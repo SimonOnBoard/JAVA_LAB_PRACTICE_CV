@@ -1,5 +1,6 @@
-package com.itis.practice.team123.cvproject.models;
+package com.itis.practice.team123.cvproject.dto;
 
+import com.itis.practice.team123.cvproject.models.Teacher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

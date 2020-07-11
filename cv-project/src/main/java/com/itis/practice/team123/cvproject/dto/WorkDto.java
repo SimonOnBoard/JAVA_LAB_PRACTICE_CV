@@ -1,6 +1,5 @@
 package com.itis.practice.team123.cvproject.dto;
 
-import com.itis.practice.team123.cvproject.models.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

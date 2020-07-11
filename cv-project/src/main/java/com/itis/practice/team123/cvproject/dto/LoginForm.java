@@ -1,4 +1,4 @@
-package com.itis.practice.team123.cvproject.dtos;
+package com.itis.practice.team123.cvproject.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
