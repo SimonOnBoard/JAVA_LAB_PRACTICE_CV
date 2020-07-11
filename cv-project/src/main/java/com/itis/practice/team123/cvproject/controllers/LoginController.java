@@ -14,7 +14,8 @@ public class LoginController {
     @GetMapping("/login")
     public String startLoginProcess(@RequestParam(value = "error", required = false) Boolean info, @AuthenticationPrincipal UserDetailsImpl<?> userDetails, Model model) {
         if (userDetails != null) return "redirect:/profile";
-        if(info!= null && info) model.addAttribute("info", "Something went wrong) Check Login or Password or Register user");
+        if (info != null && info)
+            model.addAttribute("info", "Something went wrong) Check Login or Password or Register user");
         return "login";
     }
 }
