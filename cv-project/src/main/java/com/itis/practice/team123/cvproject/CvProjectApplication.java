@@ -1,11 +1,19 @@
 package com.itis.practice.team123.cvproject;
 
+import com.itis.practice.team123.cvproject.enums.Role;
+import com.itis.practice.team123.cvproject.models.Teacher;
+import com.itis.practice.team123.cvproject.models.User;
+import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
+import com.itis.practice.team123.cvproject.repositories.UsersRepository;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.EnvironmentAware;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.core.env.Environment;
@@ -27,7 +35,9 @@ import java.util.Properties;
 @EnableAspectJAutoProxy
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.itis.practice.team123.cvproject.repositories")
-public class CvProjectApplication {
+public class CvProjectApplication implements CommandLineRunner {
+    @Autowired
+    ApplicationContext applicationContext;
 
     public static void main(String[] args) {
         SpringApplication.run(CvProjectApplication.class, args);
@@ -85,5 +95,17 @@ public class CvProjectApplication {
         transactionManager.setEntityManagerFactory(entityManagerFactory);
 
         return transactionManager;
+    }
+
+    @Override
+    public void run(String... args) throws Exception {
+//        PasswordEncoder passwordEncoder = applicationContext.getBean("passwordEncoder", PasswordEncoder.class);
+//        UsersRepository usersRepository = applicationContext.getBean("usersRepository", UsersRepository.class);
+//        TeachersRepository teachersRepository = applicationContext.getBean("teachersRepository", TeachersRepository.class);
+//        User user = User.builder().username("12345").password(passwordEncoder.encode("12345")).role(Role.ADMIN).email("aaa@aa.ru").build();
+//        String password = passwordEncoder.encode("135");
+//        Teacher teacher = new Teacher((Long)null, "135", password, Role.TEACHER, "bbb@bb.ru", "Simple teacher");
+//        usersRepository.save(user);
+//        teachersRepository.save(teacher);
     }
 }
