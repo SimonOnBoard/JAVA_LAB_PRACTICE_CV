@@ -35,6 +35,11 @@ public class Student {
 
     @Enumerated(value = EnumType.STRING)
     private Education education;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
+    @JoinTable(name = "students_languages",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "language_id"))
     private List<Language> languages;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
