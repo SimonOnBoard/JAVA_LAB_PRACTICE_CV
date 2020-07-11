@@ -1,5 +1,6 @@
-package com.itis.practice.team123.cvproject.models;
+package com.itis.practice.team123.cvproject.dto;
 
+import com.itis.practice.team123.cvproject.models.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,10 +12,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Work {
+public class WorkDto {
     private String name;
     private String description;
     private List<Tag> tags;
-    private Student student;
-    private Teacher teacher;
+    private Long studentId;
+    private Long teacherId;
 }
