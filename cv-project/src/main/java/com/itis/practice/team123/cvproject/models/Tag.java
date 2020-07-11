@@ -1,6 +1,5 @@
 package com.itis.practice.team123.cvproject.models;
 
-import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,24 +7,18 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "USERS")
-public class User {
+@Table(name = "tags")
+public class Tag {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
-    protected String username;
-
-    protected String password;
-
-    protected Role role;
-
-    protected String email;
+    @Column(name = "tag_name")
+    private String name;
 }

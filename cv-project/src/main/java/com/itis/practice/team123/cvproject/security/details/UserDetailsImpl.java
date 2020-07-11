@@ -2,6 +2,7 @@ package com.itis.practice.team123.cvproject.security.details;
 
 import com.itis.practice.team123.cvproject.models.User;
 import lombok.Builder;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -9,6 +10,7 @@ import java.util.*;
 import java.util.Collection;
 
 @Builder
+@Data
 public class UserDetailsImpl<T extends User> implements org.springframework.security.core.userdetails.UserDetails {
     private Long userId;
     private String role;
@@ -16,17 +18,6 @@ public class UserDetailsImpl<T extends User> implements org.springframework.secu
 
     private T user;
 
-    public Long getUserId() {
-        return userId;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public String getName() {
-        return name;
-    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -63,6 +54,6 @@ public class UserDetailsImpl<T extends User> implements org.springframework.secu
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

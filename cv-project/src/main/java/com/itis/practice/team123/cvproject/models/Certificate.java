@@ -1,6 +1,5 @@
 package com.itis.practice.team123.cvproject.models;
 
-import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,24 +7,22 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
+@Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Builder
-@Entity
-@Inheritance(strategy = InheritanceType.JOINED)
-@Table(name = "USERS")
-public class User {
+@Table(name = "certificates")
+public class Certificate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
+    private Long id;
 
-    protected String username;
+    private String description;
+    private String yearOfReceipt;
 
-    protected String password;
-
-    protected Role role;
-
-    protected String email;
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "student_id")
+    private Student student;
 }
