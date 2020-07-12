@@ -31,7 +31,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/profile", true)
@@ -40,6 +39,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true");
 
         http.logout()
+                .logoutUrl("/logout")
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/login?logout");
     }

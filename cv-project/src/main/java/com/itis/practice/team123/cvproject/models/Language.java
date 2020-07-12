@@ -24,4 +24,8 @@ public class Language {
 
     @Enumerated(value = EnumType.STRING)
     private LanguageLevel level;
+
+    public void setLevel(String level) {
+        this.level = LanguageLevel.valueOf(level);
+    }
 }

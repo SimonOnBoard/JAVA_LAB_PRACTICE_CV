@@ -4,6 +4,9 @@ import com.itis.practice.team123.cvproject.enums.Role;
 import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.models.User;
 import com.itis.practice.team123.cvproject.services.interfaces.ProfileService;
+import com.itis.practice.team123.cvproject.services.interfaces.UsersService;
+import com.itis.practice.team123.cvproject.utils.Initializer;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -13,21 +16,27 @@ import static com.itis.practice.team123.cvproject.enums.Role.*;
 
 @Service
 public class ProfileServiceImpl implements ProfileService {
+    private UsersService usersService;
+
+    public ProfileServiceImpl(UsersService usersService) {
+        this.usersService = usersService;
+    }
 
     @Override
-    public Role getProfile(User user, Model model) throws IllegalStateException {
+    public String getProfile(User user, Model model) throws IllegalStateException {
+        //костыль
+        user = usersService.getUser(user.getId());
         switch (user.getRole()) {
             case TEACHER:
                 loadTeacherInfo(user, model);
+                return "teacherProfile";
             case COMPANY:
                 loadCompanyInfo(user, model);
-                break;
             case ADMIN:
-                break;
+                return "panel";
             default:
                 throw new IllegalStateException("Unexpected value: " + user.getClass());
         }
-        return user.getRole();
     }
 
     private void loadCompanyInfo(User user, Model model) {
@@ -46,7 +55,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Role getProfile(Long id, Model model) throws AccessDeniedException {
-        return null;
+    public String getProfile(Long id, Model model) throws AccessDeniedException, IllegalArgumentException {
+        User user = usersService.getUser(id);
+        return this.getProfile(user, model);
     }
 }

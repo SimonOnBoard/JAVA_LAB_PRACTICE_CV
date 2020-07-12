@@ -7,7 +7,7 @@ import org.springframework.ui.Model;
 import java.nio.file.AccessDeniedException;
 
 public interface ProfileService {
-    Role getProfile(User user, Model model) throws IllegalStateException;
-    Role getProfile(Long id, Model model) throws AccessDeniedException;
+    String getProfile(User user, Model model) throws IllegalStateException;
+    String getProfile(Long id, Model model) throws AccessDeniedException, IllegalArgumentException;
 
 }

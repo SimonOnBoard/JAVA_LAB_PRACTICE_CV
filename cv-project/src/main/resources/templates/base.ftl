@@ -1,6 +1,13 @@
 <#macro content></#macro>
 <#macro title></#macro>
 <#macro head></#macro>
+<#macro enumSelect selectName enumValues>
+    <select name="${selectName}">
+        <#list enumValues as enum>
+            <option value="${enum}">${enum.description}</option>
+        </#list>
+    </select>
+</#macro>
 <#macro display_page>
     <!doctype html>
     <html>

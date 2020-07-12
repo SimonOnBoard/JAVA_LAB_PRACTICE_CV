@@ -25,8 +25,16 @@
     </#if>
     <#if languages?has_content>
         <#list languages as lang>
+            <br>
             <p>${lang.getLanguage()}</p>
             <p>${lang.getLevel().name()}</p>
+            <#if isOwner == true>
+                <form action="/removeLanguage/${id}/${lang.getId()}" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value= "${_csrf.token}"/>
+                    <input type="submit" value="Удалить язык">
+                </form>
+            </#if>
+            <br>
         </#list>
     </#if>
     <#if isOwner == true>
