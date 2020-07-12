@@ -1,10 +1,6 @@
 <#include "base.ftl"/>
 <#macro head>
-    <style>
-        .error {
-            color: #ff0000;
-        }
-    </style>
+
 </#macro>
 <#macro content>
     <h1>Teacher's profile</h1>
