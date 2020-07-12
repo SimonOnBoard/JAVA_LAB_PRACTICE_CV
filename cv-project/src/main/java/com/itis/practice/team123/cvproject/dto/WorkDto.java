@@ -12,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WorkDto {
-    private String name;
+    private String title;
     private String description;
-    private List<Tag> tags;
+    private List<String> tags;
     private Long studentId;
     private Long teacherId;
 }
