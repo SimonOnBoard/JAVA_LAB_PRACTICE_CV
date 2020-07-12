@@ -1,8 +1,12 @@
 package com.itis.practice.team123.cvproject;
 
 import com.itis.practice.team123.cvproject.enums.Role;
+import com.itis.practice.team123.cvproject.models.Student;
+import com.itis.practice.team123.cvproject.models.Tag;
 import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.models.User;
+import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
+import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
 import com.itis.practice.team123.cvproject.repositories.UsersRepository;
 import com.zaxxer.hikari.HikariConfig;
@@ -30,6 +34,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 @SpringBootApplication
