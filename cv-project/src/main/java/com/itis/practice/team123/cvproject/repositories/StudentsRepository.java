@@ -12,5 +12,5 @@ import java.util.List;
 @Transactional
 public interface StudentsRepository extends JpaRepository<Student, Long> {
     @Query("select c.student_id from competence c where c.tag_id = :tag_id")
-    List<Student> findByTag(@Param("tag_id") Long tag_id);
+    List<Long> findByTag(@Param("tag_id") Long tag_id);
 }

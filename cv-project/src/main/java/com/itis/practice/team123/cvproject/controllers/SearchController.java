@@ -4,6 +4,7 @@ package com.itis.practice.team123.cvproject.controllers;
 import com.itis.practice.team123.cvproject.dto.TagFormData;
 import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
+import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,9 +22,10 @@ public class SearchController {
 
     @Autowired
     TagsRepository tagsRepository;
-
     @Autowired
     StudentsRepository studentsRepository;
+    @Autowired
+    StudentsService studentsService;
 
     @GetMapping("/search")
     public String contractView(Model model) {
@@ -42,6 +44,7 @@ public class SearchController {
             formData.getComp().forEach(c -> {sb.append(c + ",");});
         else sb.append("comp is null");
         model.addAttribute("selected", sb.toString());
+        model.addAttribute("students", studentsService.getStudentsByTag(formData.getComp()));
 
         return "search";
     }
