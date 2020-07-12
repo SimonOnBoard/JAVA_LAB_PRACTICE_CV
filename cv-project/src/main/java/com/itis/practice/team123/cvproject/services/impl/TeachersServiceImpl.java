@@ -49,7 +49,6 @@ public class TeachersServiceImpl implements TeachersService {
             Language language1 = languageService.initializeLanguage(language);
             removeIfExists(teacher.getLanguages(), language1);
             teacher.getLanguages().add(language1);
-            teachersRepository.saveAndFlush(teacher);
         }catch (IllegalArgumentException e){
             // TODO: 12.07.2020 обработать нормально
             throw new IllegalArgumentException(e);
@@ -63,7 +62,6 @@ public class TeachersServiceImpl implements TeachersService {
             Teacher teacher = this.getTeacher(id);
             Language language1 = languageService.getLanguage(language);
             teacher.getLanguages().remove(language1);
-            teachersRepository.saveAndFlush(teacher);
         }catch (IllegalArgumentException e){
             // TODO: 12.07.2020 обработать нормально
             throw new IllegalArgumentException(e);

@@ -22,7 +22,7 @@ public class ProfileController {
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
-
+    //Сделать Rest подобным
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = {"/profile/{id}", "/profile"})
     public String getTeacherProfile(Model model, @AuthenticationPrincipal UserDetailsImpl<?> userDetails, @PathVariable(name = "id", required = false) Long id) throws AccessDeniedException {
@@ -36,7 +36,7 @@ public class ProfileController {
             throw new IllegalStateException(e.getMessage());
         }
     }
-
+    //возвращает страничку для редактирования профиля проверя пользователя
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/editTeacherProfile/{id}")
     public String getEditTeacherProfilePage(Model model, @AuthenticationPrincipal UserDetailsImpl<?> userDetails, @PathVariable("id") Long id) throws AccessDeniedException {

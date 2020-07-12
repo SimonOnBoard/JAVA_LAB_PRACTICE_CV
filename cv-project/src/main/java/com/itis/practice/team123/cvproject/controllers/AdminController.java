@@ -31,7 +31,7 @@ public class AdminController {
     public String getAddUserPage(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails) {
         return "addUserPage";
     }
-
+    //Придумать метод для возвращения всех возможных api  admin + переделать метод добавления пользователя в rest
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addUser")
     public String addUser(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails, UserForm userForm, Model model) {

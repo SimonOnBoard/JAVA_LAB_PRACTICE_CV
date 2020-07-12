@@ -28,7 +28,7 @@ public class StudentsServiceImpl implements StudentsService {
     public Student getStudentById(Long id) {
         return studentsRepository.getOne(id);
     }
-
+    //откромментировать код, переписать через компетенции
     @Override
     public List<Student> getStudentsByTag(List<String> tagsName) {
         HashMap<Student, Integer> studentsTagCount = new HashMap<>();
@@ -38,8 +38,7 @@ public class StudentsServiceImpl implements StudentsService {
             for (Long id : studentsRepository.findByTag(tag.getId())) {
                 Student student = studentsRepository.getOne(id);
                 Integer k = studentsTagCount.get(student);
-                if (k != null)
-                    studentsTagCount.put(student, ++k);
+                if (k != null) studentsTagCount.put(student, ++k);
                 else studentsTagCount.put(student, 1);
 
             }

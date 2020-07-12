@@ -20,12 +20,16 @@ import java.util.List;
 @Controller
 public class SearchController {
 
-    @Autowired
-    TagsRepository tagsRepository;
-    @Autowired
-    StudentsRepository studentsRepository;
-    @Autowired
-    StudentsService studentsService;
+    private TagsRepository tagsRepository;
+    private StudentsRepository studentsRepository;
+    private StudentsService studentsService;
+
+    public SearchController(TagsRepository tagsRepository, StudentsRepository studentsRepository, StudentsService studentsService) {
+        this.tagsRepository = tagsRepository;
+        this.studentsRepository = studentsRepository;
+        this.studentsService = studentsService;
+    }
+
 
     @GetMapping("/search")
     public String contractView(Model model) {
@@ -35,16 +39,16 @@ public class SearchController {
 
 
     @PostMapping("/search")
-    public String compsave(@ModelAttribute("formData") TagFormData formData,
-                           Model model) {
+    public String competenceSave(@ModelAttribute("formData") TagFormData formData,
+                                 Model model) {
         model.addAttribute("tags", tagsRepository.findAll());
-        
+        //переписать кусок кода нельзя создавать объект нельзя писать бизнес логику в контроллере
         StringBuilder sb = new StringBuilder();
-        if (formData.getComp() != null)
-            formData.getComp().forEach(c -> {sb.append(c + ",");});
+        if (formData.getCompetencies() != null)
+            formData.getCompetencies().forEach(c -> {sb.append(c + ",");});
         else sb.append("comp is null");
         model.addAttribute("selected", sb.toString());
-        model.addAttribute("students", studentsService.getStudentsByTag(formData.getComp()));
+        model.addAttribute("students", studentsService.getStudentsByTag(formData.getCompetencies()));
 
         return "search";
     }

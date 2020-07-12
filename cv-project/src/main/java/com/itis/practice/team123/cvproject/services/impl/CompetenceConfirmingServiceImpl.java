@@ -18,17 +18,17 @@ public class CompetenceConfirmingServiceImpl implements CompetenceConfirmingServ
         this.competenceRepository = competenceRepository;
     }
 
+    //обработать исключение когда это делает не учитель, выполнить проверку
     @Override
     public void confirmCompetenceFromStudentProfile(Long competenceId, User user) {
         Teacher teacher = (Teacher) user;
 
+        //можно завести отдельный сервис для компетенций и доставать оттуда компетенцию
+        //почему не find?
         Competence competence = competenceRepository.getOne(competenceId);
         competence.setConfirmed(true);
 
-        List<Teacher> confirmedTeachers = competence.getConfirmedTeachers();
-        confirmedTeachers.add(teacher);
-        competence.setConfirmedTeachers(confirmedTeachers);
-
+        competence.getConfirmedTeachers().add(teacher);
         competenceRepository.save(competence);
     }
 }

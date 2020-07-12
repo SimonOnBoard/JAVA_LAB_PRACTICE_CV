@@ -18,11 +18,14 @@ import java.util.List;
 
 @Controller
 public class StudentWorksController {
-    @Autowired
     private WorksRepository worksRepository;
-    @Autowired
     private WeightsAssigner weightsAssigner;
 
+    public StudentWorksController(WorksRepository worksRepository, WeightsAssigner weightsAssigner) {
+        this.worksRepository = worksRepository;
+        this.weightsAssigner = weightsAssigner;
+    }
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/works/{id}")
     public ModelAndView getStudentsWorks(@PathVariable Long id) {
         ModelAndView modelAndView = new ModelAndView();

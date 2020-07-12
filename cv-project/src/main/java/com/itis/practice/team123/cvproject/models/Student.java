@@ -10,14 +10,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "students")
 public class Student extends User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String firstName;
     private String lastName;

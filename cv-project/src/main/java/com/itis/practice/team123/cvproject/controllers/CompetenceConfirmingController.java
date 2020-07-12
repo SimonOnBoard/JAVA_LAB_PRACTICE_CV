@@ -21,7 +21,7 @@ public class CompetenceConfirmingController {
 
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("{studentId}/confirm/{competenceId}")
-    public ResponseEntity confirmCompetenceFromStudentProfile(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+    public ResponseEntity<?> confirmCompetenceFromStudentProfile(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                                               @PathVariable("studentId") Long studentId,
                                                               @PathVariable("competenceId") Long competenceId) {
         competenceConfirmingService.confirmCompetenceFromStudentProfile(competenceId, userDetails.getUser());
