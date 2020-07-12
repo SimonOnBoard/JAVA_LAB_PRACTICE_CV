@@ -3,8 +3,8 @@
     <title>Works</title>
 </head>
 <body>
-<#list works as work>
-    ${work}
+<#list weightedWorks as work>
+    ${work} <br>
 </#list>
 </body>
 </html>
