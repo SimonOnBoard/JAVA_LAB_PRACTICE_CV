@@ -1,4 +1,4 @@
-package com.itis.practice.team123.cvproject.ascpects;
+package com.itis.practice.team123.cvproject.aspects;
 
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
