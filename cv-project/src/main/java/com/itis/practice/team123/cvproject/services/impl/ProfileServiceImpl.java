@@ -41,6 +41,7 @@ public class ProfileServiceImpl implements ProfileService {
         if (teacher.getSurname() != null) model.addAttribute("surname", teacher.getSurname());
         if (teacher.getInstitution() != null) model.addAttribute("institution", teacher.getInstitution());
         if (teacher.getLanguages() != null) model.addAttribute("languages", teacher.getLanguages());
+        if (teacher.getAdditionalInfo() != null) model.addAttribute("info", teacher.getAdditionalInfo());
         model.addAttribute("id", teacher.getId());
     }
 

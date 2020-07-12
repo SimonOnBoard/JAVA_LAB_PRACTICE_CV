@@ -20,6 +20,9 @@
     <#if institution?has_content>
         <p> Organization: ${institution}</p>
     </#if>
+    <#if info?has_content>
+        <p> additional info: ${info}</p>
+    </#if>
     <#if languages?has_content>
         <#list languages as lang>
             <p>${lang.getLanguage()}</p>
