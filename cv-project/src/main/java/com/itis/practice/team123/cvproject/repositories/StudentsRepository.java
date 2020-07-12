@@ -6,4 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface StudentsRepository extends JpaRepository<Student, Long> {
+
+    // TODO написать метод для получения студентов по фильтрам
 }
