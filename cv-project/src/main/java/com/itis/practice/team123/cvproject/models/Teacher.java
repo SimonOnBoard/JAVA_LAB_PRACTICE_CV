@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.models;
 
+import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +28,11 @@ public class Teacher extends User {
         this.description = description;
     }
 
+    public Teacher(Long id, String username, String password, Role role, String email) {
+        super(id, username, password, role, email);
+    }
+
+    public static Teacher fromUserForm(UserForm userForm) {
+        return new Teacher((Long) null, userForm.getUsername(), userForm.getPassword(), userForm.getRole(), userForm.getEmail());
+    }
 }

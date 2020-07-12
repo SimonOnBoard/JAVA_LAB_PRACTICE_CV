@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.models;
 
+import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,6 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
 
+    @Column(unique = true)
     protected String username;
 
     protected String password;
@@ -28,4 +30,13 @@ public class User {
     protected Role role;
 
     protected String email;
+
+    public static User from(UserForm userForm) {
+        return User.builder()
+                .username(userForm.getUsername())
+                .password(userForm.getPassword())
+                .email(userForm.getEmail())
+                .role(userForm.getRole())
+                .build();
+    }
 }

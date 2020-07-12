@@ -31,7 +31,6 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("*").anonymous();
 
         http.formLogin()
                 .loginPage("/login")
