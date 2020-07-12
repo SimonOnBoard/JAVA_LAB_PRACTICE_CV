@@ -1,10 +1,7 @@
 package com.itis.practice.team123.cvproject.models;
 
 import com.itis.practice.team123.cvproject.enums.Education;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,8 +11,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "students")
-public class Student {
+public class Student extends User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +26,6 @@ public class Student {
     private int age;
 
     private String phoneNumber;
-    private String email;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private List<Competence> competences;
@@ -47,3 +44,4 @@ public class Student {
 
     private String aboutMe;
 }
+

@@ -1,8 +1,10 @@
 package com.itis.practice.team123.cvproject.controllers;
 
+import com.itis.practice.team123.cvproject.dto.WeightedWorkDto;
 import com.itis.practice.team123.cvproject.models.Work;
 import com.itis.practice.team123.cvproject.repositories.WorksRepository;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
+import com.itis.practice.team123.cvproject.services.interfaces.WeightsAssigner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,13 +20,16 @@ import java.util.List;
 public class StudentWorksController {
     @Autowired
     private WorksRepository worksRepository;
+    @Autowired
+    private WeightsAssigner weightsAssigner;
 
     @GetMapping("/works/{id}")
     public ModelAndView getStudentsWorks(@PathVariable Long id) {
-        List<Work> works = worksRepository.getWorksByStudentId(id);
         ModelAndView modelAndView = new ModelAndView();
+        List<Work> works = worksRepository.getWorksByStudentId(id);
+        List<WeightedWorkDto> weightedWorks = weightsAssigner.assignWeights(works);
         modelAndView.setViewName("works");
-        modelAndView.addObject("works", works);
+        modelAndView.addObject("weightedWorks", weightedWorks);
         return modelAndView;
     }
 }
