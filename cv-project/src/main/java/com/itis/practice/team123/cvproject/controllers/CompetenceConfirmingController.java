@@ -4,6 +4,7 @@ import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.CompetenceConfirmingService;
 import com.itis.practice.team123.cvproject.utils.RedirectUtil;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ public class CompetenceConfirmingController {
         this.competenceConfirmingService = competenceConfirmingService;
     }
 
+    @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("{studentId}/confirm/{competenceId}")
     public ResponseEntity confirmCompetenceFromStudentProfile(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                                               @PathVariable("studentId") Long studentId,
