@@ -43,6 +43,6 @@
     </form>
 </#macro>
 <#macro title>
-    <title>Login</title>
+    <title>Add user page</title>
 </#macro>
 <@display_page />
