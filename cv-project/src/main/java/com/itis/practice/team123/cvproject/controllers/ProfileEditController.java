@@ -30,8 +30,10 @@ public class ProfileEditController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editTeacherProfile/{id}")
-    public String getEditTeacherProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails, @PathVariable("id") Long id, TeacherProfileInfo teacherProfileInfo) throws AccessDeniedException {
-        if (Role.ADMIN.equals(userDetails.getRole()) | id.equals(userDetails.getUserId())) {
+    public String getEditTeacherProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+                                            @PathVariable("id") Long id,
+                                            TeacherProfileInfo teacherProfileInfo) throws AccessDeniedException {
+        if (Role.ADMIN.name().equals(userDetails.getRole()) | id.equals(userDetails.getUserId())) {
             teachersService.updateTeacher(teacherProfileInfo, id);
         } else {
             throw new AccessDeniedException("You can't do this");
@@ -42,7 +44,7 @@ public class ProfileEditController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/addLanguage/{id}")
     public @ResponseBody String addLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails, @PathVariable("id") Long id, Language language) throws AccessDeniedException {
-        if (Role.ADMIN.equals(userDetails.getRole()) | id.equals(userDetails.getUserId())) {
+        if (Role.ADMIN.name().equals(userDetails.getRole()) | id.equals(userDetails.getUserId())) {
             teachersService.addLanguage(id, language);
         } else {
             throw new AccessDeniedException("You can't do this");
@@ -52,8 +54,10 @@ public class ProfileEditController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/removeLanguage/{id}/{langId}")
-    public String deleteLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails, @PathVariable("id") Long id, @PathVariable("langId") Long langId) throws AccessDeniedException {
-        if (Role.ADMIN.equals(userDetails.getRole()) | id.equals(userDetails.getUserId())) {
+    public String deleteLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+                                 @PathVariable("id") Long id,
+                                 @PathVariable("langId") Long langId) throws AccessDeniedException {
+        if (Role.ADMIN.name().equals(userDetails.getRole()) | id.equals(userDetails.getUserId())) {
             teachersService.removeLanguage(id, langId);
         } else {
             throw new AccessDeniedException("You can't do this");

@@ -25,6 +25,7 @@ public class StudentWorksController {
         this.worksRepository = worksRepository;
         this.weightsAssigner = weightsAssigner;
     }
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/works/{id}")
     public ModelAndView getStudentsWorks(@PathVariable Long id) {

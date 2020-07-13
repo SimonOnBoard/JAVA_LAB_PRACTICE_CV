@@ -6,8 +6,7 @@ import com.itis.practice.team123.cvproject.models.User;
 import com.itis.practice.team123.cvproject.repositories.CompetenceRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.CompetenceConfirmingService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CompetenceConfirmingServiceImpl implements CompetenceConfirmingService {
@@ -18,17 +17,17 @@ public class CompetenceConfirmingServiceImpl implements CompetenceConfirmingServ
         this.competenceRepository = competenceRepository;
     }
 
-    //обработать исключение когда это делает не учитель, выполнить проверку
     @Override
+    @Transactional
     public void confirmCompetenceFromStudentProfile(Long competenceId, User user) {
         Teacher teacher = (Teacher) user;
 
-        //можно завести отдельный сервис для компетенций и доставать оттуда компетенцию
-        //почему не find?
-        Competence competence = competenceRepository.getOne(competenceId);
-        competence.setConfirmed(true);
+        Competence competence = competenceRepository.findById(competenceId)
+                .orElseThrow(() ->
+                    new IllegalArgumentException("Competence with id " + competenceId + " doesn't exist")
+                );
 
+        competence.setConfirmed(true);
         competence.getConfirmedTeachers().add(teacher);
-        competenceRepository.save(competence);
     }
 }

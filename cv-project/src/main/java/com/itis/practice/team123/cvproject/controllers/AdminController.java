@@ -34,7 +34,9 @@ public class AdminController {
     //Придумать метод для возвращения всех возможных api  admin + переделать метод добавления пользователя в rest
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addUser")
-    public String addUser(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails, UserForm userForm, Model model) {
+    public String addUser(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails,
+                          UserForm userForm,
+                          Model model) {
         try {
             adminService.registerUser(userForm);
         } catch (IllegalArgumentException e) {

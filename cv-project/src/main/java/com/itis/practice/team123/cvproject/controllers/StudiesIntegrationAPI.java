@@ -36,7 +36,11 @@ public class StudiesIntegrationAPI {
         Teacher teacher = teachersRepository.getOne(workDto.getTeacherId());
         Student student = studentsRepository.getOne(workDto.getStudentId());
         List<Tag> tags = tagsRepository.findAllByNameIn(workDto.getTags());
-        Work work = Work.builder().description(workDto.getDescription()).title(workDto.getTitle()).student(student).teacher(teacher)
+        Work work = Work.builder()
+                .description(workDto.getDescription())
+                .title(workDto.getTitle())
+                .student(student)
+                .teacher(teacher)
                 .tags(tags).build();
         worksRepository.save(work);
         return "Work successfully exported";

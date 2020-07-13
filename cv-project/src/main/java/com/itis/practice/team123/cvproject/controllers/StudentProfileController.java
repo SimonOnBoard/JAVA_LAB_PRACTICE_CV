@@ -18,7 +18,7 @@ public class StudentProfileController {
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping("/students/{id}")
+    @GetMapping("/api/students/{id}")
     public ResponseEntity<Student> getStudent(@PathVariable("id") Long id) {
         return ResponseEntity.ok(studentsService.getStudentById(id));
     }

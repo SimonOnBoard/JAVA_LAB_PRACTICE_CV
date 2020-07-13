@@ -45,7 +45,9 @@ public class SearchController {
         //переписать кусок кода нельзя создавать объект нельзя писать бизнес логику в контроллере
         StringBuilder sb = new StringBuilder();
         if (formData.getCompetencies() != null)
-            formData.getCompetencies().forEach(c -> {sb.append(c + ",");});
+            formData.getCompetencies().forEach(c ->
+                    sb.append(c).append(",")
+            );
         else sb.append("comp is null");
         model.addAttribute("selected", sb.toString());
         model.addAttribute("students", studentsService.getStudentsByTag(formData.getCompetencies()));
