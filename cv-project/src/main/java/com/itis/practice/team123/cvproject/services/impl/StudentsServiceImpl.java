@@ -15,12 +15,12 @@ import java.util.List;
 @Service
 public class StudentsServiceImpl implements StudentsService {
 
-    @Autowired
-    TagsRepository tagsRepository;
 
+    private final TagsRepository tagsRepository;
     private final StudentsRepository studentsRepository;
 
-    public StudentsServiceImpl(StudentsRepository studentsRepository) {
+    public StudentsServiceImpl(TagsRepository tagsRepository, StudentsRepository studentsRepository) {
+        this.tagsRepository = tagsRepository;
         this.studentsRepository = studentsRepository;
     }
 
@@ -33,13 +33,12 @@ public class StudentsServiceImpl implements StudentsService {
     public List<Student> getStudentsByTag(List<String> tagsName) {
         HashMap<Student, Integer> studentsTagCount = new HashMap<>();
         List<Student> students = new ArrayList<>();
-        for (String tagName : tagsName) {
-            Tag tag = tagsRepository.findByName(tagName).get();
+        List<Tag> tags = tagsRepository.findAllByNameIn(tagsName);
+        for (Tag tag : tags) {
             for (Student student : studentsRepository.findByTag(tag.getId())) {
                 Integer k = studentsTagCount.get(student);
                 if (k != null) studentsTagCount.put(student, ++k);
                 else studentsTagCount.put(student, 1);
-
             }
         }
 
