@@ -1,7 +1,11 @@
 package com.itis.practice.team123.cvproject.security.config;
 
+import com.itis.practice.team123.cvproject.security.filters.JwtAuthenticationFilter;
+import com.itis.practice.team123.cvproject.security.providers.JwtAuthenticationProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AnonymousAuthenticationProvider;
@@ -15,21 +19,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.CharacterEncodingFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class AppSecurityConfig {
     @Order(2)
     @Configuration
+    @RequiredArgsConstructor
     public static class SessionConfig extends WebSecurityConfigurerAdapter {
-        private PasswordEncoder passwordEncoder;
-        private UserDetailsService userDetailsService;
-
-        public SessionConfig(PasswordEncoder passwordEncoder, @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
-            this.passwordEncoder = passwordEncoder;
-            this.userDetailsService = userDetailsService;
-        }
+        private final PasswordEncoder passwordEncoder;
+        private final UserDetailsService userDetailsService;
 
         @Autowired
         @Override
@@ -63,8 +65,9 @@ public class AppSecurityConfig {
 
     @Order(1)
     @Configuration
+    @RequiredArgsConstructor
     public static class JwtConfig extends WebSecurityConfigurerAdapter {
-
+        private final JwtAuthenticationProvider authenticationProvider;
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
@@ -72,15 +75,26 @@ public class AppSecurityConfig {
             http.anonymous().principal("guest").authorities("GUEST_ROLE");
             http.formLogin().disable();
             http.logout().disable();
-            http.addFilterBefore(new AnonymousAuthenticationFilter("twrt454"), UsernamePasswordAuthenticationFilter.class);
+            http.addFilterAt(tokenProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+            http.addFilterBefore(new AnonymousAuthenticationFilter("twrt454"), JwtAuthenticationFilter.class);
+            //http.addFilterBefore(characterEncodingFilter(), AnonymousAuthenticationFilter.class);
+        }
+
+
+        @Bean
+        public JwtAuthenticationFilter tokenProcessingFilter() throws Exception {
+            JwtAuthenticationFilter tokenProcessingFilter = new JwtAuthenticationFilter();
+            tokenProcessingFilter.setAuthenticationManager(authenticationManager());
+            return tokenProcessingFilter;
         }
 
 
         @Autowired
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.authenticationProvider(new AnonymousAuthenticationProvider("twrt454"));
+            auth.authenticationProvider(authenticationProvider).authenticationProvider(new AnonymousAuthenticationProvider("twrt454"));
         }
+
 
     }
 }

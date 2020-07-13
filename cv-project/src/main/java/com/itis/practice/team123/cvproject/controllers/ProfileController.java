@@ -20,34 +20,46 @@ public class ProfileController {
     public ProfileController(ProfileService profileService) {
         this.profileService = profileService;
     }
+
     //Сделать Rest подобным
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = {"/profile/{id}", "/profile"})
     public String getTeacherProfile(Model model,
                                     @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
-                                    @PathVariable(name = "id", required = false) Long id) throws AccessDeniedException {
+                                    @PathVariable(name = "id", required = false) Long id) {
         // TODO: 12.07.2020 Подумать на тему конфиденциального отображения профилей
         try {
             model.addAttribute("isOwner", id == null || id.equals(userDetails.getUserId()));
             return id == null ? profileService.getProfile(userDetails.getUser(), model) : profileService.getProfile(id, model);
-        } catch (AccessDeniedException e) {
-            throw new AccessDeniedException(e.getMessage());
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException(e.getMessage());
         }
     }
-    //возвращает страничку для редактирования профиля проверя пользователя
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/editTeacherProfile/{id}")
     public String getEditTeacherProfilePage(Model model,
                                             @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                             @PathVariable("id") Long id) throws AccessDeniedException {
-        if (Role.ADMIN.name().equals(userDetails.getRole()) | id.equals(userDetails.getUserId())) {
-            model.addAttribute("myEnum", LanguageLevel.values());
-            profileService.getProfile(id, model);
-        } else {
-            throw new AccessDeniedException("You can't do this");
-        }
+        checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
+        model.addAttribute("myEnum", LanguageLevel.values());
+        profileService.getProfile(id, model);
         return "editTeacherProfilePage";
     }
+
+    private void checkAuthorities(String role, Long id, Long userId) throws AccessDeniedException {
+        if (!((Role.ADMIN.name().equals(role)) | id.equals(userId)))
+            throw new AccessDeniedException("You can't do this");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/editCompanyProfile/{id}")
+    public String getEditCompanyProfilePage(Model model,
+                                            @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+                                            @PathVariable("id") Long id) throws AccessDeniedException {
+        checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
+        profileService.getProfile(id, model);
+        return "editCompanyProfilePage";
+    }
+
 }
