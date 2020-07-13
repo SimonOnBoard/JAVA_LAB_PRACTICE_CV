@@ -4,7 +4,6 @@ package com.itis.practice.team123.cvproject.controllers;
 import com.itis.practice.team123.cvproject.dto.TagFormData;
 import com.itis.practice.team123.cvproject.models.Student;
 import com.itis.practice.team123.cvproject.models.Tag;
-import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +17,16 @@ import java.util.List;
 public class SearchController {
 
     private TagsRepository tagsRepository;
-    private StudentsRepository studentsRepository;
     private StudentsService studentsService;
 
-    public SearchController(TagsRepository tagsRepository, StudentsRepository studentsRepository, StudentsService studentsService) {
+    public SearchController(TagsRepository tagsRepository, StudentsService studentsService) {
         this.tagsRepository = tagsRepository;
-        this.studentsRepository = studentsRepository;
         this.studentsService = studentsService;
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping("/search")
-    public ResponseEntity<List<Tag>> contractView() {
+    public ResponseEntity<List<Tag>> tagsView() {
         return ResponseEntity.ok(tagsRepository.findAll());
     }
 
