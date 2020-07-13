@@ -1,34 +1,31 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
-import com.itis.practice.team123.cvproject.dto.TeacherProfileInfo;
+import com.itis.practice.team123.cvproject.dto.TeacherEditForm;
 import com.itis.practice.team123.cvproject.models.Language;
 import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
 import com.itis.practice.team123.cvproject.services.interfaces.TeachersService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class TeachersServiceImpl implements TeachersService {
-    private TeachersRepository teachersRepository;
-    private LanguageService languageService;
-
-    public TeachersServiceImpl(TeachersRepository teachersRepository, LanguageService languageService) {
-        this.teachersRepository = teachersRepository;
-        this.languageService = languageService;
-    }
+    private final TeachersRepository teachersRepository;
+    private final LanguageService languageService;
 
     @Override
-    public void updateTeacher(TeacherProfileInfo teacherProfileInfo, Long id) throws IllegalArgumentException {
+    public void updateTeacher(TeacherEditForm teacherEditForm, Long id) throws IllegalArgumentException {
         Teacher teacher = getTeacher(id);
-        teacher.setAdditionalInfo(teacherProfileInfo.getInfo());
-        teacher.setName(teacherProfileInfo.getName());
-        teacher.setPatronymic(teacherProfileInfo.getPatronymic());
-        teacher.setInstitution(teacherProfileInfo.getInstitution());
-        teacher.setSurname(teacherProfileInfo.getSurname());
+        teacher.setAdditionalInfo(teacherEditForm.getInfo());
+        teacher.setName(teacherEditForm.getName());
+        teacher.setPatronymic(teacherEditForm.getPatronymic());
+        teacher.setInstitution(teacherEditForm.getInstitution());
+        teacher.setSurname(teacherEditForm.getSurname());
         teachersRepository.saveAndFlush(teacher);
     }
 
