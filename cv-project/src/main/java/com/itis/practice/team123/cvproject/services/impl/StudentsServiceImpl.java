@@ -35,8 +35,7 @@ public class StudentsServiceImpl implements StudentsService {
         List<Student> students = new ArrayList<>();
         for (String tagName : tagsName) {
             Tag tag = tagsRepository.findByName(tagName).get();
-            for (Long id : studentsRepository.findByTag(tag.getId())) {
-                Student student = studentsRepository.getOne(id);
+            for (Student student : studentsRepository.findByTag(tag.getId())) {
                 Integer k = studentsTagCount.get(student);
                 if (k != null) studentsTagCount.put(student, ++k);
                 else studentsTagCount.put(student, 1);

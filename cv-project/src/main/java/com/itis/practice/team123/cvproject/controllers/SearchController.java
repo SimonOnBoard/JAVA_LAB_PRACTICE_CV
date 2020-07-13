@@ -41,17 +41,7 @@ public class SearchController {
     @PostMapping("/search")
     public String competenceSave(@ModelAttribute("formData") TagFormData formData,
                                  Model model) {
-        model.addAttribute("tags", tagsRepository.findAll());
-        //переписать кусок кода нельзя создавать объект нельзя писать бизнес логику в контроллере
-        StringBuilder sb = new StringBuilder();
-        if (formData.getCompetencies() != null)
-            formData.getCompetencies().forEach(c ->
-                    sb.append(c).append(",")
-            );
-        else sb.append("comp is null");
-        model.addAttribute("selected", sb.toString());
-        model.addAttribute("students", studentsService.getStudentsByTag(formData.getCompetencies()));
-
+        model.addAttribute("students", studentsService.getStudentsByTag(formData.getComp()));
         return "search";
     }
 

@@ -13,7 +13,7 @@
         <#list tags! as tag>
             <input type="checkbox" name="comp" id='${tag.name!}' value='${tag.name!}'> <label for='${tag.name!}'>${tag.name!}</label><br/>
 		</#list>
-        <#--<input type="hidden" name="${_csrf.parameterName}" value= "${_csrf.token}"/>-->
+        <input type="hidden" name="${_csrf.parameterName}" value= "${_csrf.token}"/>
 		<input type="submit" name="ok">
 	</form>
 
