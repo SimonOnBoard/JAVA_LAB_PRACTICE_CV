@@ -2,22 +2,19 @@ package com.itis.practice.team123.cvproject.controllers;
 
 
 import com.itis.practice.team123.cvproject.dto.TagFormData;
+import com.itis.practice.team123.cvproject.models.Student;
+import com.itis.practice.team123.cvproject.models.Tag;
 import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@Controller
+
+@RestController
 public class SearchController {
 
     private TagsRepository tagsRepository;
@@ -30,19 +27,16 @@ public class SearchController {
         this.studentsService = studentsService;
     }
 
-
+    @PreAuthorize("permitAll()")
     @GetMapping("/search")
-    public String contractView(Model model) {
-        model.addAttribute("tags", tagsRepository.findAll());
-        return "search";
+    public ResponseEntity<List<Tag>> contractView() {
+        return ResponseEntity.ok(tagsRepository.findAll());
     }
 
-
+    @PreAuthorize("permitAll()")
     @PostMapping("/search")
-    public String competenceSave(@ModelAttribute("formData") TagFormData formData,
-                                 Model model) {
-        model.addAttribute("students", studentsService.getStudentsByTag(formData.getComp()));
-        return "search";
+    public ResponseEntity<List<Student>> competenceSave(@RequestBody TagFormData formData) {
+        return ResponseEntity.ok(studentsService.getStudentsByTag(formData.getComp()));
     }
 
 }

@@ -10,6 +10,7 @@
 
 
 	<form action="/search" method="post" enctype="application/x-www-form-urlencoded">
+        <label>Tags</label>
         <#list tags! as tag>
             <input type="checkbox" name="comp" id='${tag.name!}' value='${tag.name!}'> <label for='${tag.name!}'>${tag.name!}</label><br/>
 		</#list>
