@@ -23,12 +23,38 @@
                     alert(b);
                 },
                 error : function(err) {
-                    alert(err);
+                    alert(err.responseText);
+                }
+            });
+        }
+        function addTeacherInfo() {
+            // Create an FormData object
+            var form = $("#f")[0];
+            var data = new FormData(form);
+            var address = "\"" + form.action + "\"";
+            console.log(address);
+            $.ajax({
+                method: "POST",
+                url: form.action,
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success : function(data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert(b);
+                },
+                error : function(err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    alert(b);
                 }
             });
         }
     </script>
-    <form name='f' action="/editTeacherProfile/${id}" method='POST'>
+    <form id='f' action="/editTeacherProfile/${id}" method='POST'>
         <table>
             <tr>
                 <td>Name:</td>
@@ -72,7 +98,7 @@
             </tr>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <tr>
-                <td><input name="submit" type="submit" value="submit"/></td>
+                <td> <button type="button" onclick="addTeacherInfo()" value="Submit"></button></td>
             </tr>
         </table>
     </form>

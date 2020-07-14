@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -28,4 +29,7 @@ public class ProjectComment {
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    @Column(name = "comment_creating_date_time")
+    private LocalDateTime dateTime;
 }

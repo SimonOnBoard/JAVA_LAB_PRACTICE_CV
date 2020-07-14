@@ -19,11 +19,7 @@ import java.util.Optional;
 @Component(value = "prodiver")
 @RequiredArgsConstructor
 public class JwtAuthenticationProvider implements AuthenticationProvider {
-    private UsersRepository usersRepository;
-
-    public JwtAuthenticationProvider(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
+    private final UsersRepository usersRepository;
 
     // секретный ключ, которым мы подписываем токен
     @Value("${jwt.secret}")

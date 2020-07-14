@@ -1,20 +1,15 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
-import com.itis.practice.team123.cvproject.enums.Role;
+import com.itis.practice.team123.cvproject.dto.CompanyDto;
+import com.itis.practice.team123.cvproject.dto.TeacherDto;
 import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.models.User;
 import com.itis.practice.team123.cvproject.services.interfaces.ProfileService;
 import com.itis.practice.team123.cvproject.services.interfaces.UsersService;
-import com.itis.practice.team123.cvproject.utils.Initializer;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-
-import java.nio.file.AccessDeniedException;
-
-import static com.itis.practice.team123.cvproject.enums.Role.*;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +39,7 @@ public class ProfileServiceImpl implements ProfileService {
         Company company = (Company) user;
         model.addAttribute("id", company.getId());
         model.addAttribute("meil", company.getEmail());
+        model.addAttribute("posts",company.getPosts());
         if (company.getDescription() != null) model.addAttribute("description", company.getDescription());
         if (company.getAddress() != null) model.addAttribute("address", company.getAddress());
         if (company.getName() != null) model.addAttribute("name", company.getName());
@@ -65,5 +61,25 @@ public class ProfileServiceImpl implements ProfileService {
     public String getProfile(Long id, Model model) throws IllegalArgumentException {
         User user = usersService.getUser(id);
         return this.getProfile(user, model);
+    }
+
+    @Override
+    public Object getProfileForApi(User user) {
+        switch (user.getRole()) {
+            case TEACHER:
+                return TeacherDto.from((Teacher) user);
+            case COMPANY:
+                return CompanyDto.from((Company) user);
+            case ADMIN:
+                return "panel";
+            default:
+                throw new IllegalStateException("Unexpected value: " + user.getClass());
+        }
+    }
+
+    @Override
+    public Object getProfileForApi(Long id) {
+        User user = usersService.getUser(id);
+        return getProfileForApi(user);
     }
 }

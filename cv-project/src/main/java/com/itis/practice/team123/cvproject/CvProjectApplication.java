@@ -1,8 +1,10 @@
 package com.itis.practice.team123.cvproject;
 
+import com.itis.practice.team123.cvproject.dto.WeightedStudentDto;
 import com.itis.practice.team123.cvproject.enums.Role;
 import com.itis.practice.team123.cvproject.models.*;
 import com.itis.practice.team123.cvproject.repositories.*;
+import com.itis.practice.team123.cvproject.services.interfaces.WeightsAssigner;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,12 +44,16 @@ public class CvProjectApplication implements CommandLineRunner {
     @Autowired
     ApplicationContext applicationContext;
 
+    @Autowired
+    Environment environment;
+
+
     public static void main(String[] args) {
         SpringApplication.run(CvProjectApplication.class, args);
     }
 
-    @Autowired
-    Environment environment;
+    @Bean
+    public String okAnswer(){ return "check profile:)"; }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -106,6 +112,7 @@ public class CvProjectApplication implements CommandLineRunner {
 //        UsersRepository usersRepository = applicationContext.getBean("usersRepository", UsersRepository.class);
 //        TeachersRepository teachersRepository = applicationContext.getBean("teachersRepository", TeachersRepository.class);
 //        User user = User.builder().username("12345").password(passwordEncoder.encode("12345")).role(Role.ADMIN).email("aaa@aa.ru").build();
+//        usersRepository.save(user);
 //        String password = passwordEncoder.encode("135");
 //        Teacher teacher = new Teacher((Long)null, "135", password, Role.TEACHER, "bbb@bb.ru", "Simple teacher");
 //        usersRepository.save(user);

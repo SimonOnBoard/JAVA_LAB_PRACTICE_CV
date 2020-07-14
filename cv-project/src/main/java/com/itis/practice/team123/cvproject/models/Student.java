@@ -1,6 +1,8 @@
 package com.itis.practice.team123.cvproject.models;
 
+import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.enums.Education;
+import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Builder
 @Table(name = "students")
 public class Student extends User {
-
 
     private String firstName;
     private String lastName;
@@ -39,5 +41,13 @@ public class Student extends User {
     private List<Certificate> certificates;
 
     private String aboutMe;
+
+    public Student(Long id, String username, String password, Role role, String email) {
+        super(id, username, password, role, email);
+    }
+
+    public static Student fromUserForm(UserForm userForm) {
+        return new Student(null, userForm.getUsername(), userForm.getPassword(), userForm.getRole(), userForm.getEmail());
+    }
 }
 

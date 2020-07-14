@@ -2,7 +2,7 @@ package com.itis.practice.team123.cvproject.controllers;
 
 
 import com.itis.practice.team123.cvproject.dto.TagFormData;
-import com.itis.practice.team123.cvproject.models.Student;
+import com.itis.practice.team123.cvproject.dto.WeightedStudentDto;
 import com.itis.practice.team123.cvproject.models.Tag;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
@@ -32,7 +32,7 @@ public class SearchController {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/search")
-    public ResponseEntity<List<Student>> competenceSave(@RequestBody TagFormData formData) {
+    public ResponseEntity<List<WeightedStudentDto>> competenceSave(@RequestBody TagFormData formData) {
         return ResponseEntity.ok(studentsService.getStudentsByTag(formData.getComp()));
     }
 
