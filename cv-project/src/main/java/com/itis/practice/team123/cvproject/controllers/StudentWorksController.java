@@ -31,7 +31,6 @@ public class StudentWorksController {
     @GetMapping("/works/{id}")
     public List<WeightedWorkDto> getStudentsWorks(@PathVariable Long id) {
         List<Work> works = worksRepository.getWorksByStudentId(id);
-        List<WeightedWorkDto> weightedWorks = weightsAssigner.assignWeights(works);
-        return weightedWorks;
+        return weightsAssigner.assignWorkWeights(works);
     }
 }
