@@ -33,6 +33,7 @@
                             <option value="ADMIN">ADMIN</option>
                             <option value="TEACHER">TEACHER</option>
                             <option value="COMPANY">COMPANY</option>
+                            <option value="STUDENT">STUDENT</option>
                         </select></p></td>
             </tr>
             <input type="hidden" name="${_csrf.parameterName}" value= "${_csrf.token}"/>

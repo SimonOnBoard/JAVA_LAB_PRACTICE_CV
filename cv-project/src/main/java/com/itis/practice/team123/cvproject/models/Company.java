@@ -4,10 +4,8 @@ import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,6 +20,9 @@ public class Company extends User{
     private String address;
 
     private String phone;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "company")
+    private List<Post> posts;
 
     public Company(Long id, String username, String password, Role role, String email) {
         super(id, username, password, role, email);
