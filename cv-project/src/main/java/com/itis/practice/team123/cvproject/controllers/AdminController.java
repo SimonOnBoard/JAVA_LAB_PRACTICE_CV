@@ -4,7 +4,10 @@ import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.models.User;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.AdminService;
+import io.swagger.models.Response;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -12,13 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-@Controller
-public class AdminController {
-    private AdminService adminService;
+import java.sql.SQLException;
 
-    public AdminController(AdminService adminService) {
-        this.adminService = adminService;
-    }
+@Controller
+@RequiredArgsConstructor
+public class AdminController {
+    private final AdminService adminService;
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/panel")
@@ -32,18 +34,15 @@ public class AdminController {
         return "addUserPage";
     }
 
-    //Придумать метод для возвращения всех возможных api  admin + переделать метод добавления пользователя в rest
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addUser")
-    public String addUser(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails,
-                          UserForm userForm,
-                          Model model) {
+    public ResponseEntity<?> addUser(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails,
+                            UserForm userForm) {
         try {
             adminService.registerUser(userForm);
-        } catch (IllegalArgumentException e) {
-            model.addAttribute("info", e.getMessage());
-            return "addUserPage";
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getCause());
         }
-        return "panel";
+        return ResponseEntity.ok().body("All is ok");
     }
 }

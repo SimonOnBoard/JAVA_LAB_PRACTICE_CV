@@ -24,7 +24,9 @@
                     alert(b);
                 },
                 error : function(err) {
-                    alert(err);
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    alert(b);
                 }
             });
         }
