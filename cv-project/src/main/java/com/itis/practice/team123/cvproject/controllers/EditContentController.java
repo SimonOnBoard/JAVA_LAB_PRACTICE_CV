@@ -3,7 +3,9 @@ package com.itis.practice.team123.cvproject.controllers;
 import com.itis.practice.team123.cvproject.dto.CompanyEditForm;
 import com.itis.practice.team123.cvproject.dto.TeacherEditForm;
 import com.itis.practice.team123.cvproject.enums.Role;
+import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Language;
+import com.itis.practice.team123.cvproject.models.Post;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.CompanyService;
 import com.itis.practice.team123.cvproject.services.interfaces.TeachersService;
@@ -23,7 +25,7 @@ import java.nio.file.AccessDeniedException;
 public class EditContentController {
     private final TeachersService teachersService;
     private final CompanyService companyService;
-
+    private final String okAnswer;
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
@@ -36,7 +38,7 @@ public class EditContentController {
                                          TeacherEditForm teacherEditForm) throws AccessDeniedException {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
         teachersService.updateTeacher(teacherEditForm, id);
-        return ResponseEntity.ok("Check your profile :)");
+        return ResponseEntity.ok(okAnswer);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -46,7 +48,7 @@ public class EditContentController {
                                                     CompanyEditForm companyEditForm) throws AccessDeniedException {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
         companyService.updateCompany(companyEditForm, id);
-        return ResponseEntity.ok("Check company profile :)");
+        return ResponseEntity.ok(okAnswer);
     }
 
 
@@ -57,7 +59,23 @@ public class EditContentController {
                        Language language) throws AccessDeniedException {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
         teachersService.addLanguage(id, language);
-        return ResponseEntity.ok().body("Check user profile :)");
+        return ResponseEntity.ok().body(okAnswer);
+    }
+
+    @PreAuthorize("hasRole('COMPANY')")
+    @PostMapping("/addPost")
+    public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails,
+                                         Post post){
+        companyService.addPost(userDetails.getUser(), post);
+        return ResponseEntity.ok().body(okAnswer);
+    }
+
+    @PreAuthorize("hasRole('COMPANY')")
+    @PostMapping("/removePost/{id}")
+    public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails,
+                                         @PathVariable("id") Long id) {
+        companyService.removePost(userDetails.getUser(), id);
+        return ResponseEntity.ok().body(okAnswer);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -68,11 +86,13 @@ public class EditContentController {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
         try {
             teachersService.removeLanguage(id, langId);
-            return ResponseEntity.ok("Done");
+            return ResponseEntity.ok(okAnswer);
         } catch (IllegalArgumentException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+
 
 
     private void checkAuthorities(String role,

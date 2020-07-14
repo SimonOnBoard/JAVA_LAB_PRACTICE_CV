@@ -4,7 +4,7 @@
 </#macro>
 <#macro content>
     <script type="application/javascript">
-        function addLanguage() {
+        function editCompany() {
             // Create an FormData object
             var form = $("#x")[0];
             var data = new FormData(form);
@@ -67,9 +67,19 @@
             </tr>
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
             <tr>
-                <td><button type="button" onclick="addLanguage()" value="Отправить"/></td>
+                <td><button type="button" onclick="editCompany()" value="Отправить"/></td>
             </tr>
         </table>
+    </form>
+    <br>
+    <form id="x" action="/addPost">
+        <#--        <input type="hidden" name="id" value="null"><br>-->
+        <p>Language: </p>
+        <input type="text" name="language"/>
+        <p>Level: </p>
+        <@enumSelect "level" myEnum/><br>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <button type="button" onclick="addLanguage()" value="Submit"></button>
     </form>
     <a href="/profile">Go to profile</a>
 </#macro>

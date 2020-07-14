@@ -44,12 +44,16 @@ public class CvProjectApplication implements CommandLineRunner {
     @Autowired
     ApplicationContext applicationContext;
 
+    @Autowired
+    Environment environment;
+
+
     public static void main(String[] args) {
         SpringApplication.run(CvProjectApplication.class, args);
     }
 
-    @Autowired
-    Environment environment;
+    @Bean
+    public String okAnswer(){ return "check profile:)"; }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
