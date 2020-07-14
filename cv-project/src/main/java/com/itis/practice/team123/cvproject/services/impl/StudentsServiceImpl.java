@@ -56,20 +56,16 @@ public class StudentsServiceImpl implements StudentsService {
     @Override
     public void updateStudentBaseInfo(StudentForm studentForm, Long id) {
         Student student = getStudentById(id);
-        Student updateStudent = Student.builder()
-                .firstName(studentForm.getFirstName())
-                .lastName(studentForm.getLastName())
-                .patronymic(studentForm.getPatronymic())
-                .age(studentForm.getAge())
-                .phoneNumber(studentForm.getPhoneNumber())
-                .aboutMe(studentForm.getAboutMe())
-                .certificates(student.getCertificates())
-                .competences(student.getCompetences())
-                .education(student.getEducation())
-                .languages(student.getLanguages())
-                .build();
 
-        studentsRepository.save(updateStudent);
+        student.setFirstName(studentForm.getFirstName());
+        student.setLastName(studentForm.getLastName());
+        student.setPatronymic(studentForm.getPatronymic());
+        student.setAge(studentForm.getAge());
+        student.setPhoneNumber(studentForm.getPhoneNumber());
+        student.setEmail(studentForm.getEmail());
+        student.setAboutMe(studentForm.getAboutMe());
+
+        studentsRepository.save(student);
     }
 
     @Override
