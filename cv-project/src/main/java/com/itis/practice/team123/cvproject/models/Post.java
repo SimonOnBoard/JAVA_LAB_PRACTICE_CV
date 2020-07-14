@@ -1,8 +1,6 @@
 package com.itis.practice.team123.cvproject.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -10,6 +8,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Data
+@ToString(exclude = "company")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +22,5 @@ public class Post {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
 }

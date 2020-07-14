@@ -30,6 +30,32 @@
                 }
             });
         }
+        function addPost() {
+            // Create an FormData object
+            var form = $("#f")[0];
+            var data = new FormData(form);
+            var address = "\"" + form.action + "\"";
+            console.log(address);
+            $.ajax({
+                method: "POST",
+                url: form.action,
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success : function(data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert(b);
+                },
+                error : function(err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    alert(b);
+                }
+            });
+        }
     </script>
     <form id='x' action="/editCompanyProfile/${id}" method='POST'>
         <table>
@@ -72,14 +98,14 @@
         </table>
     </form>
     <br>
-    <form id="x" action="/addPost">
+    <form id="f" action="/addPost">
         <#--        <input type="hidden" name="id" value="null"><br>-->
-        <p>Language: </p>
-        <input type="text" name="language"/>
-        <p>Level: </p>
-        <@enumSelect "level" myEnum/><br>
+        <p>Name: </p>
+        <input type="text" name="name"/>
+        <p>Description: </p>
+        <p><textarea rows="10" cols="45" name="description"></textarea></p>
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <button type="button" onclick="addLanguage()" value="Submit"></button>
+        <button type="button" onclick="addPost()" value="Submit"></button>
     </form>
     <a href="/profile">Go to profile</a>
 </#macro>

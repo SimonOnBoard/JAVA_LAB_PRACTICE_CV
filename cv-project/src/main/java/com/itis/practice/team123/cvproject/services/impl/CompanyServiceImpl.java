@@ -38,6 +38,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public void addPost(Company company, Post post) {
+        post.setCompany(company);
         postRepository.save(post);
         company.getPosts().add(post);
     }

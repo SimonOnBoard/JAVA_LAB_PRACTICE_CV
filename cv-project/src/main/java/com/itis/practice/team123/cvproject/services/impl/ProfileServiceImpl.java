@@ -39,6 +39,7 @@ public class ProfileServiceImpl implements ProfileService {
         Company company = (Company) user;
         model.addAttribute("id", company.getId());
         model.addAttribute("meil", company.getEmail());
+        model.addAttribute("posts",company.getPosts());
         if (company.getDescription() != null) model.addAttribute("description", company.getDescription());
         if (company.getAddress() != null) model.addAttribute("address", company.getAddress());
         if (company.getName() != null) model.addAttribute("name", company.getName());
