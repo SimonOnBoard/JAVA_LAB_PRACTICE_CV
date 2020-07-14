@@ -31,52 +31,53 @@ public class EditContentController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editTeacherProfile/{id}")
-    public String editTeacherProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+    public ResponseEntity<?> editTeacherProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                          @PathVariable("id") Long id,
                                          TeacherEditForm teacherEditForm) throws AccessDeniedException {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
         teachersService.updateTeacher(teacherEditForm, id);
-        return "redirect:/profile/" + id;
+        return ResponseEntity.ok("Check your profile :)");
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/editCompanyProfile/{id}")
     public ResponseEntity<?> editCompanyProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
-                                         @PathVariable("id") Long id,
-                                         CompanyEditForm companyEditForm) throws AccessDeniedException {
+                                                    @PathVariable("id") Long id,
+                                                    CompanyEditForm companyEditForm) throws AccessDeniedException {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
         companyService.updateCompany(companyEditForm, id);
-        return ResponseEntity.ok("All is ok just relax");
+        return ResponseEntity.ok("Check company profile :)");
     }
-
 
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/addLanguage/{id}")
-    public @ResponseBody
-    String addLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+    public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                        @PathVariable("id") Long id,
                        Language language) throws AccessDeniedException {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
         teachersService.addLanguage(id, language);
-        return "All is ok just check your profile";
+        return ResponseEntity.ok().body("Check user profile :)");
     }
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/removeLanguage/{id}/{langId}")
-    public String deleteLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
-                                 @PathVariable("id") Long id,
-                                 @PathVariable("langId") Long langId) throws AccessDeniedException {
+    public ResponseEntity<?> deleteLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+                                            @PathVariable("id") Long id,
+                                            @PathVariable("langId") Long langId) throws AccessDeniedException {
         checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
-        teachersService.removeLanguage(id, langId);
-        return "redirect:/profile/" + id;
+        try {
+            teachersService.removeLanguage(id, langId);
+            return ResponseEntity.ok("Done");
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
     private void checkAuthorities(String role,
                                   Long id,
                                   Long userId) throws AccessDeniedException {
-        if (!((Role.ADMIN.name().equals(role)) | id.equals(userId)))
-            throw new AccessDeniedException("You can't do this");
+        if (!((Role.ADMIN.name().equals(role)) | id.equals(userId))) throw new AccessDeniedException("You can't do this");
     }
 }

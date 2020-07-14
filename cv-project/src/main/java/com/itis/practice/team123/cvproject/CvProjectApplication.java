@@ -108,6 +108,7 @@ public class CvProjectApplication implements CommandLineRunner {
 //        UsersRepository usersRepository = applicationContext.getBean("usersRepository", UsersRepository.class);
 //        TeachersRepository teachersRepository = applicationContext.getBean("teachersRepository", TeachersRepository.class);
 //        User user = User.builder().username("12345").password(passwordEncoder.encode("12345")).role(Role.ADMIN).email("aaa@aa.ru").build();
+//        usersRepository.save(user);
 //        String password = passwordEncoder.encode("135");
 //        Teacher teacher = new Teacher((Long)null, "135", password, Role.TEACHER, "bbb@bb.ru", "Simple teacher");
 //        usersRepository.save(user);
