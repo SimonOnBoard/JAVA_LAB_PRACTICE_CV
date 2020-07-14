@@ -3,19 +3,21 @@ package com.itis.practice.team123.cvproject.services.impl;
 import com.itis.practice.team123.cvproject.dto.CompanyEditForm;
 import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Post;
-import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.repositories.CompanyRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.CompanyService;
-import com.itis.practice.team123.cvproject.services.interfaces.PostRepository;
-import lombok.RequiredArgsConstructor;
+import com.itis.practice.team123.cvproject.repositories.PostRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final PostRepository postRepository;
+
+    public CompanyServiceImpl(CompanyRepository companyRepository, PostRepository postRepository) {
+        this.companyRepository = companyRepository;
+        this.postRepository = postRepository;
+    }
 
     @Override
     @Transactional
