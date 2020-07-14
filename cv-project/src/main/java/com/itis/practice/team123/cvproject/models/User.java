@@ -14,6 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Data
 @Builder
+@ToString(exclude = {"username", "password", "role"})
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "USERS")
