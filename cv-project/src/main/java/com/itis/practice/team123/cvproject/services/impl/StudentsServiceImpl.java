@@ -1,12 +1,13 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
+import com.itis.practice.team123.cvproject.dto.WeightedStudentDto;
 import com.itis.practice.team123.cvproject.models.Student;
 import com.itis.practice.team123.cvproject.models.Tag;
 import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
+import com.itis.practice.team123.cvproject.services.interfaces.WeightsAssigner;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class StudentsServiceImpl implements StudentsService {
 
     private final TagsRepository tagsRepository;
     private final StudentsRepository studentsRepository;
+    private final WeightsAssigner weightsAssigner;
 
 
     @Override
@@ -28,7 +30,7 @@ public class StudentsServiceImpl implements StudentsService {
     }
     //откромментировать код, переписать через компетенции
     @Override
-    public List<Student> getStudentsByTag(List<String> tagsName) {
+    public List<WeightedStudentDto> getStudentsByTag(List<String> tagsName) {
         HashMap<Student, Integer> studentsTagCount = new HashMap<>();
         List<Student> students = new ArrayList<>();
         List<Tag> tags = tagsRepository.findAllByNameIn(tagsName);
@@ -44,6 +46,10 @@ public class StudentsServiceImpl implements StudentsService {
             if (studentsTagCount.get(student) == tagsName.size())
                 students.add(student);
         }
-        return students;
+
+        List<WeightedStudentDto> weightedStudents = weightsAssigner.assignStudentWeightsByTags(students, tags);
+
+
+        return weightedStudents;
     }
 }
