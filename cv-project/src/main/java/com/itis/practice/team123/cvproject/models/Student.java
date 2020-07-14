@@ -1,6 +1,8 @@
 package com.itis.practice.team123.cvproject.models;
 
+import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.enums.Education;
+import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,5 +41,13 @@ public class Student extends User {
     private List<Certificate> certificates;
 
     private String aboutMe;
+
+    public Student(Long id, String username, String password, Role role, String email) {
+        super(id, username, password, role, email);
+    }
+
+    public static Student fromUserForm(UserForm userForm) {
+        return new Student((Long) null, userForm.getUsername(), userForm.getPassword(), userForm.getRole(), userForm.getEmail());
+    }
 }
 

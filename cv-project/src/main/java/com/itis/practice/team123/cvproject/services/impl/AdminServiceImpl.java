@@ -2,9 +2,11 @@ package com.itis.practice.team123.cvproject.services.impl;
 
 import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.models.Company;
+import com.itis.practice.team123.cvproject.models.Student;
 import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.models.User;
 import com.itis.practice.team123.cvproject.repositories.CompanyRepository;
+import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
 import com.itis.practice.team123.cvproject.repositories.UsersRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.AdminService;
@@ -23,7 +25,7 @@ public class AdminServiceImpl implements AdminService {
     private final TeachersRepository teachersRepository;
     private final PasswordEncoder passwordEncoder;
     private final CompanyRepository companyRepository;
-
+    private final StudentsRepository studentsRepository;
     @Override
     public void registerUser(UserForm userForm) {
         switch (userForm.getRole()){
@@ -41,6 +43,11 @@ public class AdminServiceImpl implements AdminService {
                 Company company = Company.fromUserForm(userForm);
                 company.setPassword(passwordEncoder.encode(company.getPassword()));
                 companyRepository.save(company);
+                break;
+            case STUDENT:
+                Student student = Student.fromUserForm(userForm);
+                student.setPassword(passwordEncoder.encode(student.getPassword()));
+                studentsRepository.save(student);
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected value: " + userForm.getRole());
