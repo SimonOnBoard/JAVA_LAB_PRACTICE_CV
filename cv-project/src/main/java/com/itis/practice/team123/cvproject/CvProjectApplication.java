@@ -1,8 +1,10 @@
 package com.itis.practice.team123.cvproject;
 
+import com.itis.practice.team123.cvproject.dto.WeightedStudentDto;
 import com.itis.practice.team123.cvproject.enums.Role;
 import com.itis.practice.team123.cvproject.models.*;
 import com.itis.practice.team123.cvproject.repositories.*;
+import com.itis.practice.team123.cvproject.services.interfaces.WeightsAssigner;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
