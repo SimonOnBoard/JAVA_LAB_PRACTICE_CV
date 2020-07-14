@@ -13,9 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
+@Builder
 @Table(name = "students")
 public class Student extends User {
-
 
     private String firstName;
     private String lastName;
@@ -47,7 +47,7 @@ public class Student extends User {
     }
 
     public static Student fromUserForm(UserForm userForm) {
-        return new Student((Long) null, userForm.getUsername(), userForm.getPassword(), userForm.getRole(), userForm.getEmail());
+        return new Student(null, userForm.getUsername(), userForm.getPassword(), userForm.getRole(), userForm.getEmail());
     }
 }
 
