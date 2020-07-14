@@ -28,6 +28,10 @@ public class Project {
     @ElementCollection
     private List<String> links;
 
+    @ManyToOne(optional = false, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "owner_id")
+    private Student owner;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
     private List<ProjectComment> projectComments;
 }
