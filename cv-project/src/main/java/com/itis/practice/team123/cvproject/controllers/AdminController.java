@@ -24,20 +24,19 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/panel")
-    public String getAdminPanel(@AuthenticationPrincipal UserDetailsImpl<User> userDetails) {
+    public String getAdminPanel() {
         return "panel";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/addUser")
-    public String getAddUserPage(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails) {
+    public String getAddUserPage() {
         return "addUserPage";
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addUser")
-    public ResponseEntity<?> addUser(@AuthenticationPrincipal UserDetailsImpl<User> userUserDetails,
-                            UserForm userForm) {
+    public ResponseEntity<?> addUser(UserForm userForm) {
         try {
             adminService.registerUser(userForm);
         } catch (RuntimeException e) {
