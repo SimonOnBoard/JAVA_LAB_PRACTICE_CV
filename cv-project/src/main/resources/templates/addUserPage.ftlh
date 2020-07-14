@@ -1,4 +1,3 @@
-<#include "base.ftl"/>
 <#macro head>
     <style>
         .error {
