@@ -5,6 +5,7 @@ import com.itis.practice.team123.cvproject.models.Tag;
 import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class StudentsServiceImpl implements StudentsService {
 
 
     private final TagsRepository tagsRepository;
     private final StudentsRepository studentsRepository;
 
-    public StudentsServiceImpl(TagsRepository tagsRepository, StudentsRepository studentsRepository) {
-        this.tagsRepository = tagsRepository;
-        this.studentsRepository = studentsRepository;
-    }
 
     @Override
     public Student getStudentById(Long id) {
