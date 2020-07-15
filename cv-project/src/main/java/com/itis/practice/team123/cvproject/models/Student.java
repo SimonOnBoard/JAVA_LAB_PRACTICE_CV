@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.enums.Education;
 import com.itis.practice.team123.cvproject.enums.Role;

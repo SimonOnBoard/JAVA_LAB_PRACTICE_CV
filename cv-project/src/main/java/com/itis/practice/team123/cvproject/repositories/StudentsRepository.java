@@ -11,6 +11,6 @@ import java.util.List;
 
 @Transactional
 public interface StudentsRepository extends JpaRepository<Student, Long> {
-    @Query(value = "select s from students s, competences c where (c.tag_id = :tag_id) and (c.student_id = s.id)", nativeQuery = true)
+    @Query(value = "select s from Student s, Competence c where (c.tag.id = :tag_id) and (c.student.id = s.id)")
     List<Student> findByTag(@Param("tag_id") Long tagId);
 }
