@@ -36,6 +36,14 @@ public class StudentProjectsController {
         return ResponseEntity.ok().body(ProjectDto.from(projectsService.getAllProjects(userDetails.getUserId())));
     }
 
+    @PreAuthorize("hasAnyRole('STUDENT')")
+    @PostMapping("/projects/newProject")
+    public ResponseEntity<?> addNewProject(@RequestBody ProjectDto projectDto,
+                                           @AuthenticationPrincipal UserDetailsImpl<?> userDetails) {
+        projectsService.addNewProject(projectDto, userDetails.getUser());
+        return ResponseEntity.ok().build();
+    }
+
     @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping("/projects/{projectId}/newComment")
     public ResponseEntity<?> commentProject(@RequestBody ProjectCommentDto projectCommentDto,

@@ -1,6 +1,7 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
 import com.itis.practice.team123.cvproject.dto.ProjectCommentDto;
+import com.itis.practice.team123.cvproject.dto.ProjectDto;
 import com.itis.practice.team123.cvproject.models.*;
 import com.itis.practice.team123.cvproject.repositories.ProjectCommentsRepository;
 import com.itis.practice.team123.cvproject.repositories.ProjectsRepository;
@@ -29,6 +30,18 @@ public class ProjectsServiceImpl implements ProjectsService {
     @Override
     public Project getProjectById(Long id) {
         return projectsRepository.getOne(id);
+    }
+
+    @Override
+    public void addNewProject(ProjectDto projectDto, User user) {
+        Student student = (Student) user;
+
+        projectsRepository.save(Project.builder()
+                .title(projectDto.getTitle())
+                .description(projectDto.getDescription())
+                .links(projectDto.getLinks())
+                .owner(student)
+                .build());
     }
 
     @Override
