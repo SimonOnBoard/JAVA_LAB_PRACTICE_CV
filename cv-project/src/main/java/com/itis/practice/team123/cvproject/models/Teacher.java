@@ -5,6 +5,7 @@ import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@RequiredArgsConstructor
 public class Teacher extends User {
     private String surname;
     private String name;
@@ -38,6 +40,10 @@ public class Teacher extends User {
 
     public Teacher(Long id, String username, String password, Role role, String email) {
         super(id, username, password, role, email);
+    }
+
+    public Teacher(Long id) {
+        this.id = id;
     }
 
     public static Teacher fromUserForm(UserForm userForm) {

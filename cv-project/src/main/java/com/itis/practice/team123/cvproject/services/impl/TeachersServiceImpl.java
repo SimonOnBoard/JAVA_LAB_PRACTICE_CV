@@ -7,6 +7,7 @@ import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
 import com.itis.practice.team123.cvproject.services.interfaces.TeachersService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TeachersServiceImpl implements TeachersService {
     private final TeachersRepository teachersRepository;
     private final LanguageService languageService;
@@ -55,12 +57,12 @@ public class TeachersServiceImpl implements TeachersService {
 
     @Override
     public void removeLanguage(Long id, Long language) throws IllegalArgumentException {
-        Teacher teacher = this.getTeacher(id);
-        removeLanguage(teacher, language);
+        removeLanguage(new Teacher((Long) id), language);
     }
 
     @Override
     public void removeLanguage(Teacher teacher, Long languageToDelete) throws IllegalArgumentException {
+        teacher = this.getTeacher(teacher.getId());
         Language language = languageService.getLanguage(languageToDelete);
         teacher.getLanguages().remove(language);
         teachersRepository.saveAndFlush(teacher);
