@@ -17,7 +17,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public JwtAuthenticationFilter() {
-        super("/**");
+        super("/api/**");
     }
 
     @Override

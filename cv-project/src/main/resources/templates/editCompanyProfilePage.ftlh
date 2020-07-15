@@ -57,7 +57,7 @@
             });
         }
     </script>
-    <form id='x' action="/editCompanyProfile/${id}" method='POST'>
+    <form id='x' action="/editCompanyProfile" method='POST'>
         <table>
             <tr>
                 <td>Name:</td>

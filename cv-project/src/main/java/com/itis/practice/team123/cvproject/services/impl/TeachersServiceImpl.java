@@ -21,6 +21,11 @@ public class TeachersServiceImpl implements TeachersService {
     @Override
     public void updateTeacher(TeacherEditForm teacherEditForm, Long id) throws IllegalArgumentException {
         Teacher teacher = getTeacher(id);
+        updateTeacher(teacherEditForm, teacher);
+    }
+
+    @Override
+    public void updateTeacher(TeacherEditForm teacherEditForm, Teacher teacher) {
         teacher.setAdditionalInfo(teacherEditForm.getInfo());
         teacher.setName(teacherEditForm.getName());
         teacher.setPatronymic(teacherEditForm.getPatronymic());
@@ -35,22 +40,30 @@ public class TeachersServiceImpl implements TeachersService {
     }
 
     @Override
-    @Transactional
     public void addLanguage(Long id, Language language) throws IllegalArgumentException {
         Teacher teacher = this.getTeacher(id);
-        Language language1 = languageService.initializeLanguage(language);
-        removeIfExists(teacher.getLanguages(), language1);
-        teacher.getLanguages().add(language1);
+        addLanguage(teacher, language);
     }
 
     @Override
-    @Transactional
+    public void addLanguage(Teacher teacher, Language languageToAdd) {
+        Language language = languageService.initializeLanguage(languageToAdd);
+        removeIfExists(teacher.getLanguages(), language);
+        teacher.getLanguages().add(language);
+        teachersRepository.saveAndFlush(teacher);
+    }
+
+    @Override
     public void removeLanguage(Long id, Long language) throws IllegalArgumentException {
         Teacher teacher = this.getTeacher(id);
-        Language language1 = languageService.getLanguage(language);
-        teacher.getLanguages().remove(language1);
-        teachersRepository.saveAndFlush(teacher);
+        removeLanguage(teacher, language);
+    }
 
+    @Override
+    public void removeLanguage(Teacher teacher, Long languageToDelete) throws IllegalArgumentException {
+        Language language = languageService.getLanguage(languageToDelete);
+        teacher.getLanguages().remove(language);
+        teachersRepository.saveAndFlush(teacher);
     }
 
     private boolean removeIfExists(List<Language> languages, Language languageToRemove) {

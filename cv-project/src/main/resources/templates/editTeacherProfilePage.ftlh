@@ -54,7 +54,7 @@
             });
         }
     </script>
-    <form id='f' action="/editTeacherProfile/${id}" method='POST'>
+    <form id='f' action="/editTeacherProfile" method='POST'>
         <table>
             <tr>
                 <td>Name:</td>
@@ -103,7 +103,7 @@
         </table>
     </form>
     <h2> Add language form</h2>
-    <form id="x" action="/addLanguage/${id}">
+    <form id="x" action="/addLanguage">
 <#--        <input type="hidden" name="id" value="null"><br>-->
         <p>Language: </p>
         <input type="text" name="language"/>

@@ -6,6 +6,7 @@ import com.itis.practice.team123.cvproject.enums.Role;
 import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Language;
 import com.itis.practice.team123.cvproject.models.Post;
+import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.CompanyService;
 import com.itis.practice.team123.cvproject.services.interfaces.TeachersService;
@@ -22,50 +23,57 @@ import java.nio.file.AccessDeniedException;
 
 @Controller
 @RequiredArgsConstructor
-public class EditContentController {
+public class TeacherCompanyContentController {
     private final TeachersService teachersService;
     private final CompanyService companyService;
     private final String okAnswer;
+
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/editTeacherProfile/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping(value = {"/editTeacherProfile", "/api/editTeacherProfile"})
     public ResponseEntity<?> editTeacherProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
-                                         @PathVariable("id") Long id,
-                                         TeacherEditForm teacherEditForm) throws AccessDeniedException {
-        checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
-        teachersService.updateTeacher(teacherEditForm, id);
+                                                    TeacherEditForm teacherEditForm) {
+        teachersService.updateTeacher(teacherEditForm, (Teacher) userDetails.getUser());
         return ResponseEntity.ok(okAnswer);
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/editCompanyProfile/{id}")
+    @PreAuthorize("hasRole('COMPANY')")
+    @PostMapping(value = {"/editCompanyProfile", "/api/editCompanyChanges"})
     public ResponseEntity<?> editCompanyProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
-                                                    @PathVariable("id") Long id,
-                                                    CompanyEditForm companyEditForm) throws AccessDeniedException {
-        checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
-        companyService.updateCompany(companyEditForm, id);
+                                                    CompanyEditForm companyEditForm) {
+        companyService.updateCompany(companyEditForm, (Company) userDetails.getUser());
         return ResponseEntity.ok(okAnswer);
     }
 
 
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/addLanguage/{id}")
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/addLanguage")
     public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
-                       @PathVariable("id") Long id,
-                       Language language) throws AccessDeniedException {
-        checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
-        teachersService.addLanguage(id, language);
+                                         Language language) {
+        teachersService.addLanguage((Teacher) userDetails.getUser(), language);
         return ResponseEntity.ok().body(okAnswer);
+    }
+
+    @PreAuthorize("hasRole('TEACHER')")
+    @PostMapping("/removeLanguage/{langId}")
+    public ResponseEntity<?> deleteLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+                                            @PathVariable("langId") Long langId) {
+        try {
+            teachersService.removeLanguage((Teacher) userDetails.getUser(), langId);
+            return ResponseEntity.ok(okAnswer);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PreAuthorize("hasRole('COMPANY')")
     @PostMapping("/addPost")
     public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails,
-                                         Post post){
+                                         Post post) {
         companyService.addPost(userDetails.getUser(), post);
         return ResponseEntity.ok().body(okAnswer);
     }
@@ -76,28 +84,5 @@ public class EditContentController {
                                          @PathVariable("id") Long id) {
         companyService.removePost(userDetails.getUser(), id);
         return ResponseEntity.ok().body(okAnswer);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/removeLanguage/{id}/{langId}")
-    public ResponseEntity<?> deleteLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
-                                            @PathVariable("id") Long id,
-                                            @PathVariable("langId") Long langId) throws AccessDeniedException {
-        checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
-        try {
-            teachersService.removeLanguage(id, langId);
-            return ResponseEntity.ok(okAnswer);
-        } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-
-
-
-    private void checkAuthorities(String role,
-                                  Long id,
-                                  Long userId) throws AccessDeniedException {
-        if (!((Role.ADMIN.name().equals(role)) | id.equals(userId))) throw new AccessDeniedException("You can't do this");
     }
 }

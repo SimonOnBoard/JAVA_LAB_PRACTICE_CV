@@ -54,7 +54,7 @@
             <p>${lang.getLanguage()}</p>
             <p>${lang.getLevel().name()}</p>
             <#if isOwner == true>
-                <form id="${lang.getId()}" action="/removeLanguage/${id}/${lang.getId()}" method="post">
+                <form id="${lang.getId()}" action="/removeLanguage/${lang.getId()}" method="post">
                     <input type="hidden" name="${_csrf.parameterName}" value= "${_csrf.token}"/>
                     <button type="button" onclick="removeLanguage(${lang.getId()})">Удачить язык</button>
                 </form>

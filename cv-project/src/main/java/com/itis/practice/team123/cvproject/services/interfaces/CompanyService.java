@@ -7,6 +7,7 @@ import com.itis.practice.team123.cvproject.models.User;
 
 public interface CompanyService {
     void updateCompany(CompanyEditForm companyEditForm, Long id) throws IllegalArgumentException;
+    void updateCompany(CompanyEditForm companyEditForm, Company company);
 
     Company getCompany(Long id) throws IllegalArgumentException;
 

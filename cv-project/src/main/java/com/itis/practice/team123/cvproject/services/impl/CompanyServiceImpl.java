@@ -20,13 +20,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    @Transactional
     public void updateCompany(CompanyEditForm companyEditForm, Long id) throws IllegalArgumentException {
         Company company = getCompany(id);
+        updateCompany(companyEditForm, company);
+    }
+
+    @Override
+    public void updateCompany(CompanyEditForm companyEditForm, Company company) {
         company.setAddress(companyEditForm.getAddress());
         company.setPhone(companyEditForm.getPhone());
         company.setDescription(companyEditForm.getDescription());
         company.setName(companyEditForm.getName());
+        companyRepository.saveAndFlush(company);
     }
 
 
