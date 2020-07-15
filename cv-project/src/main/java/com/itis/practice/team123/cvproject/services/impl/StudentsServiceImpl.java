@@ -3,10 +3,8 @@ package com.itis.practice.team123.cvproject.services.impl;
 import com.itis.practice.team123.cvproject.dto.*;
 import com.itis.practice.team123.cvproject.enums.LanguageLevel;
 import com.itis.practice.team123.cvproject.models.*;
-import com.itis.practice.team123.cvproject.repositories.CompetenceRepository;
-import com.itis.practice.team123.cvproject.repositories.LanguageRepository;
-import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
-import com.itis.practice.team123.cvproject.repositories.TagsRepository;
+import com.itis.practice.team123.cvproject.repositories.*;
+import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
 import com.itis.practice.team123.cvproject.services.interfaces.WeightsAssigner;
 import com.itis.practice.team123.cvproject.utils.EducationConverter;
@@ -20,14 +18,16 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+//целиком надо рефакторить разносить в следующей коммите
 public class StudentsServiceImpl implements StudentsService {
 
 
     private final TagsRepository tagsRepository;
     private final StudentsRepository studentsRepository;
     private final WeightsAssigner weightsAssigner;
-    private final LanguageRepository languageRepository;
+    private final LanguageService languageService;
     private final CompetenceRepository competenceRepository;
+    private final CertificateRepository certificateRepository;
 
     @Override
     public Student getStudentById(Long id) {
@@ -90,14 +90,9 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     @Transactional
-    public void updateStudentLanguagesInfo(LanguageDto languageDto, Long id) {
+    public void updateStudentLanguagesInfo(Language languageToAdd, Long id) {
         Student student = studentsRepository.getOne(id);
-        Language language = languageRepository.findByLevelAndLanguageIgnoreCase(LanguageLevel
-                .valueOf(languageDto.getLevel()), languageDto.getName())
-                .orElseThrow(() ->
-                        new IllegalArgumentException("That language doesn't exists")
-                );
-
+        Language language = languageService.initializeLanguage(languageToAdd);
         student.getLanguages().add(language);
     }
 
@@ -105,7 +100,6 @@ public class StudentsServiceImpl implements StudentsService {
     @Transactional
     public void updateStudentEducationInfo(EducationDto educationDto, Long id) {
         Student student = studentsRepository.getOne(id);
-
         student.setEducation(EducationConverter.convert(educationDto));
     }
 
@@ -113,12 +107,12 @@ public class StudentsServiceImpl implements StudentsService {
     @Transactional
     public void updateStudentCertificatesInfo(CertificateDto certificateDto, Long id) {
         Student student = studentsRepository.getOne(id);
-
-        student.getCertificates().add(Certificate.builder()
+        Certificate certificate = Certificate.builder()
                 .description(certificateDto.getName())
                 .yearOfReceipt(certificateDto.getYear())
                 .student(student)
-                .build()
-        );
+                .build();
+        certificateRepository.save(certificate);
+        student.getCertificates().add(certificate);
     }
 }

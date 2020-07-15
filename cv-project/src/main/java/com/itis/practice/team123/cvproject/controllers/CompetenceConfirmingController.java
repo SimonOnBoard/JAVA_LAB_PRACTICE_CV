@@ -20,7 +20,7 @@ public class CompetenceConfirmingController {
     }
 
     @PreAuthorize("hasRole('TEACHER')")
-    @PostMapping("/{studentId}/confirm/{competenceId}")
+    @PostMapping(value = {"/{studentId}/confirm/{competenceId}","/api/{studentId}/confirm/{competenceId}"})
     public ResponseEntity<?> confirmCompetenceFromStudentProfile(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                                               @PathVariable("studentId") Long studentId,
                                                               @PathVariable("competenceId") Long competenceId) {
