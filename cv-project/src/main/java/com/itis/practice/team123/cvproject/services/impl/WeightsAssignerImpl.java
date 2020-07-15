@@ -42,11 +42,14 @@ public class WeightsAssignerImpl implements WeightsAssigner {
         List<WeightedStudentDto> weightedStudents = new ArrayList<>();
         for(Student student : students) {
             WeightedStudentDto weightedStudent = new WeightedStudentDto();
-            weightedStudent.setWeight(1.0);
+            weightedStudent.setWeight(0.0);
+            weightedStudent.setStudent(student);
             List<Work> works;
             for (Tag tag : tags) {
                 double tagSum = 0.0;
                 works = worksRepository.getWorksByStudentAndTags(student, tag);
+                if (works.size() == 0) continue;
+                if (weightedStudent.getWeight() == 0.0) weightedStudent.setWeight(1.0);
                 List<WeightedWorkDto> weightedWorks = assignWorkWeights(works);
                 for (WeightedWorkDto weightedWork : weightedWorks) {
                     tagSum = tagSum + weightedWork.getWeight();

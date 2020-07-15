@@ -1,9 +1,7 @@
 package com.itis.practice.team123.cvproject.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -14,6 +12,14 @@ import javax.persistence.*;
 @Builder
 @Table(name = "certificates")
 public class Certificate {
+    @Override
+    public String toString() {
+        return "Certificate{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", yearOfReceipt='" + yearOfReceipt + '\'' +
+                '}';
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +28,7 @@ public class Certificate {
     private String description;
     private String yearOfReceipt;
 
+    @JsonIgnore
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "student_id")
     private Student student;

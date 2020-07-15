@@ -12,5 +12,5 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TagFormData {
-    List<String> comp;
+    private List<String> comp;
 }
