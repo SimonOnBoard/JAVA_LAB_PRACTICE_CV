@@ -24,9 +24,7 @@
              contentType: false,
              complete : function(response) {
                  var a = JSON.stringify(response);
-                 var b = JSON.parse(a);
-                 alert(b);
-                 $('#students').innerHtml = b;
+                 $('#students').innerHtml = JSON.parse(a);
              },
              error : function(err) {
                  alert(err.responseText);
@@ -63,7 +61,7 @@
             <#--<input type="checkbox" name="comp" id='${tag.name!}' value='${tag.name!}'> <label for='${tag.name!}'>${tag.name!}</label><br/>-->
 		<#--</#list>-->
         <input type="hidden" name="${_csrf.parameterName}" value= "${_csrf.token}"/>
-		<input type="submit" onclick="searchByTags()" name="ok">
+		<button type="button" onclick="searchByTags()" name="ok">Search</button>
 	</form>
 
 
