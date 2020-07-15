@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@RequiredArgsConstructor
 public class Teacher extends User {
     private String surname;
     private String name;
