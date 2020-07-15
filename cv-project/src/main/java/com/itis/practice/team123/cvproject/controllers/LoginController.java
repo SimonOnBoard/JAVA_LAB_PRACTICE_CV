@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class LoginController {
-    //Спросить у Рената нужен ли ему метод для rest login
     @PreAuthorize("permitAll()")
     @GetMapping("/login")
     public String startLoginProcess(@RequestParam(value = "error", required = false) Boolean info,
