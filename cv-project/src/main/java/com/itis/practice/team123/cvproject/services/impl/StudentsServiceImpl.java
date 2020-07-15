@@ -3,6 +3,7 @@ package com.itis.practice.team123.cvproject.services.impl;
 import com.itis.practice.team123.cvproject.dto.*;
 import com.itis.practice.team123.cvproject.enums.LanguageLevel;
 import com.itis.practice.team123.cvproject.models.*;
+import com.itis.practice.team123.cvproject.repositories.CompetenceRepository;
 import com.itis.practice.team123.cvproject.repositories.LanguageRepository;
 import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
@@ -26,11 +27,13 @@ public class StudentsServiceImpl implements StudentsService {
     private final StudentsRepository studentsRepository;
     private final WeightsAssigner weightsAssigner;
     private final LanguageRepository languageRepository;
+    private final CompetenceRepository competenceRepository;
 
     @Override
     public Student getStudentById(Long id) {
         return studentsRepository.getOne(id);
     }
+
     //откромментировать код, переписать через компетенции
     @Override
     public List<WeightedStudentDto> getStudentsByTag(List<String> tagsName) {
@@ -74,15 +77,15 @@ public class StudentsServiceImpl implements StudentsService {
         Student student = studentsRepository.getOne(id);
         Tag tag = tagsRepository.findByName(tagDto.getName())
                 .orElseThrow(() ->
-                    new IllegalArgumentException("Tag with name " + tagDto.getName() + " doesn't exists")
+                        new IllegalArgumentException("Tag with name " + tagDto.getName() + " doesn't exists")
                 );
-
-        student.getCompetences().add(Competence.builder()
+        Competence competence = Competence.builder()
                 .tag(tag)
                 .student(student)
                 .isConfirmed(false)
-                .build()
-        );
+                .build();
+        competenceRepository.save(competence);
+        student.getCompetences().add(competence);
     }
 
     @Override
@@ -92,8 +95,8 @@ public class StudentsServiceImpl implements StudentsService {
         Language language = languageRepository.findByLevelAndLanguageIgnoreCase(LanguageLevel
                 .valueOf(languageDto.getLevel()), languageDto.getName())
                 .orElseThrow(() ->
-                            new IllegalArgumentException("That language doesn't exists")
-                        );
+                        new IllegalArgumentException("That language doesn't exists")
+                );
 
         student.getLanguages().add(language);
     }
