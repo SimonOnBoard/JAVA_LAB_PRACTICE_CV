@@ -30,9 +30,11 @@ public class ProfileServiceImpl implements ProfileService {
                 return "companyView";
             case ADMIN:
                 return "panel";
+            case STUDENT:
+                return "redirect:/students/" + user.getId();
             default:
                 throw new IllegalStateException("Unexpected value: " + user.getClass());
-        }
+          }
     }
 
     private void loadCompanyInfo(User user, Model model) {

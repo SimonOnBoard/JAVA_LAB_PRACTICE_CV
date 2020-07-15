@@ -2,6 +2,7 @@ package com.itis.practice.team123.cvproject.controllers;
 
 import com.itis.practice.team123.cvproject.models.Student;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
+import com.itis.practice.team123.cvproject.utils.Initializer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,6 +19,6 @@ public class StudentProfileController {
     @PreAuthorize("permitAll()")
     @GetMapping(value = {"/api/students/{id}", "/students/{id}"})
     public ResponseEntity<Student> getStudent(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(studentsService.getStudentById(id));
+        return ResponseEntity.ok(Initializer.initializeAndUnproxy(studentsService.getStudentById(id)));
     }
 }
