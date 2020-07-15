@@ -8,15 +8,14 @@ import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
-@RestController
+@Controller
 public class SearchController {
 
     private TagsRepository tagsRepository;
@@ -28,15 +27,21 @@ public class SearchController {
     }
 
     @PreAuthorize("permitAll()")
-    @GetMapping(value = {"/search", "/api/search"})
-    public ResponseEntity<List<Tag>> tagsView() {
+    @GetMapping(value = {"/api/search"})
+    public @ResponseBody ResponseEntity<List<Tag>> tagsView() {
         return ResponseEntity.ok(tagsRepository.findAll());
     }
 
     @PreAuthorize("permitAll()")
     @PostMapping(value = {"/search", "/api/search"})
-    public ResponseEntity<List<WeightedStudentDto>> competenceSave(@RequestBody TagFormData formData) {
+    public @ResponseBody ResponseEntity<List<WeightedStudentDto>> competenceSave(@RequestBody TagFormData formData) {
         return ResponseEntity.ok(studentsService.getStudentsByTag(formData.getComp()));
+    }
+
+    @PreAuthorize("permitAll()")
+    @GetMapping(value = {"/search"})
+    public String searchView() {
+        return "search";
     }
 
 }
