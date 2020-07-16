@@ -3,15 +3,13 @@ package com.itis.practice.team123.cvproject.services.impl;
 import com.itis.practice.team123.cvproject.models.Language;
 import com.itis.practice.team123.cvproject.repositories.LanguageRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class LanguageServiceImpl implements LanguageService {
-    private LanguageRepository languageRepository;
-
-    public LanguageServiceImpl(LanguageRepository languageRepository) {
-        this.languageRepository = languageRepository;
-    }
+    private final LanguageRepository languageRepository;
 
     @Override
     public Language initializeLanguage(Language language) {
@@ -25,6 +23,6 @@ public class LanguageServiceImpl implements LanguageService {
 
     @Override
     public Language getLanguage(Long language) {
-        return languageRepository.findById(language).orElseThrow(IllegalStateException::new);
+        return languageRepository.findById(language).orElseThrow(IllegalArgumentException::new);
     }
 }
