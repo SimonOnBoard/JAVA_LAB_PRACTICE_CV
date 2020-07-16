@@ -10,8 +10,8 @@
 <#macro content>
 
  <script type="application/javascript">
-     getTags();
-     function searchByTags() {
+     // getTags();
+     function searchByFilters() {
          // Create an FormData object
          var form = $("#f")[0];
          var data = new FormData(form);
@@ -31,7 +31,7 @@
              }
          });
      }
-     function getTags() {
+     /*function getTags() {
          // Create an FormData object
          $.ajax({
              method: "GET",
@@ -42,12 +42,12 @@
                  var a = JSON.stringify(response);
                  var b = JSON.parse(a);
                  $.each(response, function () {
-                     $('#tags').first().append('<input type="checkbox" name="comp"  id=' +
-                             this.name+ 'value=' + this.name + '> <label for=' + this.name + '>' + this.name + '</label><br/>');
+                     $('#tags').first().append('<td><input type="checkbox" name="comp"  id=' +
+                             this.name+ 'value=' + this.name + '> <label for=' + this.name + '>' + this.name + '</label><br/></td>');
                  });
              },
          });
-     }
+     }*/
  </script>
 
 
@@ -55,13 +55,32 @@
 
 
 	<form  id='f' action="/api/search" method="post">
-        <table id="tags"></table>
+        <table id="filters">
+            <tr id="tags">
+                <td>Tags</td>
+                <#list tags! as tag>
+                    <td><input type="checkbox" name="comp" id='${tag.name!}' value='${tag.name!}'> <label for='${tag.name!}'>${tag.name!}</label><br/></td>
+                </#list>
+            </tr>
+            <tr id="education">
+                <td>Education Level</td>
+                <#list educations! as education>
+                    <td><input type="checkbox" name="education" id='${education!}' value='${education!}'> <label for='${education!}'>${education!}</label><br/></td>
+                </#list>
+            </tr>
+            <tr id="language">
+                <td>Languages</td>
+                <#list languages! as language>
+                    <td><input type="checkbox" name="language" id='${language.language!}' value='${language.language!}'> <label for='${language.language!}'>${language.language!}</label><br/></td>
+                </#list>
+            </tr>
+        </table>
         <#--<label>Tags</label>-->
         <#--<#list tags! as tag>-->
             <#--<input type="checkbox" name="comp" id='${tag.name!}' value='${tag.name!}'> <label for='${tag.name!}'>${tag.name!}</label><br/>-->
 		<#--</#list>-->
         <input type="hidden" name="${_csrf.parameterName}" value= "${_csrf.token}"/>
-		<button type="button" onclick="searchByTags()" name="ok">Search</button>
+        <button type="button" onclick="searchByFilters()" name="ok">Search</button>
 	</form>
 
 

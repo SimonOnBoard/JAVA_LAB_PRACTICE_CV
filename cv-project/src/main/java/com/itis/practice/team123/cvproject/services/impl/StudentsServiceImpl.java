@@ -1,7 +1,7 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
 import com.itis.practice.team123.cvproject.dto.*;
-import com.itis.practice.team123.cvproject.enums.LanguageLevel;
+import com.itis.practice.team123.cvproject.enums.Education;
 import com.itis.practice.team123.cvproject.models.*;
 import com.itis.practice.team123.cvproject.repositories.*;
 import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +29,7 @@ public class StudentsServiceImpl implements StudentsService {
     private final LanguageService languageService;
     private final CompetenceRepository competenceRepository;
     private final CertificateRepository certificateRepository;
+    private final LanguageRepository languageRepository;
 
     @Override
     public Student getStudentById(Long id) {
@@ -36,7 +38,7 @@ public class StudentsServiceImpl implements StudentsService {
 
     //откромментировать код, переписать через компетенции
     @Override
-    public List<WeightedStudentDto> getStudentsByTag(List<String> tagsName) {
+    public List<Student> getStudentsByTag(List<String> tagsName) {
         HashMap<Student, Integer> studentsTagCount = new HashMap<>();
         List<Student> students = new ArrayList<>();
         List<Tag> tags = tagsRepository.findAllByNameIn(tagsName);
@@ -53,7 +55,20 @@ public class StudentsServiceImpl implements StudentsService {
                 students.add(student);
         }
 
-        return weightsAssigner.assignStudentWeightsByTags(students, tags);
+//        return weightsAssigner.assignStudentWeightsByTags(students, tags);
+        return students;
+    }
+
+    @Override
+    public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) {
+        HashMap<Student, Integer> studentsTagCount = new HashMap<>();
+        List<Student> students = studentsRepository.findAllByLanguagesInAndEducation(
+                languageRepository.findAllByLanguageIn(filterFormData.getLanguage()),
+                Education.valueOf(filterFormData.getEducation().get(0)));
+        List<Tag> tags = tagsRepository.findAllByNameIn(filterFormData.getComp());
+        List<Student> studentsTags = this.getStudentsByTag(filterFormData.getComp());
+        studentsTags = studentsTags.stream().filter(students::contains).collect(Collectors.toList());
+        return weightsAssigner.assignStudentWeightsByTags(studentsTags, tags);
     }
 
     @Override

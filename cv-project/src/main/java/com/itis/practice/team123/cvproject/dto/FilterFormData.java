@@ -11,6 +11,9 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TagFormData {
+public class FilterFormData {
     private List<String> comp;
+    private List<String> education;
+    private List<String> language;
+
 }

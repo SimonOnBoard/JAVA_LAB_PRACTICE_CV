@@ -1,11 +1,14 @@
 package com.itis.practice.team123.cvproject.controllers;
 
 
-import com.itis.practice.team123.cvproject.dto.TagFormData;
+import com.itis.practice.team123.cvproject.dto.FilterFormData;
 import com.itis.practice.team123.cvproject.dto.WeightedStudentDto;
+import com.itis.practice.team123.cvproject.enums.Education;
 import com.itis.practice.team123.cvproject.models.Tag;
+import com.itis.practice.team123.cvproject.repositories.LanguageRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,15 +19,12 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 public class SearchController {
 
-    private TagsRepository tagsRepository;
-    private StudentsService studentsService;
-
-    public SearchController(TagsRepository tagsRepository, StudentsService studentsService) {
-        this.tagsRepository = tagsRepository;
-        this.studentsService = studentsService;
-    }
+    private final TagsRepository tagsRepository;
+    private final StudentsService studentsService;
+    private final LanguageRepository languageRepository;
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = {"/api/search"})
@@ -34,13 +34,16 @@ public class SearchController {
 
     @PreAuthorize("permitAll()")
     @PostMapping(value = {"/search", "/api/search"})
-    public @ResponseBody ResponseEntity<List<WeightedStudentDto>> competenceSave(TagFormData formData) {
-        return ResponseEntity.ok(studentsService.getStudentsByTag(formData.getComp()));
+    public @ResponseBody ResponseEntity<List<WeightedStudentDto>> competenceSave(FilterFormData formData) {
+        return ResponseEntity.ok(studentsService.getStudentsByFilters(formData));
     }
 
     @PreAuthorize("permitAll()")
     @GetMapping(value = {"/search"})
-    public String searchView() {
+    public String searchView(Model model) {
+        model.addAttribute("educations", Education.values());
+        model.addAttribute("tags", tagsRepository.findAll());
+        model.addAttribute("languages", languageRepository.findAll());
         return "search";
     }
 
