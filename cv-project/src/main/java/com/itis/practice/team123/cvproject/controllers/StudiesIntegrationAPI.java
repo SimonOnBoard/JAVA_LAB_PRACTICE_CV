@@ -7,6 +7,7 @@ import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.models.Work;
 import com.itis.practice.team123.cvproject.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,7 +33,7 @@ public class StudiesIntegrationAPI {
 
     @PreAuthorize("permitAll()")
     @PostMapping("/works")
-    public String addWork(@RequestBody WorkDto workDto) {
+    public ResponseEntity<?> addWork(@RequestBody WorkDto workDto) {
         Teacher teacher = teachersRepository.getOne(workDto.getTeacherId());
         Student student = studentsRepository.getOne(workDto.getStudentId());
         List<Tag> tags = tagsRepository.findAllByNameIn(workDto.getTags());
@@ -42,7 +43,11 @@ public class StudiesIntegrationAPI {
                 .student(student)
                 .teacher(teacher)
                 .tags(tags).build();
-        worksRepository.save(work);
-        return "Work successfully exported";
+        try {
+            worksRepository.save(work);
+            return ResponseEntity.ok("Work successfully exported");
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }

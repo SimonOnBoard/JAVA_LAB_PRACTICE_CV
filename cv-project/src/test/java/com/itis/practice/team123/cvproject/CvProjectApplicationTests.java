@@ -2,6 +2,7 @@ package com.itis.practice.team123.cvproject;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,8 +16,11 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.context.WebApplicationContext;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -26,11 +30,10 @@ import java.util.Properties;
 @ExtendWith(SpringExtension.class)
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("com.itis.practice.team123.cvproject.repositories")
+@ComponentScan("com.itis.practice.team123.cvproject")
 @EnableJpaRepositories(basePackages = "com.itis.practice.team123.cvproject.repositories")
 public
 class CvProjectApplicationTests {
-
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
