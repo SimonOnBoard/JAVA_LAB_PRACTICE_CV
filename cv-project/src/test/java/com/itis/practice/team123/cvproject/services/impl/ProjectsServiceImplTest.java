@@ -52,7 +52,6 @@ class ProjectsServiceImplTest {
 
     @Test
     void getAllProjects_isOk_And_Sizes_Equal() {
-
         when(studentsRepository.getOne(anyLong())).thenReturn(new Student());
         when(projectsRepository.findAllByOwner(any(Student.class))).thenReturn(Lists.newArrayList(new Project(), new Project()));
         List<Project> projects = projectsService.getAllProjects(1L);
