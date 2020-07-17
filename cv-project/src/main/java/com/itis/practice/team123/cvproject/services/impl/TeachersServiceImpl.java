@@ -52,7 +52,6 @@ public class TeachersServiceImpl implements TeachersService {
         Language language = languageService.initializeLanguage(languageToAdd);
         if (teacher.getLanguages() == null) teacher.setLanguages(new ArrayList<>());
         removeIfExists(teacher.getLanguages(), language);
-        teacher.getLanguages().add(language);
         teachersRepository.saveAndFlush(teacher);
     }
 
@@ -76,7 +75,10 @@ public class TeachersServiceImpl implements TeachersService {
         for (Language language : languages) {
             //подумать над случаями апперкейся
             if (language.getLanguage().toUpperCase().equals(languageToRemove.getLanguage().toUpperCase())) {
-                languages.remove(languageToRemove);
+                if(!languageToRemove.getLevel().equals(language.getLevel())) {
+                    languages.remove(language);
+                    languages.add(languageToRemove);
+                }
                 result = true;
                 break;
             }

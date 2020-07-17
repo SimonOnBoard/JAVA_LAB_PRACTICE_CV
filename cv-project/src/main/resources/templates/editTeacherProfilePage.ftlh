@@ -1,6 +1,15 @@
 <#include "base.ftlh"/>
 <#macro head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
 </#macro>
 <#macro content>
     <script type="application/javascript">
@@ -17,16 +26,18 @@
                 contentType: false,
                 cache: false,
                 timeout: 600000,
-                success : function(data) {
+                success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
                     alert(b);
+                    $('#x')[0].reset();
                 },
-                error : function(err) {
+                error: function (err) {
                     alert(err.responseText);
                 }
             });
         }
+
         function addTeacherInfo() {
             // Create an FormData object
             var form = $("#f")[0];
@@ -41,12 +52,12 @@
                 contentType: false,
                 cache: false,
                 timeout: 600000,
-                success : function(data) {
+                success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
                     alert(b);
                 },
-                error : function(err) {
+                error: function (err) {
                     var a = JSON.stringify(err);
                     var b = JSON.parse(a);
                     alert(b);
@@ -54,57 +65,83 @@
             });
         }
     </script>
-    <form id='f' action="/editTeacherProfile" method='POST'>
-        <table>
-            <tr>
-                <td>Name:</td>
-                <#if name?has_content>
-                    <td><input type='text' name='name' value='${name}' required></td>
-                <#else>
-                    <td><input type='text' name='name' value='' required></td>
-                </#if>
-            </tr>
-            <tr>
-                <td>Patronymic:</td>
-                <#if patronymic?has_content>
-                    <td><input type='text' name='patronymic' value='${patronymic}'></td>
-                <#else>
-                    <td><input type='text' name='patronymic' value=''></td>
-                </#if>
-            </tr>
-            <tr>
-                <td>Surname:</td>
-                <#if surname?has_content>
-                    <td><input type='text' name='surname' value='${surname}'></td>
-                <#else>
-                    <td><input type='text' name='surname' value=''></td>
-                </#if>
-            </tr>
-            <tr>
-                <td>Institution:</td>
-                <#if institution?has_content>
-                    <td><input type='text' name='institution' value='${institution}'></td>
-                <#else>
-                    <td><input type='text' name='institution' value=''></td>
-                </#if>
-            </tr>
-            <tr>
-                <td>Additional info:</td>
-                <#if info?has_content>
-                    <td><input type='text' name='info' value='${info}'></td>
-                <#else>
-                    <td><input type='text' name='info' value=''></td>
-                </#if>
-            </tr>
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-            <tr>
-                <td> <button type="button" onclick="addTeacherInfo()" value="Submit"></button></td>
-            </tr>
-        </table>
+    <div>
+        <form id='f' action="/editTeacherProfile" method='POST'>
+            <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <div class="card-header">Общая информация</div>
+                <div class="card-body text-dark" style="max-height: 40rem">
+
+                    <div style="overflow-y: scroll">
+
+                    </div>
+
+                    <div class="form-group">
+                        <h5 class="card-title">ФИО</h5>
+                        <div class="form-group">
+                            <label class="card-text">
+                                <strong>Фамилия</strong>
+                                <#if surname?has_content>
+                                    <td><input type='text' name='surname' value='${surname}'  class="form-control" required/>
+                                <#else>
+                                    <td><input type='text' name='surname' value='' class="form-control" required/>
+                                </#if>
+                            </label>
+
+                            <label class="card-text" style="margin-left: 20px">
+                                <strong>Имя</strong>
+                                <#if name?has_content>
+                                    <input type='text' name='name' class="form-control" value='${name}' required/>
+                                <#else>
+                                    <input type='text' name='name' class="form-control" value='' required/>
+                                </#if>
+                            </label>
+
+                            <label class="card-text" style="margin-left: 20px">
+                                <strong>Отчество</strong>
+                                <#if patronymic?has_content>
+                                    <input type='text' name='patronymic' class="form-control" value='${patronymic}' required/>
+                                <#else>
+                                    <input type='text' name='patronymic' class="form-control" value='' required/>
+                                </#if>
+                            </label>
+
+                        </div>
+
+                        <div style="margin-top: 25px"></div>
+
+                        <h5 class="card-title">Место преподавания</h5>
+                        <#if institution?has_content>
+                            <input type='text' class="form-control" name='institution' value='${institution}' required/>
+                        <#else>
+                            <input type='text' class="form-control" name='institution' value='' required/>
+                        </#if>
+
+                        <div style="margin-top: 25px"></div>
+
+                        <h5 class="card-title">О себе</h5>
+                        <#if info?has_content>
+                            <textarea class="form-control" name="info" rows="5" cols="70"
+                                      style="resize: none" type='text'
+                                      required>${info}</textarea>
+                        <#else>
+                            <textarea class="form-control" name="info" rows="5" cols="70"
+                                      style="resize: none" value='' type='text'
+                                      required></textarea>
+                        </#if>
+                        <div style="margin-top: 2rem; float: right">
+                                <button type="button" onclick="addTeacherInfo()" class="btn btn-primary"
+                                        value="Изменять"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
     </form>
     <h2> Add language form</h2>
     <form id="x" action="/addLanguage">
-<#--        <input type="hidden" name="id" value="null"><br>-->
+        <#--        <input type="hidden" name="id" value="null"><br>-->
         <p>Language: </p>
         <input type="text" name="language"/>
         <p>Level: </p>
@@ -116,6 +153,6 @@
     <a href="/profile">Go to profile</a>
 </#macro>
 <#macro title>
-    <title>Edit teacher profile page</title>
+    <title>Личный кабинет</title>
 </#macro>
 <@display_page />

@@ -40,7 +40,7 @@ public class ProfileServiceImpl implements ProfileService {
     private void loadCompanyInfo(User user, Model model) {
         Company company = (Company) user;
         model.addAttribute("id", company.getId());
-        model.addAttribute("meil", company.getEmail());
+        model.addAttribute("mail", company.getEmail());
         model.addAttribute("posts",company.getPosts());
         if (company.getDescription() != null) model.addAttribute("description", company.getDescription());
         if (company.getAddress() != null) model.addAttribute("address", company.getAddress());
@@ -51,6 +51,7 @@ public class ProfileServiceImpl implements ProfileService {
     private void loadTeacherInfo(User user, Model model) {
         Teacher teacher = (Teacher) user;
         model.addAttribute("id", teacher.getId());
+        model.addAttribute("mail", teacher.getEmail());
         if (teacher.getName() != null) model.addAttribute("name", teacher.getName());
         if (teacher.getPatronymic() != null) model.addAttribute("patronymic", teacher.getPatronymic());
         if (teacher.getSurname() != null) model.addAttribute("surname", teacher.getSurname());
