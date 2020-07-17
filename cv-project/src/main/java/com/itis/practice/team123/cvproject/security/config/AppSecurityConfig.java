@@ -37,6 +37,22 @@ public class AppSecurityConfig {
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+            auth.inMemoryAuthentication()
+                    .withUser("admin")
+                    .password("123")
+                    .roles("ADMIN");
+            auth.inMemoryAuthentication()
+                    .withUser("teacher")
+                    .password("123")
+                    .roles("TEACHER");
+            auth.inMemoryAuthentication()
+                    .withUser("student")
+                    .password("123")
+                    .roles("STUDENT");
+            auth.inMemoryAuthentication()
+                    .withUser("company")
+                    .password("123")
+                    .roles("COMPANY");
         }
 
         @Override
@@ -67,6 +83,7 @@ public class AppSecurityConfig {
     @Configuration
     @RequiredArgsConstructor
     public static class JwtConfig extends WebSecurityConfigurerAdapter {
+        @Qualifier("provider")
         private final JwtAuthenticationProvider authenticationProvider;
 
         @Override
@@ -93,6 +110,22 @@ public class AppSecurityConfig {
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
             auth.authenticationProvider(authenticationProvider).authenticationProvider(new AnonymousAuthenticationProvider("twrt454"));
+            auth.inMemoryAuthentication()
+                    .withUser("admin")
+                    .password("123")
+                    .roles("ADMIN");
+            auth.inMemoryAuthentication()
+                    .withUser("teacher")
+                    .password("123")
+                    .roles("TEACHER");
+            auth.inMemoryAuthentication()
+                    .withUser("student")
+                    .password("123")
+                    .roles("STUDENT");
+            auth.inMemoryAuthentication()
+                    .withUser("company")
+                    .password("123")
+                    .roles("COMPANY");
         }
 
 

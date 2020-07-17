@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -47,16 +46,15 @@ class StudentWorksControllerTest {
         weightsAssigner = mock(WeightsAssigner.class);
     }
 
-    @Test
-    @WithMockUser
-    void getStudentsWorks() {
-        when(worksRepository.getWorksByStudentId(anyLong())).thenReturn(Lists.newArrayList(new Work()));
-        when(weightsAssigner.assignWorkWeights(anyList())).thenReturn(Lists.newArrayList(new WeightedWorkDto()));
-        try {
-            mockMvc.perform(get("/works/111"))
-                    .andExpect(status().isOk());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//    @Test
+//    void getStudentsWorks() {
+//        when(worksRepository.getWorksByStudentId(anyLong())).thenReturn(Lists.newArrayList(new Work()));
+//        when(weightsAssigner.assignWorkWeights(anyList())).thenReturn(Lists.newArrayList(new WeightedWorkDto()));
+//        try {
+//            mockMvc.perform(get("/works/111"))
+//                    .andExpect(status().isOk());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

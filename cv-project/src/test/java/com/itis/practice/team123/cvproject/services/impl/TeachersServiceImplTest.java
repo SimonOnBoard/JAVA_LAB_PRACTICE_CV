@@ -18,6 +18,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -196,30 +197,61 @@ class TeachersServiceImplTest {
     class TestTeacherServiceRemoveLanguage {
         private Teacher teacher;
         private ArgumentCaptor<Long> argumentCaptor;
-        private ArgumentCaptor<Language> languageArgumentCaptor;
         private ArgumentCaptor<Teacher> teacherArgumentCaptor;
-
-        private Language language;
         private Language languageToReturn;
 
         @BeforeEach
         public void init() {
             teacher = new Teacher(1L, "Simon", "12345", Role.TEACHER, "aaa@gmail.com");
+            teacher.setLanguages(new ArrayList<>());
             argumentCaptor = ArgumentCaptor.forClass(Long.class);
-            language = Language.builder().language("English").level(LanguageLevel.C2).build();
             languageToReturn = Language.builder().id(1L).language("English").level(LanguageLevel.C2).build();
-            languageArgumentCaptor = ArgumentCaptor.forClass(Language.class);
             teacherArgumentCaptor = ArgumentCaptor.forClass(Teacher.class);
         }
 
         @Test
-        void removeLanguage() {
-
+        void removeLanguageGetTeacherExceptionByTeacherIdAndLanguageId() {
+            given(teachersRepository.findById(anyLong())).willThrow(IllegalArgumentException.class);
+            assertThrows(IllegalArgumentException.class, () -> teachersService.removeLanguage(1L,1L));
+            verify(teachersRepository).findById(argumentCaptor.capture());
+            assertThat(1L).isEqualTo(argumentCaptor.getValue());
         }
 
         @Test
-        void testRemoveLanguage() {
+        void removeLanguageGetTeacherExceptionByTeacherAndLanguageId() {
+            given(teachersRepository.findById(anyLong())).willThrow(IllegalArgumentException.class);
+            assertThrows(IllegalArgumentException.class, () -> teachersService.removeLanguage(teacher,1L));
+            verify(teachersRepository).findById(argumentCaptor.capture());
+            assertThat(1L).isEqualTo(argumentCaptor.getValue());
+        }
 
+        @Test
+        void removeLanguageSavingExceptionByTeacherAndLanguageId() {
+            initMocks();
+            given(teachersRepository.saveAndFlush(any(Teacher.class))).willThrow(RuntimeException.class);
+            assertThrows(RuntimeException.class, () -> teachersService.removeLanguage(teacher,1L));
+            checkValues();
+        }
+
+        private void checkValues() {
+            verify(languageService).getLanguage(argumentCaptor.capture());
+            assertThat(argumentCaptor.getValue()).isEqualTo(1L);
+            verify(teachersRepository).saveAndFlush(teacherArgumentCaptor.capture());
+            assertThat(teacherArgumentCaptor.getValue()).isEqualToComparingFieldByField(teacher);
+        }
+
+        private void initMocks() {
+            given(teachersRepository.findById(anyLong())).willReturn(Optional.ofNullable(teacher));
+            given(languageService.getLanguage(anyLong())).willReturn(languageToReturn);
+            teacher.getLanguages().add(languageToReturn);
+        }
+
+
+        @Test
+        void removeLanguageByTeacherAndLanguageIdSuccess() {
+            initMocks();
+            teachersService.removeLanguage(teacher,1L);
+            checkValues();
         }
     }
 }
