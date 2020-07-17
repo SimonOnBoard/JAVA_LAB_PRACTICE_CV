@@ -4,10 +4,7 @@ import com.itis.practice.team123.cvproject.enums.Role;
 import com.itis.practice.team123.cvproject.models.User;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
@@ -34,23 +31,24 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("com.itis.practice.team123.cvproject")
 @EnableJpaRepositories(basePackages = "com.itis.practice.team123.cvproject.repositories")
+@PropertySource("classpath:/application.properties")
 public
 class CvProjectApplicationTests {
     @Bean
     @Primary
     public UserDetailsService userDetailsService() {
         User userAdmin = new User(1L, "admin", "123", Role.ADMIN, "ee@dd.r");
-        User userTeacher = new User(1L, "teacher", "123", Role.TEACHER, "ee@dd.r");
+        User userTeacher = new User(1L, "teacher", "12345", Role.TEACHER, "ee@dd.r");
         User userCompany = new User(1L, "company", "123", Role.COMPANY, "ee@dd.r");
         User userStudent = new User(1L, "student", "123", Role.STUDENT, "ee@dd.r");
 
         UserDetails userAdminDetails = UserDetailsImpl.builder().userId(userAdmin.getId()).name(userAdmin.getUsername())
                 .role(userAdmin.getRole().getName()).user(userAdmin).build();
 
-        return new InMemoryUserDetailsManager(Arrays.asList(
-                userAdminDetails
-        ));
+        return new InMemoryUserDetailsManager(Arrays.asList(userAdminDetails));
     }
+
+
 
     @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {

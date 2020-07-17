@@ -23,7 +23,6 @@ class LanguageRepositoryTest {
     void setUp() {
         ApplicationContext context = new AnnotationConfigApplicationContext(CvProjectApplicationTests.class);
         languageRepository = context.getBean(LanguageRepository.class);
-        DataSource dataSource = context.getBean("testDataSourceForJpa", DataSource.class);
     }
 
     @Test
