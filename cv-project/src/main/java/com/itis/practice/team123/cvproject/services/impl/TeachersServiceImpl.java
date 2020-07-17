@@ -6,6 +6,7 @@ import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
 import com.itis.practice.team123.cvproject.services.interfaces.TeachersService;
+import com.itis.practice.team123.cvproject.utils.Initializer;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class TeachersServiceImpl implements TeachersService {
         teacher.setPatronymic(teacherEditForm.getPatronymic());
         teacher.setInstitution(teacherEditForm.getInstitution());
         teacher.setSurname(teacherEditForm.getSurname());
-        teachersRepository.saveAndFlush(teacher);
+        teacher = teachersRepository.save(teacher);
     }
 
     @Override
@@ -47,13 +48,17 @@ public class TeachersServiceImpl implements TeachersService {
         addLanguage(teacher, language);
     }
 
+    //переписать к чертям собачим
     @Override
     public void addLanguage(Teacher teacher, Language languageToAdd) {
         Language language = languageService.initializeLanguage(languageToAdd);
         if (teacher.getLanguages() == null) teacher.setLanguages(new ArrayList<>());
-        boolean deleted = removeIfExists(teacher.getLanguages(), language);
-        if(!deleted) teacher.getLanguages().add(language);
-        teachersRepository.saveAndFlush(teacher);
+        boolean deleted = checkAndReplace(teacher.getLanguages(), language);
+        if (!deleted) {
+            teacher = teachersRepository.save(teacher);
+            teacher.getLanguages().add(language);
+        }
+        teacher = teachersRepository.save(teacher);
     }
 
     @Override
@@ -62,21 +67,21 @@ public class TeachersServiceImpl implements TeachersService {
     }
 
     @Override
+    @Transactional
     public void removeLanguage(Teacher teacher, Long languageToDelete) throws IllegalArgumentException {
         teacher = this.getTeacher(teacher.getId());
         Language language = languageService.getLanguage(languageToDelete);
         teacher.getLanguages().remove(language);
-        teachersRepository.saveAndFlush(teacher);
     }
 
 
     //придумать тесты?
-    private boolean removeIfExists(List<Language> languages, Language languageToRemove) {
+    private boolean checkAndReplace(List<Language> languages, Language languageToRemove) {
         boolean result = false;
         for (Language language : languages) {
             //подумать над случаями апперкейся
             if (language.getLanguage().toUpperCase().equals(languageToRemove.getLanguage().toUpperCase())) {
-                if(!languageToRemove.getLevel().equals(language.getLevel())) {
+                if (!languageToRemove.getLevel().equals(language.getLevel())) {
                     languages.remove(language);
                     languages.add(languageToRemove);
                 }
