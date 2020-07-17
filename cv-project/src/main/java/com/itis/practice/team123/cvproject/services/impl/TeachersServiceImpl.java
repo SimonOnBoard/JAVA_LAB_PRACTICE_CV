@@ -51,7 +51,8 @@ public class TeachersServiceImpl implements TeachersService {
     public void addLanguage(Teacher teacher, Language languageToAdd) {
         Language language = languageService.initializeLanguage(languageToAdd);
         if (teacher.getLanguages() == null) teacher.setLanguages(new ArrayList<>());
-        removeIfExists(teacher.getLanguages(), language);
+        boolean deleted = removeIfExists(teacher.getLanguages(), language);
+        if(!deleted) teacher.getLanguages().add(language);
         teachersRepository.saveAndFlush(teacher);
     }
 
