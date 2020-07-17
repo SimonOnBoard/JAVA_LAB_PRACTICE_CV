@@ -61,12 +61,28 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) {
-        HashMap<Student, Integer> studentsTagCount = new HashMap<>();
-        List<Student> students = studentsRepository.findAllByLanguagesInAndEducation(
-                languageRepository.findAllByLanguageIn(filterFormData.getLanguage()),
-                Education.valueOf(filterFormData.getEducation().get(0)));
-        List<Tag> tags = tagsRepository.findAllByNameIn(filterFormData.getComp());
-        List<Student> studentsTags = this.getStudentsByTag(filterFormData.getComp());
+        List<String> languages = filterFormData.getLanguage();
+//        Education education = Education.valueOf(filterFormData.getEducation().get(0));
+        List<Student> students;
+        if (languages != null) {
+            students = studentsRepository.findAllByLanguagesInAndEducation(
+                    languageRepository.findAllByLanguageIn(languages),
+                    Education.valueOf(filterFormData.getEducation().get(0)));
+        }
+        else {
+            students = studentsRepository.findAll();
+        }
+        List<Student> studentsTags;
+        List<Tag> tags;
+        if (filterFormData.getComp() != null) {
+             tags = tagsRepository.findAllByNameIn(filterFormData.getComp());
+            studentsTags = this.getStudentsByTag(filterFormData.getComp());
+        }
+
+        else  {
+            studentsTags = students;
+            tags = tagsRepository.findAll();
+        }
         studentsTags = studentsTags.stream().filter(students::contains).collect(Collectors.toList());
         return weightsAssigner.assignStudentWeightsByTags(studentsTags, tags);
     }
