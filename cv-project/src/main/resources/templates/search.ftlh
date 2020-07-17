@@ -22,9 +22,16 @@
              data: data,
              processData: false,
              contentType: false,
-             complete : function(response) {
+             success : function(response) {
                  var a = JSON.stringify(response);
-                 $('#students').innerHtml = JSON.parse(a);
+                 var b = JSON.parse(a);
+                 // console.log(b);
+                 $.each(b, function (idx, student) {
+                     $('#students').first().append('<td><a href=\"/students/'+  student['student']['id'] +'\">' + student['student']['firstName']  + '</a></td>');
+
+
+                 });
+                 // $('#students').innerHtml = JSON.parse(a);
              },
              error : function(err) {
                  alert(err.responseText);
@@ -84,7 +91,9 @@
 	</form>
 
 
-    <div id="students"></div>
+    <table>
+        <tr id="students"><td>Students</td></tr>
+    </table>
     <#--<#list students! as student>-->
         <#--<#if student?has_content>-->
             <#--<a href="/students/${student.id!}">${student.firstName}</a>-->
