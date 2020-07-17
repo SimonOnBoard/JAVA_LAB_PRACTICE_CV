@@ -59,6 +59,7 @@ class CvProjectApplicationTests {
     }
 
     @Bean
+    @Primary
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         // создаем адаптер, который позволит Hibernate работать с Spring Data Jpa
         HibernateJpaVendorAdapter hibernateJpaVendorAdapter = new HibernateJpaVendorAdapter();
