@@ -50,6 +50,7 @@ public class TeachersServiceImpl implements TeachersService {
     @Override
     public void addLanguage(Teacher teacher, Language languageToAdd) {
         Language language = languageService.initializeLanguage(languageToAdd);
+        if (teacher.getLanguages() == null) teacher.setLanguages(new ArrayList<>());
         removeIfExists(teacher.getLanguages(), language);
         teacher.getLanguages().add(language);
         teachersRepository.saveAndFlush(teacher);
@@ -68,6 +69,8 @@ public class TeachersServiceImpl implements TeachersService {
         teachersRepository.saveAndFlush(teacher);
     }
 
+
+    //придумать тесты?
     private boolean removeIfExists(List<Language> languages, Language languageToRemove) {
         boolean result = false;
         for (Language language : languages) {

@@ -13,7 +13,7 @@
     <version>0.0.1</version>
     <name>cv-project</name>
     <description>cv project for summer practice</description>
-
+    <packaging>jar</packaging>
     <properties>
         <java.version>9</java.version>
     </properties>

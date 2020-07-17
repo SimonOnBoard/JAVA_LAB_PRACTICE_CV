@@ -38,10 +38,9 @@ public class AdminController {
     @PostMapping("/addUser")
     public ResponseEntity<?> addUser(UserForm userForm) {
         try {
-            adminService.registerUser(userForm);
+            return ResponseEntity.ok().body(adminService.registerUser(userForm));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getCause());
         }
-        return ResponseEntity.ok().body("All is ok");
     }
 }

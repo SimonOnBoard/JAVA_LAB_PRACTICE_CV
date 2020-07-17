@@ -40,13 +40,13 @@ class TeachersServiceImplTest {
     }
 
     @Nested
-    class TestTeacherServiceGetTeacher{
+    class TestTeacherServiceGetTeacher {
         private Teacher teacher;
         private ArgumentCaptor<Long> argumentCaptor;
 
         @BeforeEach
-        public void init(){
-            teacher = new Teacher(1L,"Simon","12345", Role.TEACHER,"aaa@gmail.com");
+        public void init() {
+            teacher = new Teacher(1L, "Simon", "12345", Role.TEACHER, "aaa@gmail.com");
             argumentCaptor = ArgumentCaptor.forClass(Long.class);
         }
 
@@ -68,14 +68,15 @@ class TeachersServiceImplTest {
     }
 
     @Nested
-    class TestTeacherServiceUpdateTeacher{
+    class TestTeacherServiceUpdateTeacher {
         private Teacher teacher;
         private ArgumentCaptor<Long> argumentCaptor;
         private TeacherEditForm teacherEditForm;
         private ArgumentCaptor<Teacher> teacherArgumentCaptor;
+
         @BeforeEach
-        public void init(){
-            teacher = new Teacher(1L,"Simon","12345", Role.TEACHER,"aaa@gmail.com");
+        public void init() {
+            teacher = new Teacher(1L, "Simon", "12345", Role.TEACHER, "aaa@gmail.com");
             argumentCaptor = ArgumentCaptor.forClass(Long.class);
             teacherEditForm = TeacherEditForm.builder()
                     .name("Almazzz")
@@ -102,7 +103,8 @@ class TeachersServiceImplTest {
             verify(teachersRepository).saveAndFlush(teacherArgumentCaptor.capture());
             checkTeachersInfo();
         }
-        void checkTeachersInfo(){
+
+        void checkTeachersInfo() {
             verify(teachersRepository).saveAndFlush(teacherArgumentCaptor.capture());
             Teacher capturedTeacher = teacherArgumentCaptor.getValue();
             assertThat(capturedTeacher.getName()).isEqualTo(teacherEditForm.getName());
@@ -132,13 +134,20 @@ class TeachersServiceImplTest {
     class TestTeacherServiceAddAndRemoveLanguage {
         private Teacher teacher;
         private ArgumentCaptor<Long> argumentCaptor;
+        private ArgumentCaptor<Language> languageArgumentCaptor;
+        private ArgumentCaptor<Teacher> teacherArgumentCaptor;
+
         private Language language;
+        private Language languageToReturn;
 
         @BeforeEach
         public void init() {
             teacher = new Teacher(1L, "Simon", "12345", Role.TEACHER, "aaa@gmail.com");
             argumentCaptor = ArgumentCaptor.forClass(Long.class);
             language = Language.builder().language("English").level(LanguageLevel.C2).build();
+            languageToReturn = Language.builder().id(1L).language("English").level(LanguageLevel.C2).build();
+            languageArgumentCaptor = ArgumentCaptor.forClass(Language.class);
+            teacherArgumentCaptor = ArgumentCaptor.forClass(Teacher.class);
         }
 
         @Test
@@ -151,24 +160,66 @@ class TeachersServiceImplTest {
 
         @Test
         void addLanguageByIdAndLanguageSuccess() {
+            given(teachersRepository.findById(anyLong())).willReturn(Optional.of(teacher));
+            given(languageService.initializeLanguage(any(Language.class))).willReturn(languageToReturn);
+            teachersService.addLanguage(1L, language);
+            checkFinalSaveInfoAndLanguageServiceArguments();
         }
+
 
         @Test
         void addLanguageByTeacherAndLanguageFail() {
-
+            given(teachersRepository.saveAndFlush(any(Teacher.class))).willThrow(RuntimeException.class);
+            given(languageService.initializeLanguage(any(Language.class))).willReturn(languageToReturn);
+            assertThrows(RuntimeException.class, () -> teachersService.addLanguage(teacher, language));
+            checkFinalSaveInfoAndLanguageServiceArguments();
         }
 
         @Test
         void addLanguageByTeacherAndLanguageSuccess() {
+            given(languageService.initializeLanguage(any(Language.class))).willReturn(languageToReturn);
+            teachersService.addLanguage(teacher, language);
+            checkFinalSaveInfoAndLanguageServiceArguments();
+        }
 
+        private void checkFinalSaveInfoAndLanguageServiceArguments(){
+            verify(teachersRepository).saveAndFlush(teacherArgumentCaptor.capture());
+            verify(languageService).initializeLanguage(languageArgumentCaptor.capture());
+            assertThat(languageArgumentCaptor.getValue()).isEqualTo(language);
+            language.setId(1L);
+            teacher.getLanguages().add(language);
+            assertThat(teacherArgumentCaptor.getValue()).isEqualTo(teacher);
         }
     }
 
-    @Test
-    void removeLanguage() {
-    }
+    @Nested
+    class TestTeacherServiceRemoveLanguage {
+        private Teacher teacher;
+        private ArgumentCaptor<Long> argumentCaptor;
+        private ArgumentCaptor<Language> languageArgumentCaptor;
+        private ArgumentCaptor<Teacher> teacherArgumentCaptor;
 
-    @Test
-    void testRemoveLanguage() {
+        private Language language;
+        private Language languageToReturn;
+
+        @BeforeEach
+        public void init() {
+            teacher = new Teacher(1L, "Simon", "12345", Role.TEACHER, "aaa@gmail.com");
+            argumentCaptor = ArgumentCaptor.forClass(Long.class);
+            language = Language.builder().language("English").level(LanguageLevel.C2).build();
+            languageToReturn = Language.builder().id(1L).language("English").level(LanguageLevel.C2).build();
+            languageArgumentCaptor = ArgumentCaptor.forClass(Language.class);
+            teacherArgumentCaptor = ArgumentCaptor.forClass(Teacher.class);
+        }
+
+        @Test
+        void removeLanguage() {
+
+        }
+
+        @Test
+        void testRemoveLanguage() {
+
+        }
     }
 }

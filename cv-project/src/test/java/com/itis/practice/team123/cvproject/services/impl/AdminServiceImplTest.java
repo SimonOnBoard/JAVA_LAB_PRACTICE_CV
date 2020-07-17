@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
+import com.itis.practice.team123.cvproject.dto.UserDto;
 import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Student;
@@ -27,6 +28,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.assertj.core.api.Assertions.assertThat;
+
 class AdminServiceImplTest {
     @Mock
     private UsersRepository usersRepository;
@@ -47,20 +49,24 @@ class AdminServiceImplTest {
     }
 
     @Nested
-    class TestUsersServiceWithUsersRepository{
+    class TestUsersServiceWithUsersRepository {
         private UserForm userForm;
         private String passwordToSave;
         private User userToSave;
         private ArgumentCaptor<User> argumentCaptor;
         private ArgumentCaptor<String> passwordEncoderArgumentCaptor;
+        private User userToReturn;
+
         @BeforeEach
-        public void beforeUsersRepositoryTests(){
+        public void init() {
             passwordToSave = "123";
             userForm = new UserForm("12345", "12345", "12345", "ADMIN");
             userToSave = User.from(userForm);
             userToSave.setPassword(passwordToSave);
+            userToReturn = new User(userToSave);
+            userToReturn.setId(1L);
             argumentCaptor = ArgumentCaptor.forClass(User.class);
-           passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+            passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
         }
 
 
@@ -84,10 +90,10 @@ class AdminServiceImplTest {
         @Test
         public void checkSaveAdminSuccess() {
 
-            given(usersRepository.save(anyObject())).willReturn(null);
+            given(usersRepository.save(anyObject())).willReturn(userToReturn);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-            adminService.registerUser(userForm);
+            UserDto userDto = adminService.registerUser(userForm);
 
             verify(usersRepository).save(argumentCaptor.capture());
 
@@ -95,7 +101,7 @@ class AdminServiceImplTest {
 
             assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
             assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
-
+            assertThat(userDto).isEqualTo(UserDto.from(userToSave));
         }
     }
 
@@ -106,18 +112,22 @@ class AdminServiceImplTest {
 //    }
 
     @Nested
-    class TestUsersServiceWithTeachersRepository{
+    class TestUsersServiceWithTeachersRepository {
         private UserForm userForm;
         private String passwordToSave;
         private Teacher userToSave;
-        private ArgumentCaptor<Teacher> argumentCaptor = ArgumentCaptor.forClass(Teacher.class);
-        private ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        private ArgumentCaptor<Teacher> argumentCaptor;
+        private ArgumentCaptor<String> passwordEncoderArgumentCaptor;
+        private User userToReturn;
+
         @BeforeEach
-        public void beforeUsersRepositoryTests(){
+        public void init() {
             passwordToSave = "123";
             userForm = new UserForm("12345", "12345", "12345", "TEACHER");
             userToSave = Teacher.fromUserForm(userForm);
             userToSave.setPassword(passwordToSave);
+            userToReturn = new User(userToSave);
+            userToReturn.setId(1L);
             argumentCaptor = ArgumentCaptor.forClass(Teacher.class);
             passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
         }
@@ -143,7 +153,7 @@ class AdminServiceImplTest {
             given(teachersRepository.save(anyObject())).willReturn(null);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-            adminService.registerUser(userForm);
+            UserDto userDto = adminService.registerUser(userForm);
 
             verify(teachersRepository).save(argumentCaptor.capture());
 
@@ -151,22 +161,27 @@ class AdminServiceImplTest {
 
             assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
             assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+            assertThat(userDto).isEqualTo(UserDto.from(userToSave));
         }
     }
 
     @Nested
-    class TestUsersServiceWithCompanyRepository{
+    class TestUsersServiceWithCompanyRepository {
         private UserForm userForm;
         private String passwordToSave;
         private Company userToSave;
         private ArgumentCaptor<Company> argumentCaptor;
         private ArgumentCaptor<String> passwordEncoderArgumentCaptor;
+        private User userToReturn;
+
         @BeforeEach
-        public void beforeUsersRepositoryTests(){
+        public void beforeUsersRepositoryTests() {
             passwordToSave = "123";
             userForm = new UserForm("12345", "12345", "12345", "COMPANY");
             userToSave = Company.fromUserForm(userForm);
             userToSave.setPassword(passwordToSave);
+            userToReturn = new User(userToSave);
+            userToReturn.setId(1L);
             argumentCaptor = ArgumentCaptor.forClass(Company.class);
             passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
         }
@@ -194,7 +209,7 @@ class AdminServiceImplTest {
             given(companyRepository.save(anyObject())).willReturn(null);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-            adminService.registerUser(userForm);
+            UserDto userDto = adminService.registerUser(userForm);
 
             verify(companyRepository).save(argumentCaptor.capture());
 
@@ -202,23 +217,27 @@ class AdminServiceImplTest {
 
             assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
             assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+            assertThat(userDto).isEqualTo(UserDto.from(userToSave));
 
         }
     }
 
     @Nested
-    class TestUsersServiceWithStudentsRepository{
+    class TestUsersServiceWithStudentsRepository {
         private UserForm userForm;
         private String passwordToSave;
         private Student userToSave;
         private ArgumentCaptor<Student> argumentCaptor;
         private ArgumentCaptor<String> passwordEncoderArgumentCaptor;
+        private User userToReturn;
         @BeforeEach
-        public void beforeUsersRepositoryTests(){
+        public void beforeUsersRepositoryTests() {
             passwordToSave = "123";
             userForm = new UserForm("12345", "12345", "12345", "STUDENT");
             userToSave = Student.fromUserForm(userForm);
             userToSave.setPassword(passwordToSave);
+            userToReturn = new User(userToSave);
+            userToReturn.setId(1L);
             argumentCaptor = ArgumentCaptor.forClass(Student.class);
             passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
         }
@@ -244,7 +263,7 @@ class AdminServiceImplTest {
             given(studentsRepository.save(anyObject())).willReturn(null);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-            adminService.registerUser(userForm);
+            UserDto userDto = adminService.registerUser(userForm);
 
             verify(studentsRepository).save(argumentCaptor.capture());
 
@@ -252,6 +271,7 @@ class AdminServiceImplTest {
 
             assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
             assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+            assertThat(userDto).isEqualTo(UserDto.from(userToSave));
 
         }
     }

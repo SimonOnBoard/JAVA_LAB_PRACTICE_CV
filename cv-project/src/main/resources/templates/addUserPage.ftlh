@@ -31,7 +31,8 @@
                 success : function(data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
-                    alert(b);
+                    alert('Successfully created: '  + String(a));
+                    $('#f')[0].reset();
                 },
                 error : function(err) {
                     var a = JSON.stringify(err);

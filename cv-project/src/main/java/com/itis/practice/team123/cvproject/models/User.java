@@ -28,6 +28,14 @@ public class User {
 
     protected String email;
 
+    public User(User userToSave) {
+        this.id = userToSave.getId();
+        this.username = userToSave.getUsername();
+        this.password = userToSave.getPassword();
+        this.role = userToSave.getRole();
+        this.email = userToSave.getEmail();
+    }
+
     public static User from(UserForm userForm) {
 
         return new User((Long)null, userForm.getUsername(), userForm.getPassword(), userForm.getRole(), userForm.getEmail());

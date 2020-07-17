@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
+import com.itis.practice.team123.cvproject.dto.UserDto;
 import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Student;
@@ -27,30 +28,35 @@ public class AdminServiceImpl implements AdminService {
     private final CompanyRepository companyRepository;
     private final StudentsRepository studentsRepository;
     @Override
-    public void registerUser(UserForm userForm) {
+    public UserDto registerUser(UserForm userForm) {
+        User userToReturn = null;
         switch (userForm.getRole()){
             case ADMIN:
-                 User user = User.from(userForm);
-                 user.setPassword(passwordEncoder.encode(user.getPassword()));
-                 usersRepository.save(user);
+                 userToReturn = User.from(userForm);
+                 userToReturn.setPassword(passwordEncoder.encode(userToReturn.getPassword()));
+                 usersRepository.save(userToReturn);
                 break;
             case TEACHER:
                 Teacher teacher = Teacher.fromUserForm(userForm);
                 teacher.setPassword(passwordEncoder.encode(teacher.getPassword()));
                 teachersRepository.save(teacher);
+                userToReturn = teacher;
                 break;
             case COMPANY:
                 Company company = Company.fromUserForm(userForm);
                 company.setPassword(passwordEncoder.encode(company.getPassword()));
                 companyRepository.save(company);
+                userToReturn = company;
                 break;
             case STUDENT:
                 Student student = Student.fromUserForm(userForm);
                 student.setPassword(passwordEncoder.encode(student.getPassword()));
                 studentsRepository.save(student);
+                userToReturn = student;
                 break;
             default:
                 throw new IllegalArgumentException("Unexpected value: " + userForm.getRole());
         }
+        return UserDto.from(userToReturn);
     }
 }
