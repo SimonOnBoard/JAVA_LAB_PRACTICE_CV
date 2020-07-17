@@ -10,7 +10,10 @@ import com.itis.practice.team123.cvproject.repositories.StudentsRepository;
 import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
 import com.itis.practice.team123.cvproject.repositories.UsersRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.AdminService;
+import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
@@ -43,56 +46,57 @@ class AdminServiceImplTest {
         this.adminService = new AdminServiceImpl(usersRepository, teachersRepository, passwordEncoder, companyRepository, studentsRepository);
     }
 
-    @Test
-    public void checkSaveUsersRepositoryCallingException() {
-        String passwordToSave = "123";
+    @Nested
+    class TestUsersServiceWithUsersRepository{
+        private UserForm userForm;
+        private String passwordToSave;
+        private User userToSave;
+        private ArgumentCaptor<User> argumentCaptor;
+        private ArgumentCaptor<String> passwordEncoderArgumentCaptor;
+        @BeforeEach
+        public void beforeUsersRepositoryTests(){
+            passwordToSave = "123";
+            userForm = new UserForm("12345", "12345", "12345", "ADMIN");
+            userToSave = User.from(userForm);
+            userToSave.setPassword(passwordToSave);
+            argumentCaptor = ArgumentCaptor.forClass(User.class);
+           passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        }
 
-        given(usersRepository.save(anyObject())).willThrow(RuntimeException.class);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        UserForm userForm = new UserForm("12345", "12345", "12345", "ADMIN");
+        @Test
+        public void checkSaveUsersRepositoryCallingException() {
 
-        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+            given(usersRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
+            Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
 
-        verify(usersRepository).save(argumentCaptor.capture());
+            verify(usersRepository).save(argumentCaptor.capture());
 
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
 
-        User userToSave = User.from(userForm);
-        userToSave.setPassword(passwordToSave);
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
 
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+        }
 
-    }
+        @Test
+        public void checkSaveAdminSuccess() {
 
-    @Test
-    public void checkSaveAdminSuccess() {
-        String passwordToSave = "123";
+            given(usersRepository.save(anyObject())).willReturn(null);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        given(usersRepository.save(anyObject())).willReturn(null);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
+            adminService.registerUser(userForm);
 
-        UserForm userForm = new UserForm("12345", "12345", "12345", "ADMIN");
+            verify(usersRepository).save(argumentCaptor.capture());
 
-        ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
 
-        adminService.registerUser(userForm);
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
 
-        verify(usersRepository).save(argumentCaptor.capture());
-
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
-
-        User userToSave = User.from(userForm);
-        userToSave.setPassword(passwordToSave);
-
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
-
+        }
     }
 
 //    @Test
@@ -101,155 +105,155 @@ class AdminServiceImplTest {
 //        Assertions.assertThrows(IllegalArgumentException.class, () -> adminService.registerUser(userForm));
 //    }
 
-    @Test
-    public void checkSaveTeachersRepositoryException() {
-        String passwordToSave = "123";
+    @Nested
+    class TestUsersServiceWithTeachersRepository{
+        private UserForm userForm;
+        private String passwordToSave;
+        private Teacher userToSave;
+        private ArgumentCaptor<Teacher> argumentCaptor = ArgumentCaptor.forClass(Teacher.class);
+        private ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        @BeforeEach
+        public void beforeUsersRepositoryTests(){
+            passwordToSave = "123";
+            userForm = new UserForm("12345", "12345", "12345", "TEACHER");
+            userToSave = Teacher.fromUserForm(userForm);
+            userToSave.setPassword(passwordToSave);
+            argumentCaptor = ArgumentCaptor.forClass(Teacher.class);
+            passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        }
 
-        given(teachersRepository.save(anyObject())).willThrow(RuntimeException.class);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        UserForm userForm = new UserForm("12345", "12345", "12345", "TEACHER");
+        @Test
+        public void checkSaveTeachersRepositoryException() {
+            given(teachersRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        ArgumentCaptor<Teacher> argumentCaptor = ArgumentCaptor.forClass(Teacher.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+            Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
 
-        Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
+            verify(teachersRepository).save(argumentCaptor.capture());
 
-        verify(teachersRepository).save(argumentCaptor.capture());
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
 
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+        }
 
-        Teacher userToSave = Teacher.fromUserForm(userForm);
-        userToSave.setPassword(passwordToSave);
+        @Test
+        public void checkSaveTeachersSuccess() {
+            given(teachersRepository.save(anyObject())).willReturn(null);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+            adminService.registerUser(userForm);
+
+            verify(teachersRepository).save(argumentCaptor.capture());
+
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
+
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+        }
     }
 
-    @Test
-    public void checkSaveTeachersSuccess() {
-        String passwordToSave = "345";
+    @Nested
+    class TestUsersServiceWithCompanyRepository{
+        private UserForm userForm;
+        private String passwordToSave;
+        private Company userToSave;
+        private ArgumentCaptor<Company> argumentCaptor;
+        private ArgumentCaptor<String> passwordEncoderArgumentCaptor;
+        @BeforeEach
+        public void beforeUsersRepositoryTests(){
+            passwordToSave = "123";
+            userForm = new UserForm("12345", "12345", "12345", "COMPANY");
+            userToSave = Company.fromUserForm(userForm);
+            userToSave.setPassword(passwordToSave);
+            argumentCaptor = ArgumentCaptor.forClass(Company.class);
+            passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        }
 
-        given(teachersRepository.save(anyObject())).willReturn(null);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        UserForm userForm = new UserForm("12345", "12345", "12345", "TEACHER");
+        @Test
+        public void checkSaveCompanyRepositoryException() {
+            given(companyRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        ArgumentCaptor<Teacher> argumentCaptor = ArgumentCaptor.forClass(Teacher.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+            Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
 
-        adminService.registerUser(userForm);
+            verify(companyRepository).save(argumentCaptor.capture());
 
-        verify(teachersRepository).save(argumentCaptor.capture());
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
 
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
 
-        Teacher userToSave = Teacher.fromUserForm(userForm);
-        userToSave.setPassword(passwordToSave);
+        }
 
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+        @Test
+        public void checkSaveCompanySuccess() {
+
+            given(companyRepository.save(anyObject())).willReturn(null);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
+
+            adminService.registerUser(userForm);
+
+            verify(companyRepository).save(argumentCaptor.capture());
+
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
+
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+
+        }
     }
 
-    @Test
-    public void checkSaveCompanyRepositoryException() {
-        String passwordToSave = "123";
+    @Nested
+    class TestUsersServiceWithStudentsRepository{
+        private UserForm userForm;
+        private String passwordToSave;
+        private Student userToSave;
+        private ArgumentCaptor<Student> argumentCaptor;
+        private ArgumentCaptor<String> passwordEncoderArgumentCaptor;
+        @BeforeEach
+        public void beforeUsersRepositoryTests(){
+            passwordToSave = "123";
+            userForm = new UserForm("12345", "12345", "12345", "STUDENT");
+            userToSave = Student.fromUserForm(userForm);
+            userToSave.setPassword(passwordToSave);
+            argumentCaptor = ArgumentCaptor.forClass(Student.class);
+            passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+        }
 
-        given(companyRepository.save(anyObject())).willThrow(RuntimeException.class);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
+        @Test
+        public void checkSaveStudentsRepositoryException() {
+            given(studentsRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        UserForm userForm = new UserForm("12345", "12345", "12345", "COMPANY");
+            Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
 
-        ArgumentCaptor<Company> argumentCaptor = ArgumentCaptor.forClass(Company.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
+            verify(studentsRepository).save(argumentCaptor.capture());
 
-        Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
 
-        verify(companyRepository).save(argumentCaptor.capture());
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
 
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
+        }
 
-        Company userToSave = Company.fromUserForm(userForm);
-        userToSave.setPassword(passwordToSave);
+        @Test
+        public void checkSaveStudentsSuccess() {
+            given(studentsRepository.save(anyObject())).willReturn(null);
+            given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+            adminService.registerUser(userForm);
 
+            verify(studentsRepository).save(argumentCaptor.capture());
+
+            verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
+
+            assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
+            assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
+
+        }
     }
 
-    @Test
-    public void checkSaveCompanySuccess() {
-        String passwordToSave = "345";
-
-        given(companyRepository.save(anyObject())).willReturn(null);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
-
-        UserForm userForm = new UserForm("12345", "12345", "12345", "COMPANY");
-
-        ArgumentCaptor<Company> argumentCaptor = ArgumentCaptor.forClass(Company.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
-
-        adminService.registerUser(userForm);
-
-        verify(companyRepository).save(argumentCaptor.capture());
-
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
-
-        Company userToSave = Company.fromUserForm(userForm);
-        userToSave.setPassword(passwordToSave);
-
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
-
-    }
-
-    @Test
-    public void checkSaveStudentsRepositoryException() {
-        String passwordToSave = "123";
-        given(studentsRepository.save(anyObject())).willThrow(RuntimeException.class);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
-        UserForm userForm = new UserForm("12345", "12345", "12345", "STUDENT");
-
-
-        ArgumentCaptor<Student> argumentCaptor = ArgumentCaptor.forClass(Student.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
-
-        Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
-
-        verify(studentsRepository).save(argumentCaptor.capture());
-
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
-
-        Student userToSave = Student.fromUserForm(userForm);
-        userToSave.setPassword(passwordToSave);
-
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
-
-    }
-
-    @Test
-    public void checkSaveStudentsSuccess() {
-        String passwordToSave = "345";
-        given(studentsRepository.save(anyObject())).willReturn(null);
-        given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
-        UserForm userForm = new UserForm("12345", "12345", "12345", "STUDENT");
-
-
-        ArgumentCaptor<Student> argumentCaptor = ArgumentCaptor.forClass(Student.class);
-        ArgumentCaptor<String> passwordEncoderArgumentCaptor = ArgumentCaptor.forClass(String.class);
-
-        adminService.registerUser(userForm);
-
-        verify(studentsRepository).save(argumentCaptor.capture());
-
-        verify(passwordEncoder).encode(passwordEncoderArgumentCaptor.capture());
-
-        Student userToSave = Student.fromUserForm(userForm);
-        userToSave.setPassword(passwordToSave);
-
-        assertThat(argumentCaptor.getValue()).isEqualTo(userToSave);
-        assertThat(passwordEncoderArgumentCaptor.getValue()).isEqualTo(userForm.getPassword());
-
-    }
 }
