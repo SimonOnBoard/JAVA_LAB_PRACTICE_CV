@@ -8,6 +8,7 @@ import com.itis.practice.team123.cvproject.repositories.WorksRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class StudiesIntegrationAPITest {
+    @Mock
     private WorksRepository worksRepository;
     @Autowired
     private ObjectMapper objectMapper;
@@ -70,7 +72,7 @@ class StudiesIntegrationAPITest {
 //        try {
 //            mockMvc.perform(post("/api/works")
 //                    .content(objectMapper.writeValueAsString(workDto)))
-//                    .andExpect(status().is4xxClientError());
+//                    .andExpect(status().is5xxServerError());
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }

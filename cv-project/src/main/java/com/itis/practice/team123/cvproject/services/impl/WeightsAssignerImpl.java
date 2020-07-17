@@ -29,7 +29,7 @@ public class WeightsAssignerImpl implements WeightsAssigner {
     public List<WeightedWorkDto> assignWorkWeights(List<Work> works) {
         List<WeightedWorkDto> weightedWorks = new ArrayList<>();
         for (Work work : works) {
-            double weight = work.getTags().size() * 1.0 / tagsRepository.findAll().size();
+            double weight = work.getTags().size();
             weightedWorks.add(new WeightedWorkDto(work, weight));
         }
         weightedWorks.sort((a, b) -> a.getWeight().compareTo(b.getWeight()));
