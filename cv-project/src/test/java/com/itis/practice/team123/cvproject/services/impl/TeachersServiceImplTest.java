@@ -101,7 +101,6 @@ class TeachersServiceImplTest {
         void updateTeacherByFormAndTeacherFail() {
             given(teachersRepository.saveAndFlush(anyObject())).willThrow(RuntimeException.class);
             assertThrows(RuntimeException.class, () -> teachersService.updateTeacher(teacherEditForm, teacher));
-            verify(teachersRepository).saveAndFlush(teacherArgumentCaptor.capture());
             checkTeachersInfo();
         }
 
