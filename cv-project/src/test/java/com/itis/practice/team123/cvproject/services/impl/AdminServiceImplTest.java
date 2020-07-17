@@ -67,7 +67,7 @@ class AdminServiceImplTest {
         @Test
         public void checkSaveUsersRepositoryCallingException() {
 
-            given(usersRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(usersRepository.save(any(Teacher.class))).willThrow(RuntimeException.class);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
@@ -84,7 +84,7 @@ class AdminServiceImplTest {
         @Test
         public void checkSaveAdminSuccess() {
 
-            given(usersRepository.save(anyObject())).willReturn(null);
+            given(usersRepository.save(any(Teacher.class))).willReturn(null);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             adminService.registerUser(userForm);
@@ -125,7 +125,7 @@ class AdminServiceImplTest {
 
         @Test
         public void checkSaveTeachersRepositoryException() {
-            given(teachersRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(teachersRepository.save(any(Teacher.class))).willThrow(RuntimeException.class);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
@@ -140,7 +140,7 @@ class AdminServiceImplTest {
 
         @Test
         public void checkSaveTeachersSuccess() {
-            given(teachersRepository.save(anyObject())).willReturn(null);
+            given(teachersRepository.save(any(Teacher.class))).willReturn(null);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             adminService.registerUser(userForm);
@@ -174,7 +174,7 @@ class AdminServiceImplTest {
 
         @Test
         public void checkSaveCompanyRepositoryException() {
-            given(companyRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(companyRepository.save(any(Company.class))).willThrow(RuntimeException.class);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
@@ -191,7 +191,7 @@ class AdminServiceImplTest {
         @Test
         public void checkSaveCompanySuccess() {
 
-            given(companyRepository.save(anyObject())).willReturn(null);
+            given(companyRepository.save(any(Company.class))).willReturn(null);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             adminService.registerUser(userForm);
@@ -225,7 +225,7 @@ class AdminServiceImplTest {
 
         @Test
         public void checkSaveStudentsRepositoryException() {
-            given(studentsRepository.save(anyObject())).willThrow(RuntimeException.class);
+            given(studentsRepository.save(any(Student.class))).willThrow(RuntimeException.class);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             Assertions.assertThrows(RuntimeException.class, () -> adminService.registerUser(userForm));
@@ -241,7 +241,7 @@ class AdminServiceImplTest {
 
         @Test
         public void checkSaveStudentsSuccess() {
-            given(studentsRepository.save(anyObject())).willReturn(null);
+            given(studentsRepository.save(any(Student.class))).willReturn(null);
             given(passwordEncoder.encode(anyString())).willReturn(passwordToSave);
 
             adminService.registerUser(userForm);
