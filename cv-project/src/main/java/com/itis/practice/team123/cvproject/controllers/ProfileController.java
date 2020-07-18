@@ -2,6 +2,7 @@ package com.itis.practice.team123.cvproject.controllers;
 
 import com.itis.practice.team123.cvproject.enums.LanguageLevel;
 import com.itis.practice.team123.cvproject.enums.Role;
+import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ public class ProfileController {
         // TODO: 12.07.2020 Подумать на тему конфиденциального отображения профилей
         try {
             model.addAttribute("isOwner", id == null || id.equals(userDetails.getUserId()));
+            model.addAttribute("isTeacher", userDetails.getUser().getRole().equals(Role.TEACHER));
             return id == null ? profileService.getProfile(userDetails.getUser(), model) : profileService.getProfile(id, model);
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException(e.getMessage());

@@ -33,11 +33,11 @@
     </style>
 
     <script type="application/javascript">
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         getStudent(${id})
 
         function getStudent(id) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
             $.ajax({
                 method: "GET",
                 url: /students/ + String(id),
@@ -96,18 +96,24 @@
                     if (b.competences != null) {
                         b.competences.forEach(element => {
                             if (element.confirmed === false) {
+                                var last;
+                                <#if isTeacher == true>
+                                last = "<button type=\"button\" class=\"btn btn-info\" onclick=\"confirmCompetence(" + element.id +
+                                    ")\">Подтвердить</button>\n" + "                        </div>\n</div>";
+                                <#else>
+                                last = "                       </div>\n</div>";
+                                </#if>
                                 $("#competences").append("  <div class=\"element-competence\">\n" +
                                     "                            <button type=\"button\" class=\"btn btn-secondary dropdown-toggle\" data-toggle=\"dropdown\"\n" +
                                     "                                    aria-haspopup=\"true\" aria-expanded=\"false\">" +
                                     element.tag.name + "</button>\n" +
                                     "                            <div class=\"dropdown-menu\">\n" +
-                                    "                                <strong class=\"dropdown-item\">Не подтверждена</strong></div>\n" +
-                                    "                        </div>");
+                                    "                                <strong class=\"dropdown-item\">Не подтверждена</strong>" + last);
                             } else {
                                 var result = '                        <div class="element-competence">\n' +
                                     '                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"\n' +
                                     '                                    aria-haspopup="true" aria-expanded="false">' + element.tag.name;
-                                result +='</button>\n' +
+                                result += '</button>\n' +
                                     '                            <div class="dropdown-menu">\n' +
                                     '                                <strong class="dropdown-item">Подтверждена</strong>\n' +
                                     '                                <div class="dropdown-divider"></div>\n' +
@@ -120,11 +126,17 @@
                                     if (res === '') {
                                         res = 'Имя не указано'
                                     }
-                                   result += "<a class=\"dropdown-item\" href=\"" + "/profile/" + element.id + "\">" + res + "</a>";
+                                    result += "<a class=\"dropdown-item\" href=\"" + "/profile/" + element.id + "\">" + res + "</a>";
                                 });
-                                result += "</div>\n" +
+                                var x = "</div>\n" +
                                     "                            </div>\n" +
-                                    "                        </div>\n"
+                                    "                        </div>\n";
+                                <#if isTeacher == true>
+                                result += "<button type=\"button\" class=\"btn btn-info\" onclick=\"confirmCompetence(" + element.id +
+                                    ")\">Подтвердить</button>\n" + x;
+                                <#else>
+                                result += x;
+                                </#if>
                                 console.log(result);
                                 $("#competences").append(result);
                             }
@@ -136,6 +148,28 @@
                     var b = JSON.parse(a);
                     alert(b);
                     window.location.replace("/profile");
+                }
+            });
+        }
+        function confirmCompetence(competenceId) {
+            var url = "/${id}/confirm/" + String(competenceId);
+            $.ajax({
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                method: "POST",
+                url: url,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert(b);
+                },
+                error: function (err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    window.location.replace("/profile/${id}");
                 }
             });
         }

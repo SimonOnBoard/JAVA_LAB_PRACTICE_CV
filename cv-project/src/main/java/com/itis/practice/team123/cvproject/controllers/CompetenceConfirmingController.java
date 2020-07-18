@@ -3,6 +3,7 @@ package com.itis.practice.team123.cvproject.controllers;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.CompetenceConfirmingService;
 import com.itis.practice.team123.cvproject.utils.RedirectUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
