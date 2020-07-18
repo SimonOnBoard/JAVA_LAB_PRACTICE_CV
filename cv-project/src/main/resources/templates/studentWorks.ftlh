@@ -32,11 +32,11 @@
                 success: function (response) {
                     console.log(response)
                     for (let i = response.length - 1; i >= 0; i--) {
-                        var tags;
-                        for (let j = response[i]['work']['tags'].length - 1; i >= 0; i--) {
+                        var tags = '';
+                        for (let j = response[i]['work']['tags'].length - 1; j >= 0; j--) {
                             tags = tags + '<button type="button" class="btn btn-info" style="margin: 5px" disabled>' + response[i]['work']['tags'][j]['name'] + '</button>'
                         }
-                        $('#works').first().after('<div class="list-group">\n' +
+                        $('#works').append('<div class="list-group">\n' +
                             '                                    <div class="list-group-item list-group-item-action flex-column align-items-start"\n' +
                             '                                         style="margin-bottom: 20px; border: 1px grey solid">\n' +
                             '                                        <div class="d-flex w-100 justify-content-between">\n' +
@@ -62,20 +62,8 @@
         <div class="card border-dark mb-3"
              style="display: inline-block; margin-left: 5%; margin-top: 2%; max-width: 60rem">
             <div class="card-header">Выполненные проекты</div>
-            <div id="works" class="card-body text-dark" style="height: 32rem; overflow-y: scroll">
+            <div id="works" class="card-body text-dark" style="height: 45rem; overflow-y: scroll">
 
-                <#--                                <div class="list-group">-->
-                <#--                                    <div class="list-group-item list-group-item-action flex-column align-items-start"-->
-                <#--                                         style="margin-bottom: 20px; border: 1px grey solid">-->
-                <#--                                        <div class="d-flex w-100 justify-content-between">-->
-                <#--                                            <h5 class="mb-1">Voz govna</h5>-->
-                <#--                                        </div>-->
-                <#--                                        <p class="mb-1">Лучше бы на заводе работал</p>-->
-                <#--                                        <div style="display: flex; flex-wrap: wrap">-->
-                <#--                                            <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java</button>-->
-                <#--                                        </div>-->
-                <#--                                    </div>-->
-                <#--                                </div>-->
             </div>
         </div>
     </div>
