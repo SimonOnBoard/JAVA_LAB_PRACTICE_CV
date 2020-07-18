@@ -147,7 +147,7 @@
                     <div class="card-header">Личные данные</div>
                     <div class="card-body text-dark" style="max-height: 30rem; overflow-y: scroll">
                         <h5 class="card-title" hidden="true" id="fio_label">ФИО</h5>
-                        <p class="card-text" id="fio">Блинов Ренат Константинович</p>
+                        <p class="card-text" id="fio"></p>
 
                         <div style="margin-top: 25px"></div>
 
@@ -157,14 +157,13 @@
                         <div style="margin-top: 25px"></div>
 
                         <h5 class="card-title" hidden="true" id="contacts-label">Контакты</h5>
-                        <p class="card-text" hidden="true" id="phone"><strong>Телефон: </strong>+79997892343</p>
-                        <p class="card-text" hidden="true" id="mail"><strong>Email: </strong>aaa@a.ru</p>
+                        <p class="card-text" hidden="true" id="phone"></p>
+                        <p class="card-text" hidden="true" id="mail"></p>
 
                         <div style="margin-top: 25px"></div>
 
                         <h5 class="card-title" hidden="true" id="info-label">О себе</h5>
-                        <p class="card-text" hidden="true" id="info">Студент, 20 лет опыта разработки програмного
-                            обеспечения, люблю печенье</p>
+                        <p class="card-text" hidden="true" id="info"</p>
                     </div>
                 </div>
 
@@ -172,7 +171,7 @@
                     <div class="card-header">Образование</div>
                     <div class="card-body text-dark" style="max-height: 30rem; overflow-y: scroll">
                         <#--                        <h5 class="card-title">Программная инженерия</h5>-->
-                        <p class="card-text" hidden="true" id="education">Бакалавр неоконченное</p>
+                        <p class="card-text" hidden="true" id="education"></p>
                     </div>
                 </div>
 
@@ -208,6 +207,9 @@
         </div>
 
     </div>
+    <#if isOwner == true>
+        <a href="/editStudentProfile/${id}">Редактировать профиль</a>
+    </#if>
 </#macro>
 <#macro title>
     <title>Профиль студента</title>

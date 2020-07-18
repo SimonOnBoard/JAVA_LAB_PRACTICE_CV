@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,7 +38,8 @@ public class StudentAccountController {
     }
 
     @PreAuthorize("hasRole('STUDENT')")
-    @PutMapping(value = {"/studentAccount/languages/update", "/api/studentAccount/languages/update"})
+    @RequestMapping(method = {},value = {"/studentAccount/languages/update", "/api/studentAccount/languages/update"})
+    @PostMapping(value = {"/studentAccount/languages/update", "/api/studentAccount/languages/update"})
     public ResponseEntity<?> updateLanguagesInfo(@RequestBody Language language,
                                                  @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
         studentsService.updateStudentLanguagesInfo(language, userDetails.getUserId());

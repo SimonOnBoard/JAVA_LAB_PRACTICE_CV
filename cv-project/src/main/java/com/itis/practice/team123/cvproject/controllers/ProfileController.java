@@ -74,4 +74,14 @@ public class ProfileController {
         return "editCompanyProfilePage";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/editStudentProfile/{id}")
+    public String getEditStudentProfilePage(Model model,
+                                            @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+                                            @PathVariable("id") Long id) throws AccessDeniedException {
+        checkAuthorities(userDetails.getRole(), id, userDetails.getUserId());
+        profileService.getProfile(id, model);
+        return "editStudentProfilePage";
+    }
+
 }

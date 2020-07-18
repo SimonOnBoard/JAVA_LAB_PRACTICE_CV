@@ -244,3 +244,15 @@
 </body>
 
 </html>
+
+</form>
+<h2> Add language form</h2>
+<form id="x" action="/addLanguage">
+    <#--        <input type="hidden" name="id" value="null"><br>-->
+    <p>Language: </p>
+    <input type="text" name="language"/>
+    <p>Level: </p>
+    <@enumSelect "level" myEnum/><br>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    <button type="button" onclick="addLanguage()" value="Submit"></button>
+</form>
