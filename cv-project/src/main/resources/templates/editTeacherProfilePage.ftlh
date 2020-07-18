@@ -160,7 +160,7 @@
                     <label for="exampleFormControlSelect2">Выберите уровень владения</label>
                     <select class="form-control" id="exampleFormControlSelect2">
                         <option value="A1">A1</option>
-                        <!--                    ajax-->
+                        <!--                   ajax-->
                         <option value="A2">>A2</option>
                         <option value="B1">>B1</option>
                         <option value="B2">>B2</option>
