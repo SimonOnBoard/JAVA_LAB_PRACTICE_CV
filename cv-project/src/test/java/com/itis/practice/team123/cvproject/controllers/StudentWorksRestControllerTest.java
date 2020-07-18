@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class StudentWorksControllerTest {
+class StudentWorksRestControllerTest {
     @Mock
     private WorksRepository worksRepository;
     @Mock
