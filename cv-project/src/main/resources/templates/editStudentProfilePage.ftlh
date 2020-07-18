@@ -16,6 +16,80 @@
     <script type="application/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
+        getStudent(${id})
+
+        function getStudent(id) {
+            $.ajax({
+                method: "GET",
+                url: /students/ + String(id),
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    if (b.lastName !== null) $('#lastname').attr('value',b.lastName);
+                    if (b.patronymic !== null) $('#patronymic').attr('value',b.patronymic);
+                    if (b.firstName !== null)  $('#firstName').attr('value',b.firstName);
+                    if (b.age !== null) {
+                        $("#age").attr('value',b.age);
+                    }
+                    if (b.email !== null) {
+                        $("#email").attr('value',b.email);
+                    }
+                    if (b.phoneNumber !== null) {
+                        $("#phoneNumber").attr('value',b.phoneNumber);
+                    }
+                    if (b.aboutMe !== null) {
+                        $("#additionalInfo").text(b.aboutMe);
+                    }
+                    if (b.competences != null) {
+                        b.competences.forEach(element => {
+                            $("#competenceList").append("<button type=\"button\" class=\"btn btn-info\" style=\"margin: 5px\" disabled>" + element.tag.name + "</button>")
+                        });
+                    }
+                },
+                error: function (err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    alert(b);
+                    window.location.replace("/profile");
+                }
+            });
+        }
+
+        getCompetences();
+
+        function getCompetences() {
+            $.ajax({
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                method: "GET",
+                url: "/search/tags",
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    var x = document.getElementById("competenceSelect");
+                    b.forEach(element => {
+                        var option = document.createElement("option");
+                        option.text = element.name;
+                        x.add(option);
+                    });
+                },
+                error: function (err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    alert(b);
+                    window.location.replace("/profile");
+                }
+            });
+        }
+
         function addLanguage() {
             var form = $("#x")[0];
             var data = new FormData(form);
@@ -35,6 +109,35 @@
                     var b = JSON.parse(a);
                     alert(b);
                     $('#x')[0].reset();
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                }
+            });
+        }
+
+        function addCompetence() {
+            var form = $("#co")[0];
+            var data = new FormData(form);
+            $.ajax({
+                method: "PUT",
+                url: form.action,
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(Object.fromEntries(data)),
+                contentType: "application/json",
+                processData: false,
+                cache: false,
+                timeout: 60000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    var x =  $("#competenceSelect option:selected").text();
+                    alert(b);
+                    $('#competenceList').append("  <button type=\"button\" class=\"btn btn-info\" style=\"margin: 5px\" disabled>"
+                        + x + "</button>");
+                    $('#co')[0].reset();
                 },
                 error: function (err) {
                     alert(err.responseText);
@@ -68,20 +171,47 @@
             });
         }
 
-        function addTeacherInfo() {
-            // Create an FormData object
-            var form = $("#f")[0];
+        function addEducation() {
+            var form = $("#e")[0];
             var data = new FormData(form);
-            var address = "\"" + form.action + "\"";
-            console.log(address);
             $.ajax({
                 method: "PUT",
                 url: form.action,
-                data: data,
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(Object.fromEntries(data)),
+                contentType: "application/json",
                 processData: false,
-                contentType: false,
                 cache: false,
-                timeout: 600000,
+                timeout: 60000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert(b);
+                    $('#e')[0].reset();
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                }
+            });
+        }
+
+        function updateInfo() {
+            // Create an FormData object
+            var form = $("#upd")[0];
+            var data = new FormData(form);
+            $.ajax({
+                method: "PUT",
+                url: form.action,
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(Object.fromEntries(data)),
+                contentType: "application/json",
+                processData: false,
+                cache: false,
+                timeout: 60000,
                 success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
@@ -96,7 +226,7 @@
         }
     </script>
     <div style="display: inline-block; vertical-align: top">
-        <form method="post" action="#">
+        <form method="post" action="/studentAccount/info/update" id="upd">
             <div class="card border-dark mb-3" style="width: 43rem; margin: 2%">
                 <div class="card-header">Личные данные</div>
                 <div class="card-body text-dark" style="max-height: 40rem">
@@ -107,16 +237,17 @@
                         <div class="form-group" style="text-align: left; max-width: 10rem">
                             <label class="card-text">
                                 <strong>Фамилия</strong>
-                                <input type="text" name="lastname" class="form-control" value="Блинов" required/>
+                                <input type="text" name="lastName" id="lastname" class="form-control" value="" required/>
                             </label>
 
                             <label class="card-text">
                                 <strong>Имя</strong>
-                                <input type="text" name="firstname" class="form-control" value="Ренат" required/>
+                                <input type="text" name="firstName" id="firstName" class="form-control" value="" required/>
                             </label>
                             <label class="card-text">
                                 <strong>Отчество</strong>
-                                <input type="text" name="patronomyc" class="form-control" value="Константинович" required/>
+                                <input type="text" name="patronymic" id="patronymic" class="form-control" value=""
+                                       required/>
                             </label>
                         </div>
 
@@ -126,7 +257,8 @@
                         <h5 class="card-title">Возраст</h5>
                         <p class="card-text">
                             <label>
-                                <input class="form-control" type="text" name="age" value="20" style="width: 3rem" required/>
+                                <input class="form-control" id="age" type="text" name="age" value="" style="width: 3rem"
+                                       required/>
                             </label> лет
                         </p>
 
@@ -137,12 +269,13 @@
                         <h5 class="card-title">Контакты</h5>
                         <p class="card-text"><strong>Телефон: </strong>
                             <label>
-                                <input class="form-control" type="text" name="phoneNumber" value="+79997892343" required/>
+                                <input class="form-control" type="text" name="phoneNumber" id="phoneNumber" value=""
+                                       required/>
                             </label>
                         </p>
                         <p class="card-text"><strong>Email: </strong>
                             <label>
-                                <input class="form-control" type="email" name="phoneNumber" value="aaa@a.ru" required/>
+                                <input class="form-control" type="email" name="email" id="email" value="" required/>
                             </label>
                         </p>
 
@@ -150,14 +283,14 @@
 
                         <h5 class="card-title">О себе</h5>
                         <label>
-                <textarea class="form-control" name="aboutMe" id="exampleFormControlTextarea1" rows="3" cols="50"
+                <textarea class="form-control" name="aboutMe" id="additionalInfo" name="aboutMe" rows="3" cols="50"
                           style="resize: none"
-                          required>Студент, 20 лет опыта разработки програмного обеспечения, люблю печенье</textarea>
+                          required></textarea>
                         </label>
 
                     </div>
                     <div style="display: block; float:right; margin: 1%">
-                        <input type="submit" class="btn btn-primary" value="Изменить"/>
+                        <button type="button" class="btn btn-primary" onclick="updateInfo()">Изменить</button>
                     </div>
 
                 </div>
@@ -170,37 +303,20 @@
             <div class="card-body text-dark" style="max-height: 40rem">
 
                 <div class="form-group">
-                    <form method="post" action="#">
+                    <form id="co" action="/studentAccount/competences/update">
                         <label for="competenceSelect">Выберите компетенцию из списка</label>
-                        <select class="form-control" id="competenceSelect">
-                            <option>Java</option>
-                            <!--                    ajax-->
-                            <option>SQL</option>
-                            <option>Lombok</option>
-                            <option>Spring MVC</option>
-                            <option>Spring Boot</option>
+                        <select class="form-control" id="competenceSelect" name="name">
+
                         </select>
 
                         <div style="margin-top: 1rem; ">
-                            <input type="submit" class="btn btn-primary" value="Добавить">
+                            <button type="button" class="btn btn-primary" onclick="addCompetence()">Добавить</button>
                         </div>
                     </form>
 
                     <div class="dropdown-divider"></div>
 
-                    <div class="competences" style="display: flex; flex-wrap:wrap">
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java</button>
-                        <!--                ajax-->
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>JavaSE</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java2EE</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java Collections</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java Stream API</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java IO/NIO</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java Exceptions</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Spring MVC</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Spring Boot</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Spring Security</button>
-                        <button type="button" class="btn btn-info" style="margin: 5px" disabled>Spring Framework</button>
+                    <div class="competences" style="display: flex; flex-wrap:wrap" id="competenceList">
                     </div>
                 </div>
             </div>
@@ -209,14 +325,14 @@
 
 
     <div style="display: inline-block; margin-left: 4%">
-        <form method="post" action="#">
+        <form id="e" action="/studentAccount/education/update">
             <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
                 <div class="card-header">Образование</div>
                 <div class="card-body text-dark" style="max-height: 40rem">
 
                     <div class="form-group">
                         <label for="educationSelect">Выберите ваш уровень образования</label>
-                        <select class="form-control" id="educationSelect">
+                        <select class="form-control" id="educationSelect" name="name">
                             <option value="Бакалавр неоконченное">Бакалавр неоконченное</option>
                             <!--                    ajax-->
                             <option value="Бакалавр">Бакалавр</option>
@@ -227,7 +343,8 @@
                         </select>
 
                         <div style="margin-top: 1rem; float: right">
-                            <input type="submit" class="btn btn-primary" value="Изменить">
+                            <button type="button" class="btn btn-primary" onclick="addEducation()"
+                                    value="Обновить"></button>
                         </div>
                     </div>
                 </div>
@@ -256,7 +373,8 @@
                             <option value="C2">C2</option>
                         </select>
                         <div style="margin-top: 1rem; float: right">
-                            <button type="button" class="btn btn-primary" onclick="addLanguage()" value="Обновить"></button>
+                            <button type="button" class="btn btn-primary" onclick="addLanguage()"
+                                    value="Обновить"></button>
                         </div>
                     </div>
 
@@ -270,25 +388,6 @@
                 <div class="card-header">Сертификаты</div>
                 <div class="card-body text-dark" style="max-height: 40rem">
 
-<#--                    <div style="height: 4rem; overflow-y: scroll; border: 1px grey solid; border-radius: 3px">-->
-<#--                        <h5 class="card-title" style="margin-left: 15px">ITIS</h5>-->
-<#--                        <p class="card-text" style="margin-left: 15px">2019</p>-->
-<#--                        <!--ajax&ndash;&gt;-->
-<#--                        <div class="dropdown-divider"></div>-->
-
-<#--                        <h5 class="card-title" style="margin-left: 15px">KFU</h5>-->
-<#--                        <p class="card-text" style="margin-left: 15px">2018</p>-->
-
-<#--                        <div class="dropdown-divider"></div>-->
-
-<#--                        <h5 class="card-title" style="margin-left: 15px">Mera</h5>-->
-<#--                        <p class="card-text" style="margin-left: 15px">2020</p>-->
-
-<#--                        <div class="dropdown-divider"></div>-->
-
-<#--                        <h5 class="card-title" style="margin-left: 15px">Simbirsoft</h5>-->
-<#--                        <p class="card-text" style="margin-left: 15px">2021</p>-->
-<#--                    </div>-->
 
                     <div class="form-group">
 
@@ -306,7 +405,8 @@
                         </select>
 
                         <div style="margin-top: 1rem; float: right">
-                            <button type="button" class="btn btn-primary" onclick="addCertificates()" value="Обновить"></button>
+                            <button type="button" class="btn btn-primary" onclick="addCertificates()"
+                                    value="Обновить"></button>
                         </div>
                     </div>
                 </div>

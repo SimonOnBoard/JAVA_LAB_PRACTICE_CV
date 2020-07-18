@@ -27,7 +27,7 @@ public class SearchController {
     private final LanguageRepository languageRepository;
 
     @PreAuthorize("permitAll()")
-    @GetMapping(value = {"/api/search"})
+    @GetMapping(value = {"/api/search","/search/tags"})
     public @ResponseBody ResponseEntity<List<Tag>> tagsView() {
         return ResponseEntity.ok(tagsRepository.findAll());
     }

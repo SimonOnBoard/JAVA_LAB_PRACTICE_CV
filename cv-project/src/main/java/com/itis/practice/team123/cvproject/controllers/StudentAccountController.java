@@ -27,7 +27,7 @@ public class StudentAccountController {
     public ResponseEntity<?> updateBaseInfo(@RequestBody StudentForm studentForm,
                                             @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
         studentsService.updateStudentBaseInfo(studentForm, userDetails.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(okAnswer);
     }
 
     @PreAuthorize("hasRole('STUDENT')")
@@ -35,7 +35,7 @@ public class StudentAccountController {
     public ResponseEntity<?> updateCompetencesInfo(@RequestBody TagDto tagDto,
                                                    @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
         studentsService.updateStudentCompetencesInfo(tagDto, userDetails.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(okAnswer);
     }
 
     @PreAuthorize("hasRole('STUDENT')")
@@ -51,7 +51,7 @@ public class StudentAccountController {
     public ResponseEntity<?> updateEducationInfo(@RequestBody EducationDto educationDto,
                                                  @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
         studentsService.updateStudentEducationInfo(educationDto, userDetails.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(okAnswer);
     }
 
     @PreAuthorize("hasRole('STUDENT')")
