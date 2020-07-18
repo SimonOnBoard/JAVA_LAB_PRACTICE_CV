@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,6 +86,18 @@ public class StudentsServiceImpl implements StudentsService {
         }
         studentsTags = studentsTags.stream().filter(students::contains).collect(Collectors.toList());
         return weightsAssigner.assignStudentWeightsByTags(studentsTags, tags);
+    }
+
+    @Override
+    public List<TagDto> getTagsForStudent(Student student) {
+        List<Tag> studentTags = student.getCompetences().stream()
+                .map(Competence::getTag)
+                .collect(Collectors.toList());
+        List<Tag> allTags = tagsRepository.findAll();
+        allTags.removeAll(studentTags);
+        return allTags.stream()
+                .map(TagDto::from)
+                .collect(Collectors.toList());
     }
 
     @Override
