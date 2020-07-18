@@ -26,7 +26,7 @@ public class SignInServiceImpl implements SignInService {
     @Override
     public TokenDto signIn(SignInDto signInData) {
         Optional<User> userOptional = usersRepository.findByUsername(signInData.getLogin());
-        // если у меня есть этот пользвователь
+        // если у меня есть этот пользователь
         if (userOptional.isPresent()) {
             // получаем его
             User user = userOptional.get();
@@ -40,7 +40,6 @@ public class SignInServiceImpl implements SignInService {
                         .signWith(SignatureAlgorithm.HS256, secret) // подписываем его с нашим secret
                         .compact(); // преобразовали в строку
                 return new TokenDto(token);
-
             }
         }
         return null;
