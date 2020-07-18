@@ -23,7 +23,7 @@
             var pathname = window.location.pathname
             $.ajax({
                 method: "GET",
-                url: '/api' + pathname,
+                url: '/load' + pathname,
                 dataType: "json",
                 contentType: "application/json",
                 beforeSend: function (request) {
@@ -32,6 +32,10 @@
                 success: function (response) {
                     console.log(response)
                     for (let i = response.length - 1; i >= 0; i--) {
+                        var tags;
+                        for (let j = response[i]['work']['tags'].length - 1; i >= 0; i--) {
+                            tags = tags + '<button type="button" class="btn btn-info" style="margin: 5px" disabled>' + response[i]['work']['tags'][j]['name'] + '</button>'
+                        }
                         $('#works').first().after('<div class="list-group">\n' +
                             '                                    <div class="list-group-item list-group-item-action flex-column align-items-start"\n' +
                             '                                         style="margin-bottom: 20px; border: 1px grey solid">\n' +
@@ -40,7 +44,7 @@
                             '                                        </div>\n' +
                             '                                        <p class="mb-1">' + response[i]['work']['description'] + '</p>\n' +
                             '                                        <div style="display: flex; flex-wrap: wrap">\n' +
-                            '                                            <button type="button" class="btn btn-info" style="margin: 5px" disabled>Java</button>\n' +
+                                                                        tags +
                             '                                        </div>\n' +
                             '                                    </div>\n' +
                             '                                </div>');
