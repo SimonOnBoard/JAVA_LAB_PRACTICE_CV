@@ -20,6 +20,7 @@ import java.util.List;
 public class StudentAccountController {
 
     private final StudentsService studentsService;
+    private final String okAnswer;
 
     @PreAuthorize("hasRole('STUDENT')")
     @PutMapping(value = {"/studentAccount/info/update", "/api/studentAccount/info/update"})
@@ -38,12 +39,11 @@ public class StudentAccountController {
     }
 
     @PreAuthorize("hasRole('STUDENT')")
-    @RequestMapping(method = {},value = {"/studentAccount/languages/update", "/api/studentAccount/languages/update"})
-    @PostMapping(value = {"/studentAccount/languages/update", "/api/studentAccount/languages/update"})
+    @RequestMapping(method= {RequestMethod.POST,RequestMethod.PUT},value = {"/studentAccount/languages/update", "/api/studentAccount/languages/update"})
     public ResponseEntity<?> updateLanguagesInfo(@RequestBody Language language,
                                                  @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
         studentsService.updateStudentLanguagesInfo(language, userDetails.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(okAnswer);
     }
 
     @PreAuthorize("hasRole('STUDENT')")
@@ -59,7 +59,7 @@ public class StudentAccountController {
     public ResponseEntity<?> updateCertificatesInfo(@RequestBody CertificateDto certificateDto,
                                                     @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
         studentsService.updateStudentCertificatesInfo(certificateDto, userDetails.getUserId());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(okAnswer);
     }
 
     @PreAuthorize("hasRole('STUDENT')")

@@ -9,28 +9,58 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
             integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
             crossorigin="anonymous"></script>
-
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </#macro>
 <#macro content>
     <script type="application/javascript">
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
         function addLanguage() {
             var form = $("#x")[0];
             var data = new FormData(form);
-            var address = "\"" + form.action + "\"";
-            console.log(address);
             $.ajax({
                 method: "POST",
                 url: form.action,
-                data: data,
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(Object.fromEntries(data)),
+                contentType: "application/json",
                 processData: false,
-                contentType: false,
                 cache: false,
-                timeout: 600000,
+                timeout: 60000,
                 success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
                     alert(b);
                     $('#x')[0].reset();
+                },
+                error: function (err) {
+                    alert(err.responseText);
+                }
+            });
+        }
+
+        function addCertificates() {
+            var form = $("#c")[0];
+            var data = new FormData(form);
+            $.ajax({
+                method: "PUT",
+                url: form.action,
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                data: JSON.stringify(Object.fromEntries(data)),
+                contentType: "application/json",
+                processData: false,
+                cache: false,
+                timeout: 60000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert(b);
+                    $('#c')[0].reset();
                 },
                 error: function (err) {
                     alert(err.responseText);
@@ -65,79 +95,6 @@
             });
         }
     </script>
-    <div>
-        <form id='f' action="/editTeacherProfile" method='POST'>
-            <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <div class="card-header">Общая информация</div>
-                <div class="card-body text-dark" style="max-height: 40rem">
-
-                    <div style="overflow-y: scroll">
-
-                    </div>
-
-                    <div class="form-group">
-                        <h5 class="card-title">ФИО</h5>
-                        <div class="form-group">
-                            <label class="card-text">
-                                <strong>Фамилия</strong>
-                                <#if surname?has_content>
-                                <td><input type='text' name='surname' value='${surname}'  class="form-control" required/>
-                                    <#else>
-                                <td><input type='text' name='surname' value='' class="form-control" required/>
-                                    </#if>
-                            </label>
-
-                            <label class="card-text" style="margin-left: 20px">
-                                <strong>Имя</strong>
-                                <#if name?has_content>
-                                    <input type='text' name='name' class="form-control" value='${name}' required/>
-                                <#else>
-                                    <input type='text' name='name' class="form-control" value='' required/>
-                                </#if>
-                            </label>
-
-                            <label class="card-text" style="margin-left: 20px">
-                                <strong>Отчество</strong>
-                                <#if patronymic?has_content>
-                                    <input type='text' name='patronymic' class="form-control" value='${patronymic}' required/>
-                                <#else>
-                                    <input type='text' name='patronymic' class="form-control" value='' required/>
-                                </#if>
-                            </label>
-
-                        </div>
-
-                        <div style="margin-top: 25px"></div>
-
-                        <h5 class="card-title">Место преподавания</h5>
-                        <#if institution?has_content>
-                            <input type='text' class="form-control" name='institution' value='${institution}' required/>
-                        <#else>
-                            <input type='text' class="form-control" name='institution' value='' required/>
-                        </#if>
-
-                        <div style="margin-top: 25px"></div>
-
-                        <h5 class="card-title">О себе</h5>
-                        <#if info?has_content>
-                            <textarea class="form-control" name="info" rows="5" cols="70"
-                                      style="resize: none" type='text'
-                                      required>${info}</textarea>
-                        <#else>
-                            <textarea class="form-control" name="info" rows="5" cols="70"
-                                      style="resize: none" value='' type='text'
-                                      required></textarea>
-                        </#if>
-                        <div style="margin-top: 2rem; float: right">
-                            <button type="button" onclick="addTeacherInfo()" class="btn btn-primary"
-                                    value="Изменять"></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
     <div style="display: inline-block; vertical-align: top">
         <form method="post" action="#">
             <div class="card border-dark mb-3" style="width: 43rem; margin: 2%">
@@ -285,12 +242,12 @@
 
                     <div class="form-group">
                         <label for="language">Выберите язык из списка</label>
-                        <input type="text" name="language"/>
+                        <input type="text" name="language" id="language"/>
 
                         <div style="margin: 1rem"></div>
 
                         <label for="exampleFormControlSelect2">Выберите уровень владения</label>
-                        <select class="form-control" id="level">
+                        <select class="form-control" id="level" name="level">
                             <option value="A1">A1</option>
                             <option value="A2">A2</option>
                             <option value="B1">B1</option>
@@ -298,9 +255,8 @@
                             <option value="C1">C1</option>
                             <option value="C2">C2</option>
                         </select>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <div style="margin-top: 1rem; float: right">
-                            <button type="submit" class="btn btn-primary" onclick="addLanguage()" value="Обновить"></button>
+                            <button type="button" class="btn btn-primary" onclick="addLanguage()" value="Обновить"></button>
                         </div>
                     </div>
 
@@ -309,7 +265,7 @@
         </form>
 
 
-        <form>
+        <form id="c" action="/studentAccount/certificates/update">
             <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
                 <div class="card-header">Сертификаты</div>
                 <div class="card-body text-dark" style="max-height: 40rem">
@@ -337,12 +293,11 @@
                     <div class="form-group">
 
                         <label for="nameInput">Название сертификата</label>
-                        <input class="form-control" type="text" id="nameInput" name="name" required/>
+                        <input class="form-control" type="text" id="nameInput" name="name" id="name" required/>
 
                         <label for="yearSelect">Выберите год получения</label>
-                        <select class="form-control" id="yearSelect">
+                        <select class="form-control" id="year" name="year">
                             <option value="2020">2020</option>
-                            <!--                    ajax-->
                             <option value="2019">2019</option>
                             <option value="2018">2018</option>
                             <option value="2017">2017</option>
@@ -351,7 +306,7 @@
                         </select>
 
                         <div style="margin-top: 1rem; float: right">
-                            <input type="submit" class="btn btn-primary" value="Добавить">
+                            <button type="button" class="btn btn-primary" onclick="addCertificates()" value="Обновить"></button>
                         </div>
                     </div>
                 </div>
