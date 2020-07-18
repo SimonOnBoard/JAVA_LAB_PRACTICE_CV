@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.itis.practice.team123.cvproject.dto.UserForm;
 import com.itis.practice.team123.cvproject.enums.Role;
 import lombok.*;
@@ -22,6 +23,7 @@ public class User {
     @Column(unique = true)
     protected String username;
 
+    @JsonIgnore
     protected String password;
 
     protected Role role;

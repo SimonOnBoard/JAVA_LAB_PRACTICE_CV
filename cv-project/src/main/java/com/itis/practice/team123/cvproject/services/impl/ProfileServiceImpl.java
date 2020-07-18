@@ -31,10 +31,15 @@ public class ProfileServiceImpl implements ProfileService {
             case ADMIN:
                 return "panel";
             case STUDENT:
-                return "redirect:/students/" + user.getId();
+                loadStudentInfo(user,model);
+                return "studentProfile";
             default:
                 throw new IllegalStateException("Unexpected value: " + user.getClass());
           }
+    }
+
+    private void loadStudentInfo(User user, Model model) {
+        model.addAttribute("id",user.getId());
     }
 
     private void loadCompanyInfo(User user, Model model) {
