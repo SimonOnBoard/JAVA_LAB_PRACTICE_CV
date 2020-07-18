@@ -104,13 +104,15 @@
                                     "                                <strong class=\"dropdown-item\">Не подтверждена</strong></div>\n" +
                                     "                        </div>");
                             } else {
-                                $("#competences").append(" <div class=\"element-competence\">\n" +
-                                    "                            <button type=\"button\" class=\"btn btn-success dropdown-toggle\" data-toggle=\"dropdown\"\n" +
-                                    "                                    aria-haspopup=\"true\" aria-expanded=\"false\">"
-                                    + element.tag.name + "</button><div class=\"dropdown-menu\">\n" +
-                                    "                                <strong class=\"dropdown-item\">Подтверждена</strong>\n" +
-                                    "                                <div class=\"dropdown-divider\"></div>\n" +
-                                    "                                <div class=\"scroll-teachers\">");
+                                var result = '                        <div class="element-competence">\n' +
+                                    '                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"\n' +
+                                    '                                    aria-haspopup="true" aria-expanded="false">' + element.tag.name;
+                                result +='</button>\n' +
+                                    '                            <div class="dropdown-menu">\n' +
+                                    '                                <strong class="dropdown-item">Подтверждена</strong>\n' +
+                                    '                                <div class="dropdown-divider"></div>\n' +
+                                    '                                <div class="scroll-teachers">';
+                                console.log(result);
                                 element.confirmedTeachers.forEach(element => {
                                     var res = '';
                                     if (element.name !== null) res += element.name;
@@ -118,12 +120,13 @@
                                     if (res === '') {
                                         res = 'Имя не указано'
                                     }
-                                    $("#competences").append(" <a class=\"dropdown-item\" href=\"" + "/profile/" + element.id + "\">" + res + "</a>");
+                                   result += "<a class=\"dropdown-item\" href=\"" + "/profile/" + element.id + "\">" + res + "</a>";
                                 });
-                                $("#competences").append("</div>\n" +
+                                result += "</div>\n" +
                                     "                            </div>\n" +
-                                    "                        </div>\n");
-
+                                    "                        </div>\n"
+                                console.log(result);
+                                $("#competences").append(result);
                             }
                         });
                     }
