@@ -65,7 +65,7 @@
             });
         }
     </script>
-    <div>
+    <div style="display: inline-block">
         <form id='f' action="/editTeacherProfile" method='POST'>
             <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
@@ -138,16 +138,43 @@
             </div>
         </form>
     </div>
-    </form>
-    <h2> Add language form</h2>
-    <form id="x" action="/addLanguage">
-        <#--        <input type="hidden" name="id" value="null"><br>-->
-        <p>Language: </p>
-        <input type="text" name="language"/>
-        <p>Level: </p>
-        <@enumSelect "level" myEnum/><br>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-        <button type="button" onclick="addLanguage()" value="Submit"></button>
+
+    <form method="post" action="#" style="display: inline-block">
+        <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
+            <div class="card-header">Знание языков</div>
+            <div class="card-body text-dark" style="max-height: 40rem">
+
+                <div class="form-group">
+                    <label for="languageSelect">Выберите язык из списка</label>
+                    <select class="form-control" id="languageSelect">
+                        <option>Татарский</option>
+                        <!--                    ajax-->
+                        <option>Китайский</option>
+                        <option>Русский</option>
+                        <option>Испанский</option>
+                        <option>Английский</option>
+                    </select>
+
+                    <div style="margin: 1rem"></div>
+
+                    <label for="exampleFormControlSelect2">Выберите уровень владения</label>
+                    <select class="form-control" id="exampleFormControlSelect2">
+                        <option value="A1">A1</option>
+                        <!--                    ajax-->
+                        <option value="A2">>A2</option>
+                        <option value="B1">>B1</option>
+                        <option value="B2">>B2</option>
+                        <option value="C1">>C1</option>
+                        <option value="C2">>C2</option>
+                    </select>
+
+                    <div style="margin-top: 1rem; float: right">
+                        <input type="submit" class="btn btn-primary" value="Изменить">
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </form>
 
     <a href="/profile">Go to profile</a>
