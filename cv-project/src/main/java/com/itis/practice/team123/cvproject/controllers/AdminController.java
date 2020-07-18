@@ -38,7 +38,7 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addUser")
-    public ResponseEntity<?> addUser(@RequestBody UserForm userForm) {
+    public ResponseEntity<?> addUser(UserForm userForm) {
         try {
             return ResponseEntity.ok().body(adminService.registerUser(userForm));
         } catch (RuntimeException e) {
