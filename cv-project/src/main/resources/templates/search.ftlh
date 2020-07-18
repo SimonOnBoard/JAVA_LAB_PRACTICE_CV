@@ -27,7 +27,7 @@
                  var b = JSON.parse(a);
                  // console.log(b);
                  $.each(b, function (idx, student) {
-                     $('#students').first().append('<td><a href=\"/students/'+  student['student']['id'] +'\">' + student['student']['firstName']  + '</a></td>');
+                     $('#students').first().append('<td><a href=\"/profile/'+  student['student']['id'] +'\">' + student['student']['firstName']  + '</a></td>');
 
 
                  });
