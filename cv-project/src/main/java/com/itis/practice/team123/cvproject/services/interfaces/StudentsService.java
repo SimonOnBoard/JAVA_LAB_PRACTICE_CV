@@ -12,6 +12,7 @@ public interface StudentsService {
     // TODO сделать метод для получения студентов по фильтрам
     List<Student> getStudentsByTag(List<String> tags_name);
     List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData);
+    List<TagDto> getTagsForStudent(Student student);
 
     void updateStudentBaseInfo(StudentForm studentForm, Long id);
     void updateStudentCompetencesInfo(TagDto tagDto, Long id);

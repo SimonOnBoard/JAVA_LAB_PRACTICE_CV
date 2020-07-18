@@ -65,28 +65,34 @@ public class StudentAccountController {
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping(value = {"/studentAccount/competences", "/api/studentAccount/competences"})
     public ResponseEntity<List<Competence>> getCompetencesInfo(@AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        Student student = (Student) userDetails.getUser();
+        Student student = userDetails.getUser();
         return ResponseEntity.ok().body(student.getCompetences());
+    }
+
+    @PreAuthorize("hasRole('STUDENT')")
+    @GetMapping(value = {"/studentAccount/tags", "/api/studentAccount/tags"})
+    public ResponseEntity<List<TagDto>> getTags(@AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
+        return ResponseEntity.ok().body(studentsService.getTagsForStudent(userDetails.getUser()));
     }
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping(value = {"/studentAccount/languages", "/api/studentAccount/languages"})
     public ResponseEntity<List<LanguageDto>> getLanguagesInfo(@AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        Student student = (Student) userDetails.getUser();
+        Student student = userDetails.getUser();
         return ResponseEntity.ok().body(LanguageDto.from(student.getLanguages()));
     }
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping(value = {"/studentAccount/education", "/api/studentAccount/education"})
     public ResponseEntity<EducationDto> getEducationInfo(@AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        Student student = (Student) userDetails.getUser();
+        Student student = userDetails.getUser();
         return ResponseEntity.ok().body(EducationConverter.convert(student.getEducation()));
     }
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping(value = {"/studentAccount/certificates", "/api/studentAccount/certificates"})
     public ResponseEntity<List<CertificateDto>> getCertificatesInfo(@AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        Student student = (Student) userDetails.getUser();
+        Student student = userDetails.getUser();
         return ResponseEntity.ok().body(CertificateDto.from(student.getCertificates()));
     }
 }
