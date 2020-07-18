@@ -20,43 +20,68 @@
 <body>
 
 <div>
-    <form>
-        <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
-            <div class="card-header">Общая информация</div>
-            <div class="card-body text-dark" style="max-height: 40rem">
+    <div style="display: inline-block">
+        <form>
+            <div class="card border-dark mb-3" style="margin: 2%;">
+                <div class="card-header">Общая информация</div>
+                <div class="card-body text-dark" style="max-height: 40rem">
 
-                <div style="overflow-y: scroll">
+                    <div style="overflow-y: scroll">
 
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <h5 class="card-title">Название компании</h5>
-                    <input class="form-control" type="text" name="name" value=")|(0P@" required/>
+                    <div class="form-group">
+                        <h5 class="card-title">Название компании</h5>
+                        <input class="form-control" type="text" name="name" value=")|(0P@" required/>
 
-                    <div style="margin-top: 25px"></div>
+                        <div style="margin-top: 25px"></div>
 
-                    <h5 class="card-title">Номер телефона</h5>
-                    <input class="form-control" type="text" name="phone" value="88005553535" required/>
+                        <h5 class="card-title">Номер телефона</h5>
+                        <input class="form-control" type="text" name="phone" value="88005553535" required/>
 
-                    <div style="margin-top: 25px"></div>
+                        <div style="margin-top: 25px"></div>
 
-                    <h5 class="card-title">Адрес компании</h5>
-                    <input class="form-control" type="text" name="address" value="г. Мухосранск, Зажопинская область, ул. им. Ленина, 228" required/>
+                        <h5 class="card-title">Адрес компании</h5>
+                        <input class="form-control" type="text" name="address"
+                               value="г. Мухосранск, Зажопинская область, ул. им. Ленина, 228" required/>
 
-                    <div style="margin-top: 25px"></div>
+                        <div style="margin-top: 25px"></div>
 
-                    <h5 class="card-title">О себе</h5>
-                    <textarea class="form-control" name="description" rows="5" cols="70"
-                              style="resize: none"
-                              required>Молодая IT компания, стартап, бинарный опцион - это про нас. У нас вы будете работать за печеньки и кофе</textarea>
+                        <h5 class="card-title">О себе</h5>
+                        <textarea class="form-control" name="description" rows="5" cols="70"
+                                  style="resize: none"
+                                  required>Молодая IT компания, стартап, бинарный опцион - это про нас. У нас вы будете работать за печеньки и кофе</textarea>
 
-                    <div style="margin-top: 2rem; float: right">
-                        <input type="submit" class="btn btn-primary" value="Изменить">
+                        <div style="margin-top: 2rem; float: right">
+                            <input type="submit" class="btn btn-primary" value="Изменить">
+                        </div>
                     </div>
                 </div>
             </div>
+        </form>
+    </div>
+
+    <div style="display: inline-block; ">
+        <div class="card border-dark mb-3" style="margin-left: 1%; margin-top: 2%; width: 36rem">
+            <form method="post" action="#">
+                <div class="card-header">Новый пост</div>
+                <div class="card-body text-dark" style="">
+                    <h5 class="card-title">Заголовок</h5>
+                    <input class="form-control" type="text" name="title" required/>
+
+                    <div style="margin-top: 25px"></div>
+
+                    <h5 class="card-title">Контент</h5>
+                    <input class="form-control" type="text" name="description" required/>
+
+                    <div style="margin-top: 25px"></div>
+
+                    <button type="submit" class="btn btn-primary" style="float: right; margin-bottom: 1rem">Добавить</button>
+
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
 
 </body>
