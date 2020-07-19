@@ -54,7 +54,7 @@ public class SearchServiceImpl implements SearchService {
         List<Student> students;
         List<Student> studentsTags;
         List<Tag> tags;
-        if (filterFormData.getComp() != null) {
+        if (filterFormData.getComp() != null && filterFormData.getComp().size() != 0) {
             tags = tagsRepository.findAllByNameIn(filterFormData.getComp());
             studentsTags = this.getStudentsByTag(filterFormData.getComp());
         }
@@ -64,7 +64,7 @@ public class SearchServiceImpl implements SearchService {
         }
 
         List<Language> languages = new ArrayList<>();
-        if (dataLanguage != null) {
+        if (dataLanguage != null && dataLanguage.size() != 0) {
             for (String lang : dataLanguage) {
                 languages.add(languageService.getLanguageByNameAndLevel(lang));
             }
@@ -76,7 +76,7 @@ public class SearchServiceImpl implements SearchService {
             students = studentsTags;
         }
 
-        if (filterFormData.getEducation() != null) {
+        if (filterFormData.getEducation() != null && filterFormData.getEducation().size() != 0) {
             students = students.stream().filter(student ->
                     student.getEducation().equals(Education
                             .valueOf(filterFormData.getEducation().get(0))))
