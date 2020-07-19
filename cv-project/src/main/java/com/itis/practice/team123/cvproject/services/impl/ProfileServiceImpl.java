@@ -2,6 +2,7 @@ package com.itis.practice.team123.cvproject.services.impl;
 
 import com.itis.practice.team123.cvproject.dto.CompanyDto;
 import com.itis.practice.team123.cvproject.dto.TeacherDto;
+import com.itis.practice.team123.cvproject.enums.Role;
 import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Teacher;
 import com.itis.practice.team123.cvproject.models.User;
@@ -19,7 +20,8 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public String getProfile(User user, Model model) throws IllegalArgumentException {
         //костыль
-        user = usersService.getUser(user.getId());
+        //нужен метод который смёрджит в java object данные из БД (обновит объект на уровне java)
+        if(!user.getRole().equals(Role.STUDENT)) user = usersService.getUser(user.getId());
 
         switch (user.getRole()) {
             case TEACHER:
