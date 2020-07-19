@@ -17,8 +17,8 @@ import java.util.List;
 
 @Service
 public class WeightsAssignerImpl implements WeightsAssigner {
-    private TagsRepository tagsRepository;
-    private WorksRepository worksRepository;
+    private final TagsRepository tagsRepository;
+    private final WorksRepository worksRepository;
 
     public WeightsAssignerImpl(TagsRepository tagsRepository, WorksRepository worksRepository) {
         this.tagsRepository = tagsRepository;
@@ -53,6 +53,9 @@ public class WeightsAssignerImpl implements WeightsAssigner {
                 List<WeightedWorkDto> weightedWorks = assignWorkWeights(works);
                 for (WeightedWorkDto weightedWork : weightedWorks) {
                     tagSum = tagSum + weightedWork.getWeight();
+                }
+                if (tagSum == 0) {
+                    continue;
                 }
                 weightedStudent.setWeight(weightedStudent.getWeight() * tagSum);
             }
