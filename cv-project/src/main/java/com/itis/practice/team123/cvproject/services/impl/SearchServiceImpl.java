@@ -48,9 +48,9 @@ public class SearchServiceImpl implements SearchService {
     }
 
     @Override
-    public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) {
+    public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) throws IllegalArgumentException{
         List<String> dataLanguage = filterFormData.getLanguage();
-        List<Language> languages = new ArrayList<>();
+
         List<Student> students;
         List<Student> studentsTags;
         List<Tag> tags;
@@ -58,12 +58,12 @@ public class SearchServiceImpl implements SearchService {
             tags = tagsRepository.findAllByNameIn(filterFormData.getComp());
             studentsTags = this.getStudentsByTag(filterFormData.getComp());
         }
-
         else  {
             studentsTags = studentsRepository.findAll();
             tags = tagsRepository.findAll();
         }
 
+        List<Language> languages = new ArrayList<>();
         if (dataLanguage != null) {
             for (String lang : dataLanguage) {
                 languages.add(languageService.getLanguageByNameAndLevel(lang));
@@ -71,11 +71,11 @@ public class SearchServiceImpl implements SearchService {
             students = studentsTags.stream().filter(student ->
                     student.getLanguages().containsAll(languages))
                     .collect(Collectors.toList());
-
         }
         else {
             students = studentsTags;
         }
+
         if (filterFormData.getEducation() != null) {
             students = students.stream().filter(student ->
                     student.getEducation().equals(Education

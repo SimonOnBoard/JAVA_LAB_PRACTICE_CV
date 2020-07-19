@@ -21,9 +21,10 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class SearchController {
-
+    //обратись к сервисам для предоставления тегов
     private final TagsRepository tagsRepository;
     private final SearchService searchService;
+    //тоже самое обратись к сервисам
     private final LanguageRepository languageRepository;
 
     @PreAuthorize("permitAll()")
@@ -35,7 +36,6 @@ public class SearchController {
     @PreAuthorize("permitAll()")
     @PostMapping(value = {"/search", "/api/search"})
     public @ResponseBody ResponseEntity<List<WeightedStudentDto>> competenceSave(FilterFormData formData) {
-
         return ResponseEntity.ok(searchService.getStudentsByFilters(formData));
     }
 

@@ -28,10 +28,10 @@ public class LanguageServiceImpl implements LanguageService {
     }
 
     @Override
-    public Language getLanguageByNameAndLevel(String lang) {
+    public Language getLanguageByNameAndLevel(String lang) throws IllegalArgumentException {
         String[] langArray = lang.split(" ");
         return languageRepository
                 .findByLevelAndLanguageIgnoreCase(LanguageLevel.valueOf(langArray[1]),
-                        langArray[0]).get();
+                        langArray[0]).orElseThrow(IllegalArgumentException::new);
     }
 }

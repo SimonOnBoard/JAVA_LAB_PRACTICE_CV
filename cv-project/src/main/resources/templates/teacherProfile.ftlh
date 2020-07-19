@@ -250,7 +250,7 @@
                         <#if isOwner == true>
                             <form id="${lang.getId()}" action="/removeLanguage/${lang.getId()}" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <button type="button" onclick="removeLanguage(${lang.getId()})">Удачить язык</button>
+                                <button type="button"  class="btn btn-outline-secondary" onclick="removeLanguage(${lang.getId()})">Удачить язык</button>
                             </form>
                         </#if>
                         <br>
