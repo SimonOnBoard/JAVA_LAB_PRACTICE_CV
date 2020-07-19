@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
+import com.itis.practice.team123.cvproject.enums.LanguageLevel;
 import com.itis.practice.team123.cvproject.models.Language;
 import com.itis.practice.team123.cvproject.repositories.LanguageRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
@@ -24,5 +25,13 @@ public class LanguageServiceImpl implements LanguageService {
     @Override
     public Language getLanguage(Long language) {
         return languageRepository.findById(language).orElseThrow(IllegalArgumentException::new);
+    }
+
+    @Override
+    public Language getLanguageByNameAndLevel(String lang) {
+        String[] langArray = lang.split(" ");
+        return languageRepository
+                .findByLevelAndLanguageIgnoreCase(LanguageLevel.valueOf(langArray[1]),
+                        langArray[0]).get();
     }
 }

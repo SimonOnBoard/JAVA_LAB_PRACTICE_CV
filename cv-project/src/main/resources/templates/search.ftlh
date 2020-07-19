@@ -78,7 +78,7 @@
             <tr id="language">
                 <td>Languages</td>
                 <#list languages! as language>
-                    <td><input type="checkbox" name="language" id='${language.language!}' value='${language.language!}'> <label for='${language.language!}'>${language.language!}</label><br/></td>
+                    <td><input type="checkbox" name="language" id='${language.language!}' value='${language.language!} ${language.level!}'> <label for='${language.language!}'>${language.language!} ${language.level!}</label><br/></td>
                 </#list>
             </tr>
         </table>

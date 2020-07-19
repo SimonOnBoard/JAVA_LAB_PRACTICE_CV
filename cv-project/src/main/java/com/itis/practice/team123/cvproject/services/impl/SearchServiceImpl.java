@@ -3,6 +3,7 @@ package com.itis.practice.team123.cvproject.services.impl;
 import com.itis.practice.team123.cvproject.dto.FilterFormData;
 import com.itis.practice.team123.cvproject.dto.WeightedStudentDto;
 import com.itis.practice.team123.cvproject.enums.Education;
+import com.itis.practice.team123.cvproject.models.Language;
 import com.itis.practice.team123.cvproject.models.Student;
 import com.itis.practice.team123.cvproject.models.Tag;
 import com.itis.practice.team123.cvproject.repositories.*;
@@ -24,6 +25,7 @@ public class SearchServiceImpl implements SearchService {
     private final StudentsRepository studentsRepository;
     private final WeightsAssigner weightsAssigner;
     private final LanguageRepository languageRepository;
+    private final LanguageService languageService;
     //откромментировать код, переписать через компетенции
     @Override
     public List<Student> getStudentsByTag(List<String> tagsName) {
@@ -49,12 +51,16 @@ public class SearchServiceImpl implements SearchService {
 
     @Override
     public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) {
-        List<String> languages = filterFormData.getLanguage();
+        List<String> dataLanguage = filterFormData.getLanguage();
+        List<Language> languages = new ArrayList<>();
 //        Education education = Education.valueOf(filterFormData.getEducation().get(0));
         List<Student> students;
-        if (languages != null) {
+        if (dataLanguage != null) {
+            for (String lang : dataLanguage) {
+                languages.add(languageService.getLanguageByNameAndLevel(lang));
+            }
             students = studentsRepository.findAllByLanguagesInAndEducation(
-                    languageRepository.findAllByLanguageIn(languages),
+                    languages,
                     Education.valueOf(filterFormData.getEducation().get(0)));
         }
         else {

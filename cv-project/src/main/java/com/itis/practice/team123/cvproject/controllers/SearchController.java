@@ -35,6 +35,7 @@ public class SearchController {
     @PreAuthorize("permitAll()")
     @PostMapping(value = {"/search", "/api/search"})
     public @ResponseBody ResponseEntity<List<WeightedStudentDto>> competenceSave(FilterFormData formData) {
+
         return ResponseEntity.ok(searchService.getStudentsByFilters(formData));
     }
 

@@ -6,4 +6,6 @@ public interface LanguageService {
     Language initializeLanguage(Language language);
 
     Language getLanguage(Long language);
+
+    Language getLanguageByNameAndLevel(String lang);
 }
