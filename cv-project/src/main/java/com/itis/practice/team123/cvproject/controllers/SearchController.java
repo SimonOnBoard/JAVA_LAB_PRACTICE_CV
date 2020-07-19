@@ -7,7 +7,7 @@ import com.itis.practice.team123.cvproject.enums.Education;
 import com.itis.practice.team123.cvproject.models.Tag;
 import com.itis.practice.team123.cvproject.repositories.LanguageRepository;
 import com.itis.practice.team123.cvproject.repositories.TagsRepository;
-import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
+import com.itis.practice.team123.cvproject.services.interfaces.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +23,7 @@ import java.util.List;
 public class SearchController {
 
     private final TagsRepository tagsRepository;
-    private final StudentsService studentsService;
+    private final SearchService searchService;
     private final LanguageRepository languageRepository;
 
     @PreAuthorize("permitAll()")
@@ -35,7 +35,7 @@ public class SearchController {
     @PreAuthorize("permitAll()")
     @PostMapping(value = {"/search", "/api/search"})
     public @ResponseBody ResponseEntity<List<WeightedStudentDto>> competenceSave(FilterFormData formData) {
-        return ResponseEntity.ok(studentsService.getStudentsByFilters(formData));
+        return ResponseEntity.ok(searchService.getStudentsByFilters(formData));
     }
 
     @PreAuthorize("permitAll()")

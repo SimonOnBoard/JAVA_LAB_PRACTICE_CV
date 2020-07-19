@@ -37,57 +37,6 @@ public class StudentsServiceImpl implements StudentsService {
         return studentsRepository.getOne(id);
     }
 
-    //откромментировать код, переписать через компетенции
-    @Override
-    public List<Student> getStudentsByTag(List<String> tagsName) {
-        HashMap<Student, Integer> studentsTagCount = new HashMap<>();
-        List<Student> students = new ArrayList<>();
-        List<Tag> tags = tagsRepository.findAllByNameIn(tagsName);
-        for (Tag tag : tags) {
-            for (Student student : studentsRepository.findByTag(tag.getId())) {
-                Integer k = studentsTagCount.get(student);
-                if (k != null) studentsTagCount.put(student, ++k);
-                else studentsTagCount.put(student, 1);
-            }
-        }
-
-        for (Student student : studentsTagCount.keySet()) {
-            if (studentsTagCount.get(student) == tagsName.size())
-                students.add(student);
-        }
-
-//        return weightsAssigner.assignStudentWeightsByTags(students, tags);
-        return students;
-    }
-
-    @Override
-    public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) {
-        List<String> languages = filterFormData.getLanguage();
-//        Education education = Education.valueOf(filterFormData.getEducation().get(0));
-        List<Student> students;
-        if (languages != null) {
-            students = studentsRepository.findAllByLanguagesInAndEducation(
-                    languageRepository.findAllByLanguageIn(languages),
-                    Education.valueOf(filterFormData.getEducation().get(0)));
-        }
-        else {
-            students = studentsRepository.findAll();
-        }
-        List<Student> studentsTags;
-        List<Tag> tags;
-        if (filterFormData.getComp() != null) {
-             tags = tagsRepository.findAllByNameIn(filterFormData.getComp());
-            studentsTags = this.getStudentsByTag(filterFormData.getComp());
-        }
-
-        else  {
-            studentsTags = students;
-            tags = tagsRepository.findAll();
-        }
-        studentsTags = studentsTags.stream().filter(students::contains).collect(Collectors.toList());
-        return weightsAssigner.assignStudentWeightsByTags(studentsTags, tags);
-    }
-
     @Override
     public List<TagDto> getTagsForStudent(Student student) {
         List<Tag> studentTags = student.getCompetences().stream()
