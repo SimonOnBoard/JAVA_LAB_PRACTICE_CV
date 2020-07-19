@@ -33,11 +33,165 @@
     </style>
 
     <script type="application/javascript">
-        getStudent(${id})
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
+        getViewerInfo();
 
+        function getViewerInfo() {
+            $.ajax({
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                method: "get",
+                url: "/getMyProfileInfo",
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    var result = '';
+                    if (b.role === 'TEACHER' | b.role === 'ADMIN') {
+                        result += "        <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
+                            "            <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"width: 100%; font-size: large\">\n" +
+                            "                <a class=\"navbar-brand\" href=\"#\" style=\"font-size: x-large\">Curriculum vitae</a>\n" +
+                            "                <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNavDropdown\"\n" +
+                            "                        aria-controls=\"navbarNavDropdown\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n" +
+                            "                    <span class=\"navbar-toggler-icon\"></span>\n" +
+                            "                </button>\n" +
+                            "                <div class=\"collapse navbar-collapse\" id=\"navbarNavDropdown\" style=\"margin-left: 25px\">\n" +
+                            "                    <ul class=\"navbar-nav\">\n" +
+                            "\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"/profile\">Профиль</a>\n" +
+                            "                        </li>\n" +
+                            "\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"/editTeacherProfile/" + b.id + "\">Личный кабинет</a>\n" +
+                            "                        </li>\n" +
+                            "\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
+                            "                        </li>\n" +
+                            "\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                        </li>\n" +
+                            "                    </ul>\n" +
+                            "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
+                            "                        <form method=\"get\" action=\"/logout\">\n" +
+                            "                            <button class=\"btn btn-outline-info my-2 my-sm-0\" type=\"submit\" style=\"float: right\">Выйти</button>\n" +
+                            "                        </form>\n" +
+                            "                    </div>\n" +
+                            "                </div>\n" +
+                            "            </nav>\n" +
+                            "        </div>"
+                        $("#navigation").append(result);
+                    }
+                    if (b.role === 'STUDENT') {
+                        result += "        <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
+                            "            <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"width: 100%; font-size: large\">\n" +
+                            "                <a class=\"navbar-brand\" href=\"#\" style=\"font-size: x-large\">Curriculum vitae</a>\n" +
+                            "                <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNavDropdown\"\n" +
+                            "                        aria-controls=\"navbarNavDropdown\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n" +
+                            "                    <span class=\"navbar-toggler-icon\"></span>\n" +
+                            "                </button>\n" +
+                            "                <div class=\"collapse navbar-collapse\" id=\"navbarNavDropdown\" style=\"margin-left: 25px\">\n" +
+                            "                    <ul class=\"navbar-nav\">\n" +
+                            "                        <li class=\"nav-item dropdown\">\n" +
+                            "                            <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarStudentProfile\" data-toggle=\"dropdown\"\n" +
+                            "                               aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                            "                                Профиль<span class=\"sr-only\">(current)</span>\n" +
+                            "                            </a>\n" +
+                            "                            <div class=\"dropdown-menu\" aria-labelledby=\"navbarStudentProfile\">\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/profile\">Общая информация</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/studentAccount/projects\">Проекты</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/works/";
+                        result += b.id;
+                        result += "\">Работы</a>\n" +
+                            "                            </div>\n" +
+                            "                        </li>\n" +
+                            "                        <li class=\"nav-item dropdown\">\n" +
+                            "                            <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarStudentAccount\" data-toggle=\"dropdown\"\n" +
+                            "                               aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                            "                                Личный кабинет\n" +
+                            "                            </a>\n" +
+                            "                            <div class=\"dropdown-menu\" aria-labelledby=\"navbarStudentAccount\">\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/editStudentProfile/";
+                        result += b.id;
+                        result += "\">Изменить инфомацию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить проект</a>\n" +
+                            "                            </div>\n" +
+                            "                        </li>\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
+                            "                        </li>\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                        </li>\n" +
+                            "                    </ul>\n" +
+                            "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
+                            "                        <form method=\"get\" action=\"/logout\">\n" +
+                            "                            <button class=\"btn btn-outline-info my-2 my-sm-0\" type=\"submit\" style=\"float: right\">Выйти</button>\n" +
+                            "                        </form>\n" +
+                            "                    </div>\n" +
+                            "                </div>\n" +
+                            "            </nav>\n" +
+                            "        </div>";
+                        $("#navigation").append(result);
+                    }
+                    if (b.role === 'COMPANY') {
+                        result += "    <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
+                            "            <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"width: 100%; font-size: large\">\n" +
+                            "                <a class=\"navbar-brand\" href=\"#\" style=\"font-size: x-large\">Curriculum vitae</a>\n" +
+                            "                <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#navbarNavDropdown\"\n" +
+                            "                        aria-controls=\"navbarNavDropdown\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n" +
+                            "                    <span class=\"navbar-toggler-icon\"></span>\n" +
+                            "                </button>\n" +
+                            "                <div class=\"collapse navbar-collapse\" id=\"navbarNavDropdown\" style=\"margin-left: 25px\">\n" +
+                            "                    <ul class=\"navbar-nav\">\n" +
+                            "\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"/profile\">Профиль</a>\n" +
+                            "                        </li>\n" +
+                            "\n" +
+                            "                        <li class=\"nav-item dropdown\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link dropdown-toggle\" href=\"#\" id=\"navbarStudentAccount\" data-toggle=\"dropdown\"\n" +
+                            "                               aria-haspopup=\"true\" aria-expanded=\"false\">\n" +
+                            "                                Личный кабинет\n" +
+                            "                            </a>\n" +
+                            "                            <div class=\"dropdown-menu\" aria-labelledby=\"navbarStudentAccount\">\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/editCompanyProfile/";
+                        result += b.id;
+                        result += "\">Изменить инфомацию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить вакансию</a>\n" +
+                            "                            </div>\n" +
+                            "                        </li>\n" +
+                            "\n" +
+                            "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
+                            "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
+                            "                        </li>\n" +
+                            "\n" +
+                            "                    </ul>\n" +
+                            "                    <div class=\"form-inline\" style=\"margin-left: 70%; float: right\">\n" +
+                            "                        <form method=\"get\" action=\"/logout\">\n" +
+                            "                            <button class=\"btn btn-outline-info my-2 my-sm-0\" type=\"submit\" style=\"float: right\">Выйти</button>\n" +
+                            "                        </form>\n" +
+                            "                    </div>\n" +
+                            "                </div>\n" +
+                            "            </nav>\n" +
+                            "        </div>";
+                        $("#navigation").append(result);
+                    }
+                },
+                error: function (err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    console.log(b);
+                }
+            });
+        }
+        getStudent(${id});
         function getStudent(id) {
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
             $.ajax({
                 method: "GET",
                 url: /students/ + String(id),
@@ -96,18 +250,24 @@
                     if (b.competences != null) {
                         b.competences.forEach(element => {
                             if (element.confirmed === false) {
+                                var last;
+                                <#if isTeacher == true>
+                                last = "<button type=\"button\" class=\"btn btn-info\" onclick=\"confirmCompetence(" + element.id +
+                                    ")\">Подтвердить</button>\n" + "                        </div>\n</div>";
+                                <#else>
+                                last = "                       </div>\n</div>";
+                                </#if>
                                 $("#competences").append("  <div class=\"element-competence\">\n" +
                                     "                            <button type=\"button\" class=\"btn btn-secondary dropdown-toggle\" data-toggle=\"dropdown\"\n" +
                                     "                                    aria-haspopup=\"true\" aria-expanded=\"false\">" +
                                     element.tag.name + "</button>\n" +
                                     "                            <div class=\"dropdown-menu\">\n" +
-                                    "                                <strong class=\"dropdown-item\">Не подтверждена</strong></div>\n" +
-                                    "                        </div>");
+                                    "                                <strong class=\"dropdown-item\">Не подтверждена</strong>" + last);
                             } else {
                                 var result = '                        <div class="element-competence">\n' +
                                     '                            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown"\n' +
                                     '                                    aria-haspopup="true" aria-expanded="false">' + element.tag.name;
-                                result +='</button>\n' +
+                                result += '</button>\n' +
                                     '                            <div class="dropdown-menu">\n' +
                                     '                                <strong class="dropdown-item">Подтверждена</strong>\n' +
                                     '                                <div class="dropdown-divider"></div>\n' +
@@ -120,11 +280,17 @@
                                     if (res === '') {
                                         res = 'Имя не указано'
                                     }
-                                   result += "<a class=\"dropdown-item\" href=\"" + "/profile/" + element.id + "\">" + res + "</a>";
+                                    result += "<a class=\"dropdown-item\" href=\"" + "/profile/" + element.id + "\">" + res + "</a>";
                                 });
-                                result += "</div>\n" +
+                                var x = "</div>\n" +
                                     "                            </div>\n" +
-                                    "                        </div>\n"
+                                    "                        </div>\n";
+                                <#if isTeacher == true>
+                                result += "<button type=\"button\" class=\"btn btn-info\" onclick=\"confirmCompetence(" + element.id +
+                                    ")\">Подтвердить</button>\n" + x;
+                                <#else>
+                                result += x;
+                                </#if>
                                 console.log(result);
                                 $("#competences").append(result);
                             }
@@ -139,7 +305,30 @@
                 }
             });
         }
+        function confirmCompetence(competenceId) {
+            var url = "/${id}/confirm/" + String(competenceId);
+            $.ajax({
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                method: "POST",
+                url: url,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert(b);
+                },
+                error: function (err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    window.location.replace("/profile/${id}");
+                }
+            });
+        }
     </script>
+    <div id="navigation"></div>
     <div class="profile">
         <div class="first-floor">
             <div class="card-deck">
@@ -207,9 +396,6 @@
         </div>
 
     </div>
-    <#if isOwner == true>
-        <a href="/editStudentProfile/${id}">Редактировать профиль</a>
-    </#if>
 </#macro>
 <#macro title>
     <title>Профиль студента</title>

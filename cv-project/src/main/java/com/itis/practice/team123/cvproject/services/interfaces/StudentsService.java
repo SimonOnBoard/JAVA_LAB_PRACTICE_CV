@@ -9,9 +9,7 @@ import java.util.List;
 public interface StudentsService {
 
     Student getStudentById(Long id);
-    // TODO сделать метод для получения студентов по фильтрам
-    List<Student> getStudentsByTag(List<String> tags_name);
-    List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData);
+
     List<TagDto> getTagsForStudent(Student student);
 
     void updateStudentBaseInfo(StudentForm studentForm, Long id);
