@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -78,8 +79,10 @@ public class SearchServiceImpl implements SearchService {
 
         if (filterFormData.getEducation() != null && filterFormData.getEducation().size() != 0) {
             students = students.stream().filter(student ->
-                    student.getEducation().equals(Education
-                            .valueOf(filterFormData.getEducation().get(0))))
+                    Objects.nonNull(student.getEducation()))
+                    .collect(Collectors.toList());
+            students = students.stream().filter(student ->
+                    filterFormData.getEducation().contains(student.getEducation().name()))
                     .collect(Collectors.toList());
         }
         return weightsAssigner.assignStudentWeightsByTags(students, tags);
