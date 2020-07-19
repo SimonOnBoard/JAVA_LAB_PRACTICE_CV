@@ -17,7 +17,8 @@ public interface StudentsRepository extends JpaRepository<Student, Long> {
     @Query(value = "select s from Student s, Competence c where (c.tag.id = :tag_id) and (c.student.id = s.id)")
     List<Student> findByTag(@Param("tag_id") Long tagId);
 
-    @Query(value = "select s from Student s where (s.education = :education) and ((:languages) in (select st.languages from Student st where st.id = s.id))")
+    @Query(value = "select s from Student s left join s.languages lg where (s.education = :education) " +
+            "and :languages member of lg")
     List<Student> findAllByLanguagesAndEducation(@Param("languages") List<Language> languages, @Param("education") Education education);
 
     List<Student> findAllByLanguagesInAndEducation(List<Language> languages, Education education);
