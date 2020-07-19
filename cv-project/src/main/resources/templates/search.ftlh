@@ -272,6 +272,7 @@
 
     <script>
         function searchByFilters() {
+            $('#students').empty();
             var form = $("#f")[0];
             var data = new FormData(form);
             data.set("comp", selectedTags);
