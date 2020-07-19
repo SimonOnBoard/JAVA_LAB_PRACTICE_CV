@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,11 +39,12 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/addUser")
-    public ResponseEntity<?> addUser(@RequestBody UserForm userForm) {
-        try {
-            return ResponseEntity.ok().body(adminService.registerUser(userForm));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().body(e.getCause());
-        }
+    public ResponseEntity<?> addUser(UserForm userForm) {
+        return ResponseEntity.ok().body(adminService.registerUser(userForm));
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<?> handleException(RuntimeException ex) {
+        return ResponseEntity.badRequest().body(ex.getCause());
     }
 }

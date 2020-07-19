@@ -24,9 +24,8 @@ public class SearchServiceImpl implements SearchService {
     private final TagsRepository tagsRepository;
     private final StudentsRepository studentsRepository;
     private final WeightsAssigner weightsAssigner;
-    private final LanguageRepository languageRepository;
     private final LanguageService languageService;
-    //откромментировать код, переписать через компетенции
+
     @Override
     public List<Student> getStudentsByTag(List<String> tagsName) {
         HashMap<Student, Integer> studentsTagCount = new HashMap<>();
@@ -45,40 +44,45 @@ public class SearchServiceImpl implements SearchService {
                 students.add(student);
         }
 
-//        return weightsAssigner.assignStudentWeightsByTags(students, tags);
         return students;
     }
 
     @Override
-    public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) {
+    public List<WeightedStudentDto> getStudentsByFilters(FilterFormData filterFormData) throws IllegalArgumentException{
         List<String> dataLanguage = filterFormData.getLanguage();
-        List<Language> languages = new ArrayList<>();
-//        Education education = Education.valueOf(filterFormData.getEducation().get(0));
+
         List<Student> students;
-        if (dataLanguage != null && dataLanguage.size() != 0) {
-            for (String lang : dataLanguage) {
-                languages.add(languageService.getLanguageByNameAndLevel(lang));
-            }
-            students = studentsRepository.findAllByLanguagesInAndEducation(
-                    languages,
-                    Education.valueOf(filterFormData.getEducation().get(0)));
-        }
-        else {
-            students = studentsRepository.findAll();
-        }
         List<Student> studentsTags;
         List<Tag> tags;
-        if (filterFormData.getComp() != null && filterFormData.getComp().size() != 0) {
+        if (filterFormData.getComp() != null) {
             tags = tagsRepository.findAllByNameIn(filterFormData.getComp());
             studentsTags = this.getStudentsByTag(filterFormData.getComp());
         }
-
         else  {
-            studentsTags = students;
+            studentsTags = studentsRepository.findAll();
             tags = tagsRepository.findAll();
         }
-        studentsTags = studentsTags.stream().filter(students::contains).collect(Collectors.toList());
-        return weightsAssigner.assignStudentWeightsByTags(studentsTags, tags);
+
+        List<Language> languages = new ArrayList<>();
+        if (dataLanguage != null) {
+            for (String lang : dataLanguage) {
+                languages.add(languageService.getLanguageByNameAndLevel(lang));
+            }
+            students = studentsTags.stream().filter(student ->
+                    student.getLanguages().containsAll(languages))
+                    .collect(Collectors.toList());
+        }
+        else {
+            students = studentsTags;
+        }
+
+        if (filterFormData.getEducation() != null) {
+            students = students.stream().filter(student ->
+                    student.getEducation().equals(Education
+                            .valueOf(filterFormData.getEducation().get(0))))
+                    .collect(Collectors.toList());
+        }
+        return weightsAssigner.assignStudentWeightsByTags(students, tags);
     }
 
 }
