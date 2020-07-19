@@ -271,6 +271,13 @@
     </body>
 
     <script>
+        function process(obj) {
+            if (obj === null)
+                return "";
+            else
+                return obj;
+        }
+
         function searchByFilters() {
             $('#students').empty();
             var form = $("#f")[0];
@@ -291,17 +298,20 @@
                     $.each(b, function (idx, student) {
                         var tags = '';
                         $.each(student['student']['competences'], function (idx, competence) {
-                            tags = tags + '<span class="badge badge-info" style="margin-left: 5px; margin-top: 5px; font-size: medium">' + competence['tag']['name'] +
+                            tags = tags + '<span class="badge badge-info" style="margin-left: 5px; margin-top: 5px; font-size: medium">' + process(competence['tag']['name']) +
                                 '</span>';
                         })
                         $('#students').first().append('<a href="/profile/' + student['student']['id'] + '" class="list-group-item list-group-item-action flex-column align-items-start">\n' +
                             '            <div class="d-flex w-100 justify-content-between">\n' +
-                            '                <h5 class="mb-1">' + student['student']['firstName'] + ' ' + student['student']['lastName'] + ' ' + student['student']['patronymic'] + '</h5>\n' +
+                            '                <h5 class="mb-1">' +
+                                            process(student['student']['firstName']) +
+                                            ' ' + process(student['student']['lastName']) +
+                                            ' ' + process(student['student']['patronymic']) + '</h5>\n' +
                             '            </div>\n' +
                             '            <div class="mb-1" style="display: flex; flex-wrap: wrap">' +
-                                            tags +
+                            tags +
                             '            </div>' +
-                            '            <u style="font-size: large">' + student['student']['education'] + '</u>\n' +
+                            '            <u style="font-size: large">' + process(student['student']['education']) + '</u>\n' +
                             '        </a>'
                         )
                         ;
