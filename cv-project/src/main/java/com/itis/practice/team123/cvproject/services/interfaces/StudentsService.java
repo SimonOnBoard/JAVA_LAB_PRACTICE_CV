@@ -10,11 +10,11 @@ public interface StudentsService {
 
     Student getStudentById(Long id);
 
-    List<TagDto> getTagsForStudent(Student student);
+    List<TagDto> getTagsAvaliableToAdd(Student student);
 
     void updateStudentBaseInfo(StudentForm studentForm, Long id);
-    void updateStudentCompetencesInfo(TagDto tagDto, Long id);
-    void updateStudentLanguagesInfo(Language languageDto, Long id);
+    void addCompetence(TagDto tagDto, Long id);
+    void addLanguage(Language languageDto, Long id);
     void updateStudentEducationInfo(EducationDto educationDto, Long id);
-    void updateStudentCertificatesInfo(CertificateDto certificateDto, Long id);
+    void addCertificates(CertificateDto certificateDto, Long id);
 }

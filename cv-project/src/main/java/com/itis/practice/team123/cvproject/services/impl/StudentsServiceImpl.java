@@ -38,7 +38,8 @@ public class StudentsServiceImpl implements StudentsService {
     }
 
     @Override
-    public List<TagDto> getTagsForStudent(Student student) {
+    public List<TagDto> getTagsAvaliableToAdd(Student student) {
+        student = getStudentById(student.getId());
         List<Tag> studentTags = student.getCompetences().stream()
                 .map(Competence::getTag)
                 .collect(Collectors.toList());
@@ -50,9 +51,9 @@ public class StudentsServiceImpl implements StudentsService {
     }
 
     @Override
+    @Transactional
     public void updateStudentBaseInfo(StudentForm studentForm, Long id) {
         Student student = getStudentById(id);
-
         student.setFirstName(studentForm.getFirstName());
         student.setLastName(studentForm.getLastName());
         student.setPatronymic(studentForm.getPatronymic());
@@ -60,18 +61,14 @@ public class StudentsServiceImpl implements StudentsService {
         student.setPhoneNumber(studentForm.getPhoneNumber());
         student.setEmail(studentForm.getEmail());
         student.setAboutMe(studentForm.getAboutMe());
-
-        studentsRepository.save(student);
     }
 
     @Override
     @Transactional
-    public void updateStudentCompetencesInfo(TagDto tagDto, Long id) {
-        Student student = studentsRepository.getOne(id);
+    public void addCompetence(TagDto tagDto, Long id) {
+        Student student = getStudentById(id);
         Tag tag = tagsRepository.findByName(tagDto.getName())
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Tag with name " + tagDto.getName() + " doesn't exists")
-                );
+                .orElseThrow(() -> new IllegalArgumentException("Tag with name " + tagDto.getName() + " doesn't exists"));
         Competence competence = Competence.builder()
                 .tag(tag)
                 .student(student)
@@ -83,8 +80,8 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     @Transactional
-    public void updateStudentLanguagesInfo(Language languageToAdd, Long id) {
-        Student student = studentsRepository.getOne(id);
+    public void addLanguage(Language languageToAdd, Long id) {
+        Student student = getStudentById(id);
         Language language = languageService.initializeLanguage(languageToAdd);
         student.getLanguages().add(language);
     }
@@ -98,8 +95,8 @@ public class StudentsServiceImpl implements StudentsService {
 
     @Override
     @Transactional
-    public void updateStudentCertificatesInfo(CertificateDto certificateDto, Long id) {
-        Student student = studentsRepository.getOne(id);
+    public void addCertificates(CertificateDto certificateDto, Long id) {
+        Student student = getStudentById(id);
         Certificate certificate = Certificate.builder()
                 .description(certificateDto.getName())
                 .yearOfReceipt(certificateDto.getYear())

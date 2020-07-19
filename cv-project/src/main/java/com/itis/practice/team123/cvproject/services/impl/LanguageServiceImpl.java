@@ -17,6 +17,7 @@ public class LanguageServiceImpl implements LanguageService {
         Language resultLanguage = languageRepository.findByLevelAndLanguageIgnoreCase(language.getLevel(), language.getLanguage()).orElse(null);
         if(resultLanguage == null) {
             language.setId(null);
+            language.setLanguage(language.getLanguage().toLowerCase());
             resultLanguage = languageRepository.save(language);
         }
         return resultLanguage;
