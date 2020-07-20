@@ -31,7 +31,7 @@
                 },
                 success: function (response) {
                     console.log(response)
-                    for (let i = response.length - 1; i >= 0; i--) {
+                    for (let i = 0; i < response.length - 1; i++) {
                         var tags = '';
                         for (let j = response[i]['work']['tags'].length - 1; j >= 0; j--) {
                             tags = tags + '<button type="button" class="btn btn-info" style="margin: 5px" disabled>' + response[i]['work']['tags'][j]['name'] + '</button>'
