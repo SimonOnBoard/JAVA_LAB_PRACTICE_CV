@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.services.impl;
 
+import com.itis.practice.team123.cvproject.dto.TeacherDto;
 import com.itis.practice.team123.cvproject.dto.TeacherEditForm;
 import com.itis.practice.team123.cvproject.models.Language;
 import com.itis.practice.team123.cvproject.models.Teacher;
@@ -23,19 +24,20 @@ public class TeachersServiceImpl implements TeachersService {
     private final LanguageService languageService;
 
     @Override
-    public void updateTeacher(TeacherEditForm teacherEditForm, Long id) throws IllegalArgumentException {
+    public TeacherDto updateTeacher(TeacherEditForm teacherEditForm, Long id) throws IllegalArgumentException {
         Teacher teacher = getTeacher(id);
-        updateTeacher(teacherEditForm, teacher);
+        return updateTeacher(teacherEditForm, teacher);
     }
 
     @Override
-    public void updateTeacher(TeacherEditForm teacherEditForm, Teacher teacher) {
+    public TeacherDto updateTeacher(TeacherEditForm teacherEditForm, Teacher teacher) {
         teacher.setAdditionalInfo(teacherEditForm.getInfo());
         teacher.setName(teacherEditForm.getName());
         teacher.setPatronymic(teacherEditForm.getPatronymic());
         teacher.setInstitution(teacherEditForm.getInstitution());
         teacher.setSurname(teacherEditForm.getSurname());
         teacher = teachersRepository.save(teacher);
+        return TeacherDto.from(teacher);
     }
 
     @Override
@@ -44,14 +46,14 @@ public class TeachersServiceImpl implements TeachersService {
     }
 
     @Override
-    public void addLanguage(Long id, Language language) throws IllegalArgumentException {
+    public Language addLanguage(Long id, Language language) throws IllegalArgumentException {
         Teacher teacher = this.getTeacher(id);
-        addLanguage(teacher, language);
+        return addLanguage(teacher, language);
     }
 
     //переписать к чертям собачим
     @Override
-    public void addLanguage(Teacher teacher, Language languageToAdd) {
+    public Language addLanguage(Teacher teacher, Language languageToAdd) {
         //инициализация
         Language language = languageService.initializeLanguage(languageToAdd);
         if (teacher.getLanguages() == null) teacher.setLanguages(new ArrayList<>());
@@ -59,28 +61,29 @@ public class TeachersServiceImpl implements TeachersService {
         //в случае если язык с другим уровнем есть, удаляем внутри сервиса и обновляем учителя
         Pair<Boolean, Boolean> result = languageService
                 .checkAndRemoveIfHasTheSameLanguageWithAnotherLevel(teacher.getLanguages(), language);
-        if(result.getFirst()){
+        if (result.getFirst()) {
             teacher = teachersRepository.save(teacher);
             teacher.getLanguages().add(language);
-        }
-        else{
-            if(!result.getSecond()){
+        } else {
+            if (!result.getSecond()) {
                 teacher.getLanguages().add(language);
             }
         }
         teacher = teachersRepository.save(teacher);
+        return language;
     }
 
     @Override
-    public void removeLanguage(Long id, Long language) throws IllegalArgumentException {
-        removeLanguage(new Teacher((Long) id), language);
+    public Language removeLanguage(Long id, Long language) throws IllegalArgumentException {
+        return removeLanguage(new Teacher((Long) id), language);
     }
 
     @Override
     @Transactional
-    public void removeLanguage(Teacher teacher, Long languageToDelete) throws IllegalArgumentException {
+    public Language removeLanguage(Teacher teacher, Long languageToDelete) throws IllegalArgumentException {
         teacher = this.getTeacher(teacher.getId());
         Language language = languageService.getLanguage(languageToDelete);
         teacher.getLanguages().remove(language);
+        return language;
     }
 }

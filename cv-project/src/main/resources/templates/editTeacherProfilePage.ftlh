@@ -30,7 +30,7 @@
                 success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
-                    alert(b);
+                    alert("Successfully added: " + String(a));
                     $('#x')[0].reset();
                 },
                 error: function (err) {
@@ -56,7 +56,7 @@
                 success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
-                    alert(b);
+                    alert("Successfully updated: " + String(a));
                 },
                 error: function (err) {
                     var a = JSON.stringify(err);

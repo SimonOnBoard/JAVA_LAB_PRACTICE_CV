@@ -30,10 +30,10 @@
                 cache: false,
                 timeout: 600000,
                 success : function(data) {
-                    window.location.replace("/profile");
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
-                    alert(b);
+                    alert("Successfully deleted:" + String(a));
+                    window.location.replace("/profile");
                 },
                 error : function(err) {
                     var a = JSON.stringify(err);
