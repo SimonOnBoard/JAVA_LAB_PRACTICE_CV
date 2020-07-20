@@ -9,6 +9,7 @@ import com.itis.practice.team123.cvproject.services.interfaces.StudentsService;
 import com.itis.practice.team123.cvproject.services.interfaces.WeightsAssigner;
 import com.itis.practice.team123.cvproject.utils.EducationConverter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,6 @@ public class StudentsServiceImpl implements StudentsService {
     private final LanguageService languageService;
     private final CompetenceRepository competenceRepository;
     private final CertificateRepository certificateRepository;
-    private final LanguageRepository languageRepository;
 
     @Override
     public Student getStudentById(Long id) {
@@ -83,7 +83,11 @@ public class StudentsServiceImpl implements StudentsService {
     public void addLanguage(Language languageToAdd, Long id) {
         Student student = getStudentById(id);
         Language language = languageService.initializeLanguage(languageToAdd);
-        student.getLanguages().add(language);
+        Pair<Boolean, Boolean> result = languageService
+                .checkAndRemoveIfHasTheSameLanguageWithAnotherLevel(student.getLanguages(), language);
+        if(result.getFirst() || !result.getSecond() ) {
+            student.getLanguages().add(language);
+        }
     }
 
     @Override
