@@ -14,16 +14,18 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+//вообще меппинги кривые, к диному стилю привести бы
 public class StudentProjectsRestController {
 
     private final ProjectsService projectsService;
-
+    // TODO: 20.07.2020 обработать illegal argument при выпуске  в продакшн
     @PreAuthorize("hasAnyRole('TEACHER', 'COMPANY', 'ADMIN')")
     @GetMapping(value = {"/api/students/{id}/projects", "/load/students/{id}/projects"})
     public ResponseEntity<List<ProjectDto>> getStudentProjects(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(ProjectDto.from(projectsService.getAllProjects(id)));
     }
 
+    // TODO: 20.07.2020 обработать illegal argument при выпуске  в продакшн
     @PreAuthorize("hasAnyRole('STUDENT', 'TEACHER', 'COMPANY', 'ADMIN')")
     @GetMapping("/projects/{projectId}")
     public ResponseEntity<ProjectDto> getProject(@PathVariable("projectId") Long projectId) {
@@ -38,6 +40,7 @@ public class StudentProjectsRestController {
 
     @PreAuthorize("hasAnyRole('STUDENT')")
     @PostMapping("/projects/newProject")
+    // TODO: 20.07.2020 возвращать dto шку из сервиса
     public ResponseEntity<?> addNewProject(ProjectDto projectDto,
                                            @AuthenticationPrincipal UserDetailsImpl<?> userDetails) {
         projectsService.addNewProject(projectDto, userDetails.getUser());
@@ -46,6 +49,7 @@ public class StudentProjectsRestController {
 
     @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping("/projects/{projectId}/newComment")
+    // TODO: 20.07.2020 возвращать dto шку из сервиса
     public ResponseEntity<?> commentProject(@RequestBody ProjectCommentDto projectCommentDto,
                                             @PathVariable("projectId") Long projectId,
                                             @AuthenticationPrincipal UserDetailsImpl<?> userDetails) {

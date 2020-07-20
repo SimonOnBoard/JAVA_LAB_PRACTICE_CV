@@ -32,6 +32,7 @@ public class WeightsAssignerImpl implements WeightsAssigner {
             double weight = work.getTags().size();
             weightedWorks.add(new WeightedWorkDto(work, weight));
         }
+        //сделай так чтобы лямбда либо корректно отображалась либо вызывай сортировку по второму параметру каким-то другим способом
         weightedWorks.sort((a, b) -> a.getWeight().compareTo(b.getWeight()));
         Collections.reverse(weightedWorks);
         return weightedWorks;

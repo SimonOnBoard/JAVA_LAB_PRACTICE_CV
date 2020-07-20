@@ -11,6 +11,7 @@ import com.itis.practice.team123.cvproject.repositories.*;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.impl.WorksServiceImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.WorksService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +26,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class StudiesIntegrationAPI {
     @Value("${bearer.token}")
     private String bearerToken;
     private final WorksService worksService;
 
-    public StudiesIntegrationAPI(WorksService worksService) {
-        this.worksService = worksService;
-    }
 
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/addWorkByTeacher")
+    // TODO: 20.07.2020 убрать составление dto напрямую в сервис во вспомогательный метод перед вызовом addWord
     public ResponseEntity<?> addWorkByTeacher(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                               @RequestBody TeachersWorkDto teachersWorkDto) {
         WorkDto workDto = WorkDto.builder()
