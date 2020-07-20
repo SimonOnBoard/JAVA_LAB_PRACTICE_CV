@@ -214,7 +214,7 @@
                         <div class="input-group" style="width: 20rem; margin-left: auto; margin-right: auto;">
                             <select class="custom-select" name="language" id="languageSelect">
                                 <#list languages! as language>
-                                    <option id="${language.language!}"
+                                    <option id="${language.language!} ${language.level}"
                                             value="${language.language!} ${language.level}">${language.language!} ${language.level}</option>
                                 </#list>
                             </select>
@@ -347,7 +347,7 @@
                     + ')">'
                     + select.value
                     + '</button>';
-
+                console.log(select.value);
                 select.removeChild(document.getElementById(select.value));
             }
         }
