@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Новая вакансия</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+            integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+            crossorigin="anonymous"></script>
+
+</head>
+
+<style>
+    .btn-info {
+        margin: 5px;
+    }
+</style>
+
+<body>
+
+<div class="navbar" style="list-style: none; padding: 0; margin: 0">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="width: 100%; font-size: large">
+        <div class="navbar-brand" style="font-size: x-large">Curriculum vitae</div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown" style="margin-left: 25px">
+            <ul class="navbar-nav">
+
+                <li class="nav-item" style="margin-left: 10px">
+                    <a class="nav-link" href="#">Профиль</a>
+                </li>
+
+                <li class="nav-item dropdown" style="margin-left: 10px">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarStudentAccount" data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Личный кабинет
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarStudentAccount">
+                        <a class="dropdown-item" href="/editCompanyProfile/${id}">Изменить инфомацию</a>
+                        <a class="dropdown-item" href="#">Добавить вакансию</a>
+                    </div>
+                </li>
+
+                <li class="nav-item" style="margin-left: 10px">
+                    <a class="nav-link" href="/search">Поиск</a>
+                </li>
+
+            </ul>
+            <div class="form-inline" style="margin-left: 70%; float: right">
+                <form method="get" action="/logout">
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit" style="float: right">Выйти</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+<div class="card"
+     style="display: inline-block; width: 50%; margin-left: 2%; margin-top: 1%; border: 2px darkgray solid; border-radius: 6px 0 6px 6px">
+    <div class="card-header" style="font-size: x-large; text-align: center">
+        Вакансии
+    </div>
+    <div class="card-body" style="overflow-y: scroll; max-height: 41rem; padding-bottom: 5px">
+
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Java developer</h5>
+                    <small class="text-muted" style="font-size: large">От 20000 рублей</small>
+                </div>
+                <p class="mb-1">Salesforce is a worldwide CRM system that provides a single platform for sales,
+                    marketing, and service management. The platform is better known in the United States and Europe,
+                    popularity is growing in our country.
+                    We are looking not just for an intern, but for a future employee who will stay with us and develop
+                    with our company.
+                    Stack Projects: Salesforce Apex (Java-like language), Lightning Web Components, Aura Components,
+                    Visualforce, JS)</p>
+                <div class="mb-1" style="display: flex; flex-wrap: wrap">
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Java</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">SQL</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Lombok</span>
+                    <span class="badge badge-info" style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Security</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Boot</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring MVC</span>
+                </div>
+
+                <div style="float: right">
+                    <form method="post" action="/vacancies/deleteVacancy/{id}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Удалить вакансию</button>
+                    </form>
+                </div>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Java developer</h5>
+                    <small class="text-muted" style="font-size: large">От 20000 до 500000 рублей</small>
+                </div>
+                <p class="mb-1">Salesforce is a worldwide CRM system that provides a single platform for sales,
+                    marketing, and service management. The platform is better known in the United States and Europe,
+                    popularity is growing in our country.
+                    We are looking not just for an intern, but for a future employee who will stay with us and develop
+                    with our company.
+                    Stack Projects: Salesforce Apex (Java-like language), Lightning Web Components, Aura Components,
+                    Visualforce, JS)</p>
+                <div class="mb-1" style="display: flex; flex-wrap: wrap">
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Java</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">SQL</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Lombok</span>
+                    <span class="badge badge-info" style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Security</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Boot</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring MVC</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Java</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">SQL</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Lombok</span>
+                    <span class="badge badge-info" style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Security</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Boot</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring MVC</span>
+                </div>
+
+                <div style="float: right">
+                    <form method="post" action="/vacancies/deleteVacancy/{id}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Удалить вакансию</button>
+                    </form>
+                </div>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Java developer</h5>
+                    <small class="text-muted" style="font-size: large">До 500000 рублей</small>
+                </div>
+                <p class="mb-1">Salesforce is a worldwide CRM system that provides a single platform for sales,
+                    marketing, and service management. The platform is better known in the United States and Europe,
+                    popularity is growing in our country.
+                    We are looking not just for an intern, but for a future employee who will stay with us and develop
+                    with our company.
+                    Stack Projects: Salesforce Apex (Java-like language), Lightning Web Components, Aura Components,
+                    Visualforce, JS)</p>
+                <div class="mb-1" style="display: flex; flex-wrap: wrap">
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Java</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">SQL</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Lombok</span>
+                    <span class="badge badge-info" style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Security</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Boot</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring MVC</span>
+                </div>
+
+                <div style="float: right">
+                    <form method="post" action="/vacancies/deleteVacancy/{id}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Удалить вакансию</button>
+                    </form>
+                </div>
+            </a>
+
+            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Java developer</h5>
+                    <small class="text-muted" style="font-size: large"></small>
+                </div>
+                <p class="mb-1">Salesforce is a worldwide CRM system that provides a single platform for sales,
+                    marketing, and service management. The platform is better known in the United States and Europe,
+                    popularity is growing in our country.
+                    We are looking not just for an intern, but for a future employee who will stay with us and develop
+                    with our company.
+                    Stack Projects: Salesforce Apex (Java-like language), Lightning Web Components, Aura Components,
+                    Visualforce, JS)</p>
+                <div class="mb-1" style="display: flex; flex-wrap: wrap">
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Java</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">SQL</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Lombok</span>
+                    <span class="badge badge-info" style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Security</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring Boot</span>
+                    <span class="badge badge-info"
+                          style="margin-left: 5px; margin-top: 5px; font-size: medium">Spring MVC</span>
+                </div>
+
+                <div style="float: right">
+                    <form method="post" action="/vacancies/deleteVacancy/{id}">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Удалить вакансию</button>
+                    </form>
+                </div>
+            </a>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div class="card-desc"
+     style="width: 35%; display: inline-block; margin-left: 2%; margin-top: 1%; vertical-align: top">
+    <div class="card border-dark mb-3" style="width: 43rem; margin: 2%">
+        <div class="card-header">Добавить вакансию</div>
+        <div class="card-body text-dark" style="height: 35rem; overflow-y: scroll">
+
+            <h5 class="card-title">Должность</h5>
+            <p class="card-text">
+                <label>
+                    <input class="form-control" type="text" name="title" size="47" required/>
+                </label>
+            </p>
+
+            <h5 class="card-title">Описание</h5>
+            <p class="card-text">
+                <label>
+                <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3" cols="50"
+                          style="resize: none" required></textarea>
+                </label>
+            </p>
+
+            <div>
+                <div style="display: inline-block; width: 30%; vertical-align: top">
+                    <h6 class="card-title">Телефон</h6>
+                    <label class="card-text" id="phones">
+                        <input class="form-control" type="text" name="phoneNumber" required/>
+                    </label>
+                    <button class="btn btn-secondary" onclick="addInput('phones', 'phoneNumber')">+</button>
+                </div>
+
+                <div style="display: inline-block; border-left: 1px darkgray solid; margin: 10px"></div>
+
+                <div style="display: inline-block; width: 30%; vertical-align: top">
+                    <h6 class="card-title">Email</h6>
+                    <label class="card-text" id="emails">
+                        <input class="form-control" type="text" name="email" required/>
+                    </label>
+                    <button class="btn btn-secondary" onclick="addInput('emails', 'email')">+</button>
+                </div>
+
+                <div style="display: inline-block; border-left: 1px darkgray solid; margin: 10px"></div>
+
+                <div style="display: inline-block; width: 30%; vertical-align: top">
+                    <h6 class="card-title">Адрес</h6>
+                    <label class="card-text" id="addresses">
+                        <input class="form-control" type="text" name="address" required/>
+                    </label>
+                    <button class="btn btn-secondary" onclick="addInput('addresses', 'address')">+</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 25px"></div>
+
+            <div class="input-group">
+                <select class="custom-select" id="tagsSelect">
+                    <option id="Java" value="Java">Java</option>
+                    <!--                    ajax-->
+                    <option id="SQL" value="SQL">SQL</option>
+                    <option id="Lombok" value="Lombok">Lombok</option>
+                    <option id="Spring MVC" value="Spring MVC">Spring MVC</option>
+                    <option id="Spring Boot" value="Spring Boot">Spring Boot</option>
+                    <option id="Spring Framework" value="Spring Framework">Spring Framework</option>
+                    <option id="Spring Security" value="Spring Security">Spring Security</option>
+                </select>
+                <div class="input-group-append">
+                    <button type="button" class="btn btn-outline-primary"
+                            onclick="addNewElement('tagsSelect', 'tags')">Добавить</button>
+                </div>
+            </div>
+
+            <div class="tags" id="tags" style="display: flex; flex-wrap:wrap; margin-top: 25px">
+
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+            <div style="display: block; float:right; margin: 1%">
+                <input type="submit" class="btn btn-primary" value="Добавить вакансию"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    function addNewElement(selectId, divId) {
+        var select = document.getElementById(selectId);
+        var div = document.getElementById(divId);
+        var name = 'tag';
+        if (select.value !== '') {
+            div.innerHTML += '<button type="button" class="btn btn-info" name="'
+                + name
+                + '" id="'
+                + select.value
+                + '" onclick="deleteElementFromDiv('
+                + '\'' + selectId + '\'' + ', \'' + select.value + '\', \'' + divId + '\''
+                + ')">'
+                + select.value
+                + '</button>';
+
+            select.removeChild(document.getElementById(select.value));
+        }
+    }
+
+    function deleteElementFromDiv(selectId, btnId, divId) {
+        var select = document.getElementById(selectId);
+        var btn = document.getElementById(btnId);
+
+        select.innerHTML += '<option id="'
+            + btnId
+            + '" value="'
+            + btnId
+            + '">'
+            + btnId
+            + '</option>';
+        document.getElementById(divId).removeChild(btn);
+    }
+
+    function addInput(divId, name) {
+        document.getElementById(divId).innerHTML += '<div class="input-group" style="margin-top: 10px; width: inherit">\n' +
+            '  <input type="text" class="form-control" name="' + name + '">\n' +
+            '  <div class="input-group-append">\n' +
+            '    <button onclick="deleteInput(\'' + divId +'\')" class="input-group-text">-</button>\n' +
+            '  </div>\n' +
+            '</div>';
+    }
+
+    function deleteInput(divId) {
+        var div = document.getElementById(divId);
+        const length = div.querySelectorAll("div.input-group").length;
+        var removableNode = document.querySelectorAll("div.input-group")[length - 1];
+        div.removeChild(removableNode);
+    }
+</script>
+
+</html>
