@@ -19,6 +19,7 @@
     <script type="application/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
+
         function loadWorks() {
             var pathname = window.location.pathname
             $.ajax({
@@ -44,8 +45,12 @@
                             '                                        </div>\n' +
                             '                                        <p class="mb-1">' + response[i]['work']['description'] + '</p>\n' +
                             '                                        <div style="display: flex; flex-wrap: wrap">\n' +
-                                                                        tags +
+                                                                    tags +
                             '                                        </div>\n' +
+                            '                                       <a href="/profile/' + response[i]['work']['teacher']['id'] + '">' +
+                            '                                       <u style="font-size: large">' + response[i]['work']['teacher']['surname'] + ' ' +
+                                                                    response[i]['work']['teacher']['name'] + ' ' +
+                                                                    response[i]['work']['teacher']['patronymic'] + '</u></a>\n' +
                             '                                    </div>\n' +
                             '                                </div>');
                     }
@@ -57,6 +62,7 @@
                 }
             });
         }
+
         getViewerInfo();
 
         function getViewerInfo() {
