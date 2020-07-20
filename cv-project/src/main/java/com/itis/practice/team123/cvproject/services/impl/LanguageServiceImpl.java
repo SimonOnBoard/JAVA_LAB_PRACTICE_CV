@@ -7,6 +7,8 @@ import com.itis.practice.team123.cvproject.services.interfaces.LanguageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class LanguageServiceImpl implements LanguageService {
@@ -34,5 +36,10 @@ public class LanguageServiceImpl implements LanguageService {
         return languageRepository
                 .findByLevelAndLanguageIgnoreCase(LanguageLevel.valueOf(langArray[1]),
                         langArray[0]).orElseThrow(IllegalArgumentException::new);
+    }
+
+    @Override
+    public List<Language> getAllLanguages() {
+        return languageRepository.findAll() ;
     }
 }
