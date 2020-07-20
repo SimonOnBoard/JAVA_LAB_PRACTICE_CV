@@ -50,14 +50,13 @@ public class ProfileController {
                                               @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                               @PathVariable(name = "id", required = false) Long id) {
         try {
-            return ResponseEntity.ok()
-                    .body(id == null ? profileService.getProfileForApi(userDetails.getUser()) : profileService.getProfileForApi(id));
+            return ResponseEntity.ok().body(id == null ? profileService.getProfileForApi(userDetails.getUser()) : profileService.getProfileForApi(id));
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException(e.getMessage());
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userDetails.userId.equals(#id)")
+    @PreAuthorize("(hasRole('ADMIN') or #userDetails.userId.equals(#id)) and !hasAnyRole('COMPANY','STUDENT')")
     @GetMapping("/editTeacherProfile/{id}")
     public String getEditTeacherProfilePage(Model model,
                                             @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
@@ -67,7 +66,7 @@ public class ProfileController {
         return "editTeacherProfilePage";
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userDetails.userId.equals(#id)")
+    @PreAuthorize("(hasRole('ADMIN') or #userDetails.userId.equals(#id)) and !hasAnyRole('TEACHER','STUDENT')")
     @GetMapping("/editCompanyProfile/{id}")
     public String getEditCompanyProfilePage(Model model,
                                             @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
@@ -76,7 +75,7 @@ public class ProfileController {
         return "editCompanyProfilePage";
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userDetails.userId.equals(#id)")
+    @PreAuthorize("(hasRole('ADMIN') or #userDetails.userId.equals(#id)) and !hasAnyRole('COMPANY','TEACHER')")
     @GetMapping("/editStudentProfile/{id}")
     public String getEditStudentProfilePage(Model model,
                                             @AuthenticationPrincipal UserDetailsImpl<?> userDetails,

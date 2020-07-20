@@ -22,6 +22,8 @@ public class StudentAccountController {
     private final StudentsService studentsService;
     private final String okAnswer;
 
+
+    //если выкатывать в прод нужно обработать ситуацию 409 conflict и 400 c ошибками
     @PreAuthorize("hasRole('STUDENT')")
     @PutMapping(value = {"/studentAccount/info/update", "/api/studentAccount/info/update"})
     public ResponseEntity<?> updateBaseInfo(@RequestBody StudentForm studentForm,
@@ -30,19 +32,27 @@ public class StudentAccountController {
         return ResponseEntity.ok().body(okAnswer);
     }
 
+
+    //поменять урлы если успеем добавить удаление
     @PreAuthorize("hasRole('STUDENT')")
     @PutMapping(value = {"/studentAccount/competences/update", "/api/studentAccount/competences/update"})
-    public ResponseEntity<?> updateCompetencesInfo(@RequestBody TagDto tagDto,
+    public ResponseEntity<?> addStudentCompetence(@RequestBody TagDto tagDto,
                                                    @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        studentsService.updateStudentCompetencesInfo(tagDto, userDetails.getUserId());
+        studentsService.addCompetence(tagDto, userDetails.getUserId());
         return ResponseEntity.ok().body(okAnswer);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleException(IllegalArgumentException ex){
+        return ResponseEntity.badRequest().body(ex.getMessage());
+    }
+
+    //поменять урлы если успеем добавить удаление
     @PreAuthorize("hasRole('STUDENT')")
     @RequestMapping(method= {RequestMethod.POST,RequestMethod.PUT},value = {"/studentAccount/languages/update", "/api/studentAccount/languages/update"})
-    public ResponseEntity<?> updateLanguagesInfo(@RequestBody Language language,
-                                                 @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        studentsService.updateStudentLanguagesInfo(language, userDetails.getUserId());
+    public ResponseEntity<?> addStudentLanguage(@RequestBody Language language,
+                                                @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
+        studentsService.addLanguage(language, userDetails.getUserId());
         return ResponseEntity.ok().body(okAnswer);
     }
 
@@ -54,11 +64,13 @@ public class StudentAccountController {
         return ResponseEntity.ok().body(okAnswer);
     }
 
+
+    //поменять урлы если успеем добавить удаление
     @PreAuthorize("hasRole('STUDENT')")
     @PutMapping(value = {"/studentAccount/certificates/update", "/api/studentAccount/certificates/update"})
-    public ResponseEntity<?> updateCertificatesInfo(@RequestBody CertificateDto certificateDto,
+    public ResponseEntity<?> addCertificate(@RequestBody CertificateDto certificateDto,
                                                     @AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        studentsService.updateStudentCertificatesInfo(certificateDto, userDetails.getUserId());
+        studentsService.addCertificates(certificateDto, userDetails.getUserId());
         return ResponseEntity.ok().body(okAnswer);
     }
 
@@ -71,8 +83,8 @@ public class StudentAccountController {
 
     @PreAuthorize("hasRole('STUDENT')")
     @GetMapping(value = {"/studentAccount/tags", "/api/studentAccount/tags"})
-    public ResponseEntity<List<TagDto>> getTags(@AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
-        return ResponseEntity.ok().body(studentsService.getTagsForStudent(userDetails.getUser()));
+    public ResponseEntity<List<TagDto>> getAvaliableTagsForStudent(@AuthenticationPrincipal UserDetailsImpl<Student> userDetails) {
+        return ResponseEntity.ok().body(studentsService.getTagsAvaliableToAdd(userDetails.getUser()));
     }
 
     @PreAuthorize("hasRole('STUDENT')")
