@@ -5,15 +5,11 @@ import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Vacancy;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.VacanciesService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -23,10 +19,16 @@ public class VacanciesController {
 
     private final VacanciesService vacanciesService;
 
+    @GetMapping("/api/vacancies")
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<List<Vacancy>> getVacanciesForCompany(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails) {
+        return ResponseEntity.ok().body(vacanciesService.getAllVacanciesForCompany(userDetails.getUser()));
+    }
+
     @GetMapping("/api/company/{companyId}/vacancies")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Vacancy>> getVacancies(@PathVariable("companyId") Long companyId) {
-        return ResponseEntity.ok().body(vacanciesService.getAllVacanciesForCompany(companyId));
+        return ResponseEntity.ok().body(vacanciesService.getAllVacanciesByCompanyId(companyId));
     }
 
     @GetMapping("/vacancies/{id}")
@@ -36,7 +38,7 @@ public class VacanciesController {
     }
 
     @PostMapping("/vacancy/newVacancy")
-    @PreAuthorize("hasAnyRole('COMPANY')")
+    @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<?> addVacancy(@RequestBody VacancyDto vacancyDto,
                                         @AuthenticationPrincipal UserDetailsImpl<Company> userDetails) {
         vacanciesService.addNewVacancy(vacancyDto, userDetails.getUser());
