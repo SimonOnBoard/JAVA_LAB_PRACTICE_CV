@@ -38,15 +38,6 @@ public class StudentProjectsRestController {
         return ResponseEntity.ok().body(ProjectDto.from(projectsService.getAllProjects(userDetails.getUserId())));
     }
 
-    @PreAuthorize("hasAnyRole('STUDENT')")
-    @PostMapping("/projects/newProject")
-    // TODO: 20.07.2020 возвращать dto шку из сервиса
-    public ResponseEntity<?> addNewProject(ProjectDto projectDto,
-                                           @AuthenticationPrincipal UserDetailsImpl<?> userDetails) {
-        projectsService.addNewProject(projectDto, userDetails.getUser());
-        return ResponseEntity.ok().build();
-    }
-
     @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping("/projects/{projectId}/newComment")
     // TODO: 20.07.2020 возвращать dto шку из сервиса

@@ -16,29 +16,27 @@
     <script type="application/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
-        function removePost(id) {
-            var form = $('#' + id)[0];
-            var data = new FormData(form);
-            var address = "\"" + form.action + "\"";
-            console.log(address);
+        getStudent(${id});
+        function getStudent(id) {
             $.ajax({
-                method: "POST",
-                url: form.action,
-                data: data,
-                processData: false,
-                contentType: false,
+                method: "GET",
+                url: /students/ + String(id),
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
                 cache: false,
                 timeout: 600000,
-                success : function(data) {
+                success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
-                    alert("Successfully deleted:" + String(a));
-                    window.location.replace("/profile");
+                    var res = '';
+
                 },
-                error : function(err) {
+                error: function (err) {
                     var a = JSON.stringify(err);
                     var b = JSON.parse(a);
                     alert(b);
+                    window.location.replace("/profile");
                 }
             });
         }
@@ -200,65 +198,56 @@
     </script>
     <div id="navbar">
     </div>
-    <div class="card-deck">
-        <div class="card border-dark mb-3" style="display: inline-block; margin: 2%; max-width: 32rem">
-            <div class="card-header">Личные данные</div>
-            <div class="card-body text-dark" style="max-height: 24rem; overflow-y: scroll">
-                <#if name?has_content>
-                    <h5 class="card-title">Название</h5>
-                    <p class="card-text"> ${name}</p>
-                </#if>
+<div class="card-deck" style="margin: 2%">
 
-                <div style="margin-top: 25px"></div>
+    <div class="card border-dark mb-3"
+         style="display: inline-block; max-width: 54rem; border-radius: 6px 0 0 6px">
+        <div class="card-header" style="">Проект студента</div>
+        <div class="card-body text-dark" style="overflow-y: scroll; height: 39em">
+            <h5 class="card-title">Название</h5>
+            <p class="card-text">Проект</p>
 
-                <#if address?has_content>
-                    <h5 class="card-title">Адрес компании</h5>
-                    <p class="card-text">${address}</p>
-                </#if>
+            <h5 class="card-title">Описание</h5>
+            <p class="card-text">Проект полное говно поставьте мне 5 я самый лучший я пишу проекты я заебался писать
+                фронт спасите меня пожалуйста АААААААААА</p>
 
-                <div style="margin-top: 25px"></div>
-                <h5 class="card-title">Контакты</h5>
-                <#if phone?has_content>
-                    <p class="card-text"><strong>Телефон: </strong>${phone}</p>
-                </#if>
-                <#if mail?has_content>
-                    <p class="card-text"><strong>Email: </strong> ${mail}</p>
-                </#if>
-
-                <div style="margin-top: 25px"></div>
-                <#if description?has_content>
-                    <h5 class="card-title">О себе</h5>
-                    <p class="card-text">${description}</p>
-                </#if>
-            </div>
-        </div>
-
-        <div class="card border-dark mb-3" style="display: inline-block; margin: 2%; max-width: 48rem">
-            <div class="card-header">Новости компании</div>
-            <div class="card-body text-dark" style="height: 24rem; overflow-y: scroll">
-                <div class="list-group">
-                    <#if posts?has_content>
-                        <#list posts as post>
-                            <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
-                                <div class="d-flex w-100 justify-content-between">
-                                    <h5 class="mb-1">${post.getName()}</h5>
-                                </div>
-                                <p class="mb-1">${post.getDescription()}</p>
-                                <#if isOwner == true>
-                                    <form id="${post.getId()}" action="/removePost/${post.getId()}" method="post">
-                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        <button type="button" onclick="removePost(${post.getId()})">Удалить пост</button>
-                                    </form>
-                                </#if>
-                            </a>
-                        </#list>
-                    </#if>
-                </div>
-            </div>
+            <h5 class="card-title">Ссылки</h5>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
         </div>
     </div>
-</#macro>
+
+    <div class="card border-dark mb-3"
+         style="display: inline-block; width: 30rem; border-radius: 6px 0 0 6px">
+        <div class="card-header">Комментарии</div>
+        <div id="list group" style="overflow-y: scroll; height: 30em">
+            <div class="card-body text-dark">
+                <h5 class="card-title">Зажопин Ульян Казимирович</h5>
+                <p class="card-text">Проект говно автор пидорас</p>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+
+        </div>
+
+        <div style="border-top: 1px black solid; height: 6em">
+            <form method="post">
+                <div class="input-group mb-3"
+                     style="margin: 3em auto 0 auto; width: 90%; text-align: center">
+                    <input type="text" class="form-control" placeholder="Комментарий" aria-label="Recipient's username"
+                           aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="submit">Добавить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </#macro>
 <#macro title>
-<title>Company profile</title>
+    <title>Show students project</title>
 </#macro>
 <@display_page />
