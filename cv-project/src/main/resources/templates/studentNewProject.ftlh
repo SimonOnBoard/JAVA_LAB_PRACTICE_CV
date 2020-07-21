@@ -272,7 +272,7 @@
                     <div style="margin-top: 25px"></div>
 
                     <h5 class="card-title">Ссылки</h5>
-                    <input class="form-control" type="text" name="link" style="margin-bottom: 10px" required/>
+                    <input class="form-control" type="text" name="links" style="margin-bottom: 10px" required/>
                     <div id="container">
 
                     </div>

@@ -1,10 +1,8 @@
 <#include "base.ftlh"/>
 <#macro head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-            integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-            crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
             crossorigin="anonymous"></script>
@@ -15,59 +13,33 @@
     <meta name="_csrf_header" content="${_csrf.headerName}"/>
 </#macro>
 <#macro content>
-    <body onload="loadWorks()">
     <script type="application/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
-
-        function loadWorks() {
-            var pathname = window.location.pathname
+        getStudent(${id});
+        function getStudent(id) {
             $.ajax({
                 method: "GET",
-                url: '/load' + pathname,
-                dataType: "json",
-                contentType: "application/json",
+                url: /students/ + String(id),
                 beforeSend: function (request) {
                     request.setRequestHeader(header, token);
                 },
-                success: function (response) {
-                    console.log(response)
-                    for (let i = 0; i < response.length; i++) {
-                        var tags = '';
-                        var links = '';
-                        for (let j = response[i]['work']['links'].length - 1; j >= 0; j--) {
-                            links = links + '<a href="' + response[i]['work']['links'][j] + '">' + response[i]['work']['links'][j] + '</a><br>\n';
-                        }
-                        for (let j = response[i]['work']['tags'].length - 1; j >= 0; j--) {
-                            tags = tags + '<button type="button" class="btn btn-info" style="margin: 5px" disabled>' + response[i]['work']['tags'][j]['name'] + '</button>';
-                        }
-                        $('#works').append('<div class="list-group">\n' +
-                            '                                    <div class="list-group-item list-group-item-action flex-column align-items-start"\n' +
-                            '                                         style="margin-bottom: 20px; border: 1px grey solid">\n' +
-                            '                                        <div class="d-flex w-100 justify-content-between">\n' +
-                            '                                            <h5 class="mb-1">' + response[i]['work']['title'] + '</h5>\n' +
-                            '                                        </div>\n' +
-                            '                                        <p class="mb-1">' + response[i]['work']['description'] + '</p>\n' +
-                            links +
-                            '                                        <div style="display: flex; flex-wrap: wrap">\n' +
-                            tags +
-                            '                                        </div>\n' +
-                            '                                       <a href="/profile/' + response[i]['work']['teacher']['id'] + '">' +
-                            '                                       <u style="font-size: large">' + response[i]['work']['teacher']['surname'] + ' ' +
-                            response[i]['work']['teacher']['name'] + ' ' +
-                            response[i]['work']['teacher']['patronymic'] + '</u></a>\n' +
-                            '                                    </div>\n' +
-                            '                                </div>');
-                    }
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    var res = '';
+
                 },
                 error: function (err) {
                     var a = JSON.stringify(err);
                     var b = JSON.parse(a);
-                    console.log(JSON.stringify(b))
+                    alert(b);
+                    window.location.replace("/profile");
                 }
             });
         }
-
         getViewerInfo();
 
         function getViewerInfo() {
@@ -118,7 +90,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>"
-                        $("#navigation").append(result);
+                        $("#navbar").append(result);
                     }
                     if (b.role === 'STUDENT') {
                         result += "        <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
@@ -170,7 +142,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>";
-                        $("#navigation").append(result);
+                        $("#navbar").append(result);
                     }
                     if (b.role === 'COMPANY') {
                         result += "    <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
@@ -213,7 +185,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>";
-                        $("#navigation").append(result);
+                        $("#navbar").append(result);
                     }
                 },
                 error: function (err) {
@@ -224,19 +196,58 @@
             });
         }
     </script>
-    <div id="navigation"></div>
-    <div class="card-deck">
-        <div class="card border-dark mb-3"
-             style="display: inline-block; margin-left: 5%; margin-top: 2%; max-width: 60rem">
-            <div class="card-header">Выполненные проекты</div>
-            <div id="works" class="card-body text-dark" style="height: 45rem; overflow-y: scroll">
+    <div id="navbar">
+    </div>
+<div class="card-deck" style="margin: 2%">
 
-            </div>
+    <div class="card border-dark mb-3"
+         style="display: inline-block; max-width: 54rem; border-radius: 6px 0 0 6px">
+        <div class="card-header" style="">Проект студента</div>
+        <div class="card-body text-dark" style="overflow-y: scroll; height: 39em">
+            <h5 class="card-title">Название</h5>
+            <p class="card-text">Проект</p>
+
+            <h5 class="card-title">Описание</h5>
+            <p class="card-text">Проект полное говно поставьте мне 5 я самый лучший я пишу проекты я заебался писать
+                фронт спасите меня пожалуйста АААААААААА</p>
+
+            <h5 class="card-title">Ссылки</h5>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
+            <a href="#" class="card-text" style="display: block">http://gethup.ua</a>
         </div>
     </div>
-    </body>
-</#macro>
+
+    <div class="card border-dark mb-3"
+         style="display: inline-block; width: 30rem; border-radius: 6px 0 0 6px">
+        <div class="card-header">Комментарии</div>
+        <div id="list group" style="overflow-y: scroll; height: 30em">
+            <div class="card-body text-dark">
+                <h5 class="card-title">Зажопин Ульян Казимирович</h5>
+                <p class="card-text">Проект говно автор пидорас</p>
+            </div>
+
+            <div class="dropdown-divider"></div>
+
+
+        </div>
+
+        <div style="border-top: 1px black solid; height: 6em">
+            <form method="post">
+                <div class="input-group mb-3"
+                     style="margin: 3em auto 0 auto; width: 90%; text-align: center">
+                    <input type="text" class="form-control" placeholder="Комментарий" aria-label="Recipient's username"
+                           aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-success" type="submit">Добавить</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    </#macro>
 <#macro title>
-    <title>Работы студента</title>
+    <title>Show students project</title>
 </#macro>
 <@display_page />

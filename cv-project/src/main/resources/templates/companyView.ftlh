@@ -259,6 +259,6 @@
     </div>
 </#macro>
 <#macro title>
-<title>Login</title>
+<title>Company profile</title>
 </#macro>
 <@display_page />

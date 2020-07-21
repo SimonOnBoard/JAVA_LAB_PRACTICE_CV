@@ -20,8 +20,10 @@ public class Work {
     private Long id;
 
     private String title;
-
     private String description;
+
+    @ElementCollection
+    private List<String> links;
 
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinColumn(name = "tag_id")

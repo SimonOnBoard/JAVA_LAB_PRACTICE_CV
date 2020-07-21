@@ -44,6 +44,7 @@ public class StudiesIntegrationAPI {
                 .tags(teachersWorkDto.getTags())
                 .title(teachersWorkDto.getTitle())
                 .description(teachersWorkDto.getDescription())
+                .links(teachersWorkDto.getLinks())
                 .build();
         try {
             worksService.addWork(workDto);

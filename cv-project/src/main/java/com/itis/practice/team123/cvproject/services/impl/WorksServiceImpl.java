@@ -32,10 +32,12 @@ public class WorksServiceImpl implements WorksService {
         List<Tag> tags = tagsRepository.findAllByNameIn(workDto.getTags());
         Work work = Work.builder()
                 .description(workDto.getDescription())
+                .links(workDto.getLinks())
                 .title(workDto.getTitle())
                 .student(student)
                 .teacher(teacher)
-                .tags(tags).build();
+                .tags(tags)
+                .build();
         worksRepository.save(work);
     }
 }
