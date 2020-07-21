@@ -14,6 +14,7 @@ import java.util.List;
 public class WorkDto {
     private String title;
     private String description;
+    private List<String> links;
     private List<String> tags;
     private Long studentId;
     private Long teacherId;

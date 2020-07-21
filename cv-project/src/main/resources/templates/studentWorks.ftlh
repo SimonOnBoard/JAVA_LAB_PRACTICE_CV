@@ -32,10 +32,14 @@
                 },
                 success: function (response) {
                     console.log(response)
-                    for (let i = 0; i < response.length - 1; i++) {
+                    for (let i = 0; i < response.length; i++) {
                         var tags = '';
+                        var links = '';
+                        for (let j = response[i]['work']['links'].length - 1; j >= 0; j--) {
+                            links = links + '<a href="' + response[i]['work']['links'][j] + '">' + response[i]['work']['links'][j] + '</a><br>\n';
+                        }
                         for (let j = response[i]['work']['tags'].length - 1; j >= 0; j--) {
-                            tags = tags + '<button type="button" class="btn btn-info" style="margin: 5px" disabled>' + response[i]['work']['tags'][j]['name'] + '</button>'
+                            tags = tags + '<button type="button" class="btn btn-info" style="margin: 5px" disabled>' + response[i]['work']['tags'][j]['name'] + '</button>';
                         }
                         $('#works').append('<div class="list-group">\n' +
                             '                                    <div class="list-group-item list-group-item-action flex-column align-items-start"\n' +
@@ -44,13 +48,14 @@
                             '                                            <h5 class="mb-1">' + response[i]['work']['title'] + '</h5>\n' +
                             '                                        </div>\n' +
                             '                                        <p class="mb-1">' + response[i]['work']['description'] + '</p>\n' +
+                            links +
                             '                                        <div style="display: flex; flex-wrap: wrap">\n' +
-                                                                    tags +
+                            tags +
                             '                                        </div>\n' +
                             '                                       <a href="/profile/' + response[i]['work']['teacher']['id'] + '">' +
                             '                                       <u style="font-size: large">' + response[i]['work']['teacher']['surname'] + ' ' +
-                                                                    response[i]['work']['teacher']['name'] + ' ' +
-                                                                    response[i]['work']['teacher']['patronymic'] + '</u></a>\n' +
+                            response[i]['work']['teacher']['name'] + ' ' +
+                            response[i]['work']['teacher']['patronymic'] + '</u></a>\n' +
                             '                                    </div>\n' +
                             '                                </div>');
                     }
