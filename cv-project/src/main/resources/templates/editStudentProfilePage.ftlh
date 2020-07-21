@@ -569,8 +569,6 @@
             </div>
         </form>
     </div>
-
-    <a href="/profile">Go to profile</a>
 </#macro>
 <#macro title>
     <title>Личный кабинет</title>

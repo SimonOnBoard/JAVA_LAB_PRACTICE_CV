@@ -19,6 +19,7 @@
     <script type="application/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
+
         function loadWorks() {
             var pathname = window.location.pathname
             $.ajax({
@@ -31,7 +32,7 @@
                 },
                 success: function (response) {
                     console.log(response)
-                    for (let i = response.length - 1; i >= 0; i--) {
+                    for (let i = 0; i < response.length - 1; i++) {
                         var tags = '';
                         for (let j = response[i]['work']['tags'].length - 1; j >= 0; j--) {
                             tags = tags + '<button type="button" class="btn btn-info" style="margin: 5px" disabled>' + response[i]['work']['tags'][j]['name'] + '</button>'
@@ -44,8 +45,12 @@
                             '                                        </div>\n' +
                             '                                        <p class="mb-1">' + response[i]['work']['description'] + '</p>\n' +
                             '                                        <div style="display: flex; flex-wrap: wrap">\n' +
-                                                                        tags +
+                                                                    tags +
                             '                                        </div>\n' +
+                            '                                       <a href="/profile/' + response[i]['work']['teacher']['id'] + '">' +
+                            '                                       <u style="font-size: large">' + response[i]['work']['teacher']['surname'] + ' ' +
+                                                                    response[i]['work']['teacher']['name'] + ' ' +
+                                                                    response[i]['work']['teacher']['patronymic'] + '</u></a>\n' +
                             '                                    </div>\n' +
                             '                                </div>');
                     }
@@ -57,6 +62,7 @@
                 }
             });
         }
+
         getViewerInfo();
 
         function getViewerInfo() {

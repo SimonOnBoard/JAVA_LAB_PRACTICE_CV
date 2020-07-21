@@ -11,13 +11,14 @@ import com.itis.practice.team123.cvproject.repositories.TeachersRepository;
 import com.itis.practice.team123.cvproject.repositories.WorksRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.WorksService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class WorksServiceImpl implements WorksService {
     private final TeachersRepository teachersRepository;
     private final StudentsRepository studentsRepository;
