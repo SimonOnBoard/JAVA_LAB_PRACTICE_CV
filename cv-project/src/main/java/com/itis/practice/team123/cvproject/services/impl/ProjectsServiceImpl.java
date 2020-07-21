@@ -33,15 +33,16 @@ public class ProjectsServiceImpl implements ProjectsService {
     }
 
     @Override
-    public void addNewProject(ProjectDto projectDto, User user) {
+    public ProjectDto addNewProject(ProjectDto projectDto, User user) {
         Student student = (Student) user;
-
-        projectsRepository.save(Project.builder()
+        Project project = Project.builder()
                 .title(projectDto.getTitle())
                 .description(projectDto.getDescription())
                 .links(projectDto.getLinks())
                 .owner(student)
-                .build());
+                .build();
+        projectsRepository.save(project);
+        return ProjectDto.from(project);
     }
 
     @Override

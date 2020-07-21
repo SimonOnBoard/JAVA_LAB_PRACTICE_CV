@@ -22,7 +22,7 @@
 
         function addProject() {
             // Create an FormData object
-            var form = $("#f")[0];
+            var form = $("#projectForm")[0];
             var data = new FormData(form);
             var address = "\"" + form.action + "\"";
             console.log(address);
@@ -40,7 +40,8 @@
                 success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
-                    alert(b);
+                    alert("Successfully added: " + String(a));
+                    window.location.replace("/studentAccount/projects");
                 },
                 error: function (err) {
                     var a = JSON.stringify(err);
@@ -70,7 +71,7 @@
                         $('#projects').append('<div class="list-group">\n' +
                             '                    <div class="list-group-item list-group-item-action flex-column align-items-start">\n' +
                             '                        <div class="d-flex w-100 justify-content-between">\n' +
-                            '                            <h5 class="mb-1">' + response[i]['title'] + '</h5>\n' +
+                            '                            <a href=\"/getProject/' + response[i]['id'] + '\"' + 'class="mb-1">' + response[i]['title'] + '</a>\n' +
                             '                        </div>\n' +
                             '                        <p class="mb-1">' + response[i]['description'] + '</p>\n' +
                             links +
@@ -257,7 +258,7 @@
 
         <div class="card border-dark mb-3"
              style="display: inline-block; margin-left: 5%; margin-top: 2%; max-width: 40rem; height: inherit">
-            <form method="post" action="/projects/newProject">
+            <form method="post" action="/projects/newProject" id="projectForm">
                 <div class="card-header">Новый проект</div>
                 <div class="card-body text-dark" style="height: 32rem; overflow-y: scroll">
                     <h5 class="card-title">Название проекта</h5>
@@ -279,7 +280,7 @@
                     <button type="button" onclick="f()" class="btn btn-secondary" style="margin-top: 5px">+
                     </button>
 
-                    <button type="submit" class="btn btn-primary" style="float: right">Добавить</button>
+                    <button type="button" class="btn btn-primary" style="float: right" onclick="addProject()">Добавить</button>
 
                 </div>
             </form>

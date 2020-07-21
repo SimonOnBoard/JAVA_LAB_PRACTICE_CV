@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +23,8 @@ public class ProjectComment {
 
     private String comment;
 
+
+    @JsonIgnore
     @ManyToOne(optional = false, cascade = CascadeType.MERGE)
     @JoinColumn(name = "project_id")
     private Project project;

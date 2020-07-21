@@ -40,7 +40,7 @@
                         $('#projects').append('<div class="list-group">\n' +
                             '                    <div class="list-group-item list-group-item-action flex-column align-items-start">\n' +
                             '                        <div class="d-flex w-100 justify-content-between">\n' +
-                            '                            <h5 class="mb-1">' + response[i]['title'] + '</h5>\n' +
+                            '                            <a href=\"/getProject/' + response[i]['id'] + '\"' + 'class="mb-1">' + response[i]['title'] + '</a>\n' +
                             '                        </div>\n' +
                             '                        <p class="mb-1">' + response[i]['description'] + '</p>\n' +
                             links +
