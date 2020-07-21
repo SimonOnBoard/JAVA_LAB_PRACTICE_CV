@@ -33,7 +33,7 @@ public class TeacherCompanyContentController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
     @PostMapping(value = {"/editTeacherProfile", "/api/editTeacherProfile"})
     public ResponseEntity<?> editTeacherProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                                     TeacherEditForm teacherEditForm) {

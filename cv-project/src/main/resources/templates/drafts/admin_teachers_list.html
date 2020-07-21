@@ -34,15 +34,15 @@
                 </li>
 
                 <li class="nav-item" style="margin-left: 10px">
-                    <a class="nav-link" href="/api/allStudents">Студенты</a>
+                    <a class="nav-link" href="/getStudentsPage">Студенты</a>
                 </li>
 
                 <li class="nav-item" style="margin-left: 10px">
-                    <a class="nav-link" href="/api/allTeachers">Преподаватели</a>
+                    <a class="nav-link" href="/getTeachersPage">Преподаватели</a>
                 </li>
 
                 <li class="nav-item" style="margin-left: 10px">
-                    <a class="nav-link" href="/api/allCompanies">Компании</a>
+                    <a class="nav-link" href="/getCompaniesPage">Компании</a>
                 </li>
 
             </ul>
@@ -58,8 +58,7 @@
 
 <div class="card"
      style="width: 96%; margin-right: auto; margin-left: auto; height: 46rem; border: 2px darkgray solid; border-top: 0;border-radius: 0 0 6px 6px">
-    <div class="card-header" style="font-size: x-large; text-align: center">
-        Преподаватели
+    <div class="card-header" style="font-size: x-large; text-align: center">Преподаватели
     </div>
     <div class="card-body" style="overflow-y: scroll">
 
@@ -70,8 +69,8 @@
                     <h5 class="mb-1">Абрамский Михаил Михайлович</h5>
                 </div>
                 <div style="display: inline-block; float: right">
-                    <button type="button" class="btn btn-outline-info">Профиль</button>
-                    <button type="button" class="btn btn-outline-warning">Редактировать</button>
+                    <button type="button" class="btn btn-outline-info" onclick="goToProfile()">Профиль</button>
+                    <button type="button" class="btn btn-outline-warning" onclick="editPage()">Редактировать</button>
                 </div>
             </a>
 
