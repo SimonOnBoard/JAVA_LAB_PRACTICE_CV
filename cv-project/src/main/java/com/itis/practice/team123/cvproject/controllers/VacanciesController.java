@@ -6,6 +6,7 @@ import com.itis.practice.team123.cvproject.models.Vacancy;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.VacanciesService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,11 +38,18 @@ public class VacanciesController {
         return ResponseEntity.ok().body(vacanciesService.getVacancy(id));
     }
 
-    @PostMapping("/vacancy/newVacancy")
+    @PostMapping("/vacancies/newVacancy")
     @PreAuthorize("hasRole('COMPANY')")
     public ResponseEntity<?> addVacancy(@RequestBody VacancyDto vacancyDto,
                                         @AuthenticationPrincipal UserDetailsImpl<Company> userDetails) {
         vacanciesService.addNewVacancy(vacancyDto, userDetails.getUser());
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/vacancies/deleteVacancy/{id}")
+    @PreAuthorize("hasRole('COMPANY')")
+    public ResponseEntity<?> deleteVacancy(@PathVariable("id") Long id) {
+        vacanciesService.deleteVacancy(id);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
 }
