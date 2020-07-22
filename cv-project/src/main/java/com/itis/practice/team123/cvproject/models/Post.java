@@ -18,6 +18,7 @@ public class Post {
 
     private String name;
 
+    @Column(name = "description", length = 5120)
     private String description;
 
     @JsonIgnore
