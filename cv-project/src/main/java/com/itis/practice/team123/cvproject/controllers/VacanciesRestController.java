@@ -40,7 +40,7 @@ public class VacanciesRestController {
 
     @PostMapping("/vacancies/newVacancy")
     @PreAuthorize("hasRole('COMPANY')")
-    public ResponseEntity<?> addVacancy(@RequestBody VacancyDto vacancyDto,
+    public ResponseEntity<?> addVacancy(VacancyDto vacancyDto,
                                         @AuthenticationPrincipal UserDetailsImpl<Company> userDetails) {
         vacanciesService.addNewVacancy(vacancyDto, userDetails.getUser());
         return ResponseEntity.ok().build();

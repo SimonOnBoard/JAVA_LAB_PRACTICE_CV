@@ -15,14 +15,72 @@
 <#macro content>
     <style>
         .btn-info {
-            margin: 5px
+            margin: 5px;
         }
     </style>
     <body>
     <script type="application/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
+        var selectedTags = [];
         getViewerInfo();
+
+        function deleteVacancy() {
+            var form = $("#deleteVacancy")[0];
+            var data = new FormData(form);
+            $.ajax({
+                method: "DELETE",
+                url: form.action,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert("Successfully deleted: " + String(a));
+                },
+                error: function (err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    alert(b);
+                }
+            });
+        }
+
+        function addVacancy() {
+            // Create an FormData object
+            var form = $("#addVacancy")[0];
+            var data = new FormData(form);
+            data.set("tags", selectedTags);
+            console.log(data);
+            console.log(selectedTags);
+            $.ajax({
+                method: "POST",
+                url: form.action,
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                beforeSend: function (request) {
+                    request.setRequestHeader(header, token);
+                },
+                success: function (data) {
+                    var a = JSON.stringify(data);
+                    var b = JSON.parse(a);
+                    alert("Successfully added: " + String(a));
+                },
+                error: function (err) {
+                    var a = JSON.stringify(err);
+                    var b = JSON.parse(a);
+                    alert(b);
+                }
+            });
+        }
 
         function getViewerInfo() {
             $.ajax({
@@ -180,69 +238,207 @@
     </script>
     <div id="navbar">
     </div>
-    <div class="card" style="width: 90%; margin-left: auto; margin-right: auto; margin-top: 2%">
-        <div class="card-header">
-            Вакансия
+    <div class="card"
+         style="display: inline-block; width: 50%; margin-left: 2%; margin-top: 1%; border: 2px darkgray solid; border-radius: 6px 0 6px 6px">
+        <div class="card-header" style="font-size: x-large; text-align: center">
+            Вакансии
         </div>
-        <div class="card-body">
-            <div style="float: right">
-                <#if !vacancy.salaryMin?has_content && vacancy.salaryMax?has_content>
-                    <h5 class="card-title text-muted">до ${vacancy.salaryMax} рублей</h5>
-                <#elseif vacancy.salaryMin?has_content && !vacancy.salaryMax?has_content>
-                    <h5 class="card-title text-muted">от ${vacancy.salaryMin} рублей</h5>
-                <#elseif vacancy.salaryMin?has_content && vacancy.salaryMax?has_content>
-                    <h5 class="card-title text-muted">от ${vacancy.salaryMin} до ${vacancy.salaryMax} рублей</h5>
-                <#else>
-                    <h5 class="card-title text-muted">з/п не указана</h5>
-                </#if>
-            </div>
+        <div class="card-body" style="overflow-y: scroll; max-height: 41rem; padding-bottom: 5px">
 
-            <h5 class="card-title">Должность</h5>
-            <p class="card-text">${vacancy.title}</p>
-
-            <div style="margin-top: 25px"></div>
-
-            <h5 class="card-title">Требуемые компетенции</h5>
-            <div style="display: flex; flex-wrap: wrap">
-                <#list vacancy.tags as tag>
-                    <button type="button" class="btn btn-info" disabled>${tag}</button>
+            <div class="list-group">
+                <#list vacancies as vacancy>
+                    <div class="list-group-item list-group-item-action flex-column align-items-start">
+                        <a href="/vacancies/${vacancy.id}" class="list-group-item-action flex-column align-items-start">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">${vacancy.title}</h5>
+                                <#if !vacancy.salaryMin?has_content && vacancy.salaryMax?has_content>
+                                    <small class="text-muted">до ${vacancy.salaryMax} рублей</small>
+                                <#elseif vacancy.salaryMin?has_content && !vacancy.salaryMax?has_content>
+                                    <small class="text-muted">от ${vacancy.salaryMin} рублей</small>
+                                <#elseif vacancy.salaryMin?has_content && vacancy.salaryMax?has_content>
+                                    <small class="text-muted">от ${vacancy.salaryMin} до ${vacancy.salaryMax}
+                                        рублей</small>
+                                <#else>
+                                    <small class="text-muted">з/п не указана</small>
+                                </#if>
+                            </div>
+                            <p class="mb-1">${vacancy.description}</p>
+                            <div class="mb-1" style="display: flex; flex-wrap: wrap">
+                                <#list vacancy.tags as tag>
+                                    <span class="badge badge-info"
+                                          style="margin-left: 5px; margin-top: 5px; font-size: medium">${tag.name}</span>
+                                </#list>
+                            </div>
+                        </a>
+                        <div style="float: right">
+                            <form method="post" id="deleteVacancy" action="/vacancies/deleteVacancy/${vacancy.id}">
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                                <button type="button" onclick="deleteVacancy()" class="btn btn-outline-danger btn-sm">
+                                    Удалить вакансию
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </#list>
             </div>
 
-            <div style="margin-top: 25px"></div>
+        </div>
+    </div>
 
-            <h5 class="card-title">Описание вакансии</h5>
-            <p class="card-text">${vacancy.description}</p>
 
-            <div style="margin-top: 25px"></div>
+    <div class="card-desc"
+         style="width: 35%; display: inline-block; margin-left: 2%; margin-top: 1%; vertical-align: top">
+        <div class="card border-dark mb-3" style="width: 43rem; margin: 2%">
+            <div class="card-header">Добавить вакансию</div>
+            <div class="card-body text-dark" style="height: 35rem; overflow-y: scroll">
+                <form id='addVacancy' action="/vacancies/newVacancy" method="post">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <h5 class="card-title">Должность</h5>
+                    <p class="card-text">
+                        <label>
+                            <input class="form-control" type="text" name="title" size="47" required/>
+                        </label>
+                    </p>
 
-            <h5 class="card-title">Контакты</h5>
-            <div style="display: inline-block">
-                <h6 class="card-text">Телефоны</h6>
-                <#list vacancy.phoneNumbers as number>
-                    <p class="card-text">${number}</p>
-                </#list>
-            </div>
-            <div style="display: inline-block; margin-left: 30px">
-                <h6 class="card-text">Email</h6>
-                <#list vacancy.emails as email>
-                    <p class="card-text">${email}</p>
-                </#list>
-            </div>
+                    <h5 class="card-title">Описание</h5>
+                    <p class="card-text">
+                        <label>
+                <textarea class="form-control" name="description" id="exampleFormControlTextarea1" rows="3" cols="50"
+                          style="resize: none" required></textarea>
+                        </label>
+                    </p>
 
-            <div style="margin-top: 25px"></div>
+                    <div style="margin-bottom: 25px">
+                        <h5 class="card-title">Зарплата</h5>
+                        <div style="display: inline-block; margin-right: 10px">
+                            <p class="card-text" style="display: inline">От</p>
+                            <label class="card-text">
+                                <input class="form-control" type="text" name="salaryMin"/>
+                            </label>
+                        </div>
 
-            <div style="display: block;">
-                <h5 class="card-title">Адреса</h5>
-                <#list vacancy.addresses as address>
-                    <p class="card-text">${address}</p>
-                </#list>
+                        <div style="display: inline-block;">
+                            <p class="card-text" style="display: inline">до</p>
+                            <label class="card-text">
+                                <input class="form-control" type="text" name="salaryMax"/>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div style="display: inline-block; width: 30%; vertical-align: top">
+                            <h6 class="card-title">Телефон</h6>
+                            <label class="card-text" id="phones">
+                                <input class="form-control" type="text" name="phoneNumbers" required/>
+                            </label>
+                            <button class="btn btn-secondary" onclick="addInput('phones', 'phoneNumbers')">+</button>
+                        </div>
+
+                        <div style="display: inline-block; border-left: 1px darkgray solid; margin: 10px"></div>
+
+                        <div style="display: inline-block; width: 30%; vertical-align: top">
+                            <h6 class="card-title">Email</h6>
+                            <label class="card-text" id="emails">
+                                <input class="form-control" type="text" name="emails" required/>
+                            </label>
+                            <button class="btn btn-secondary" onclick="addInput('emails', 'emails')">+</button>
+                        </div>
+
+                        <div style="display: inline-block; border-left: 1px darkgray solid; margin: 10px"></div>
+
+                        <div style="display: inline-block; width: 30%; vertical-align: top">
+                            <h6 class="card-title">Адрес</h6>
+                            <label class="card-text" id="addresses">
+                                <input class="form-control" type="text" name="addresses" required/>
+                            </label>
+                            <button class="btn btn-secondary" onclick="addInput('addresses', 'addresses')">+</button>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 25px"></div>
+
+                    <div class="input-group">
+                        <select class="custom-select" id="tagsSelect">
+                            <#list tags as tag>
+                                <option id="${tag.name}" value="${tag.name}">${tag.name}</option>
+                            </#list>
+                        </select>
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-outline-primary"
+                                    onclick="addNewElement('tagsSelect', 'tags')">Добавить
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tags" id="tags" style="display: flex; flex-wrap:wrap; margin-top: 25px">
+
+                    </div>
+
+                    <div class="dropdown-divider"></div>
+
+                    <div style="display: block; float:right; margin: 1%">
+                        <button type="button" class="btn btn-primary" onclick="addVacancy()">Добавить вакансию</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
     </body>
+
+    <script>
+        function addNewElement(selectId, divId) {
+            var select = document.getElementById(selectId);
+            var div = document.getElementById(divId);
+            var name = 'tag';
+            selectedTags.push(select.value);
+            if (select.value !== '') {
+                div.innerHTML += '<button type="button" class="btn btn-info" name="'
+                    + name
+                    + '" id="'
+                    + select.value
+                    + '" onclick="deleteElementFromDiv('
+                    + '\'' + selectId + '\'' + ', \'' + select.value + '\', \'' + divId + '\''
+                    + ')">'
+                    + select.value
+                    + '</button>';
+
+                select.removeChild(document.getElementById(select.value));
+            }
+        }
+
+        function deleteElementFromDiv(selectId, btnId, divId) {
+            var select = document.getElementById(selectId);
+            var btn = document.getElementById(btnId);
+            selectedTags.splice(selectedTags.indexOf(btn.id), selectedTags.indexOf(btn.id) + 1);
+            select.innerHTML += '<option id="'
+                + btnId
+                + '" value="'
+                + btnId
+                + '">'
+                + btnId
+                + '</option>';
+            document.getElementById(divId).removeChild(btn);
+        }
+
+        function addInput(divId, name) {
+            document.getElementById(divId).innerHTML += '<div class="input-group" style="margin-top: 10px; width: inherit">\n' +
+                '  <input type="text" class="form-control" name="' + name + '">\n' +
+                '  <div class="input-group-append">\n' +
+                '    <button onclick="deleteInput(\'' + divId + '\')" class="input-group-text">-</button>\n' +
+                '  </div>\n' +
+                '</div>';
+        }
+
+        function deleteInput(divId) {
+            var div = document.getElementById(divId);
+            const length = div.querySelectorAll("div.input-group").length;
+            var removableNode = document.querySelectorAll("div.input-group")[length - 1];
+            div.removeChild(removableNode);
+        }
+    </script>
+    </body>
 </#macro>
 <#macro title>
-    <title>Вакансия</title>
+    <title>Добавить вакансию</title>
 </#macro>
 <@display_page />
