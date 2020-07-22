@@ -227,7 +227,7 @@
      style="width: 35%; display: inline-block; margin-left: 2%; margin-top: 1%; vertical-align: top">
     <div class="card border-dark mb-3" style="width: 43rem; margin: 2%">
         <div class="card-header">Добавить вакансию</div>
-        <div class="card-body text-dark" style="height: 35rem; overflow-y: scroll">
+        <div class="card-body text-dark" style="height: 41rem; overflow-y: scroll">
 
             <h5 class="card-title">Должность</h5>
             <p class="card-text">
@@ -243,6 +243,23 @@
                           style="resize: none" required></textarea>
                 </label>
             </p>
+
+            <div style="margin-bottom: 25px">
+                <h5 class="card-title">Зарплата</h5>
+                <div style="display: inline-block; margin-right: 10px">
+                    <p class="card-text" style="display: inline">От</p>
+                    <label class="card-text">
+                        <input class="form-control" type="text" name="salaryMin"/>
+                    </label>
+                </div>
+
+                <div style="display: inline-block;">
+                    <p class="card-text" style="display: inline">до</p>
+                    <label class="card-text">
+                        <input class="form-control" type="text" name="salaryMax"/>
+                    </label>
+                </div>
+            </div>
 
             <div>
                 <div style="display: inline-block; width: 30%; vertical-align: top">
@@ -299,7 +316,7 @@
 
             <div class="dropdown-divider"></div>
 
-            <div style="display: block; float:right; margin: 1%">
+            <div style="display: block; float:right; margin-top: 1%">
                 <input type="submit" class="btn btn-primary" value="Добавить вакансию"/>
             </div>
         </div>
