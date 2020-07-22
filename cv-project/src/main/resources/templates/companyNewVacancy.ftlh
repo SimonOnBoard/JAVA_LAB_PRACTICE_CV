@@ -25,8 +25,8 @@
         var selectedTags = [];
         getViewerInfo();
 
-        function deleteVacancy() {
-            var form = $("#deleteVacancy")[0];
+        function deleteVacancy(id) {
+            var form = $("#deleteVacancy" + id)[0];
             var data = new FormData(form);
             $.ajax({
                 method: "DELETE",
@@ -271,9 +271,9 @@
                             </div>
                         </a>
                         <div style="float: right">
-                            <form method="post" id="deleteVacancy" action="/vacancies/deleteVacancy/${vacancy.id}">
+                            <form method="post" id="deleteVacancy${vacancy.id}" action="/vacancies/deleteVacancy/${vacancy.id}">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <button type="button" onclick="deleteVacancy()" class="btn btn-outline-danger btn-sm">
+                                <button type="button" onclick="deleteVacancy(${vacancy.id})" class="btn btn-outline-danger btn-sm">
                                     Удалить вакансию
                                 </button>
                             </form>
