@@ -61,7 +61,7 @@
                             "                        </li>\n" +
                             "\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -72,7 +72,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>"
-                        $("#navbar").append(result);
+                        $("#navigation").append(result);
                     }
                     if (b.role === 'STUDENT') {
                         result += "        <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
@@ -106,14 +106,14 @@
                             "                                <a class=\"dropdown-item\" href=\"/editStudentProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить проект</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/studentAccount/projects\">Добавить проект</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
                             "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -124,7 +124,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>";
-                        $("#navbar").append(result);
+                        $("#navigation").append(result);
                     }
                     if (b.role === 'COMPANY') {
                         result += "    <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
@@ -150,7 +150,7 @@
                             "                                <a class=\"dropdown-item\" href=\"/editCompanyProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить вакансию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/vacancies/newVacancy\">Добавить вакансию</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "\n" +
@@ -167,7 +167,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>";
-                        $("#navbar").append(result);
+                        $("#navigation").append(result);
                     }
                 },
                 error: function (err) {
