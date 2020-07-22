@@ -178,7 +178,7 @@
             });
         }
     </script>
-    <div id="navbar">
+    <div id="navigation">
     </div>
     <div class="card" style="width: 90%; margin-left: auto; margin-right: auto; margin-top: 2%">
         <div class="card-header">

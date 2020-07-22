@@ -236,7 +236,7 @@
             });
         }
     </script>
-    <div id="navbar">
+    <div id="navigation">
     </div>
     <div class="card"
          style="display: inline-block; width: 50%; margin-left: 2%; margin-top: 1%; border: 2px darkgray solid; border-radius: 6px 0 6px 6px">

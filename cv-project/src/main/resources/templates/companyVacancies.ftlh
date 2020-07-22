@@ -163,7 +163,7 @@
                             "            </nav>\n" +
                             "        </div>";
                         $("#navigation").append(result);
-                    }
+                    }ти
                 },
                 error: function (err) {
                     var a = JSON.stringify(err);
@@ -173,7 +173,7 @@
             });
         }
     </script>
-    <div id="navbar">
+    <div id="navigation">
     </div>
     <div class="card"
          style="width: 96%; margin-right: auto; margin-left: auto; height: 46rem; border: 2px darkgray solid; border-top: 0;border-radius: 0 0 6px 6px">
