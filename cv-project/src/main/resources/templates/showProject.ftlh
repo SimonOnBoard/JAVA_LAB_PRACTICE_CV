@@ -146,6 +146,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>"
+                        $("#comment").attr("hidden", false);
                         $("#navigation").append(result);
                     }
                     if (b.role === 'STUDENT') {

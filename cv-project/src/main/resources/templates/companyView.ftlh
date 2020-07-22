@@ -198,7 +198,7 @@
             });
         }
     </script>
-    <div id="navbar">
+    <div id="navigation">
     </div>
     <div class="card-deck">
         <div class="card border-dark mb-3" style="display: inline-block; margin: 2%; max-width: 32rem">
