@@ -235,7 +235,22 @@
                     }
                     if (b.education !== null) {
                         $("#education").attr("hidden", false);
-                        $("#education").text(b.education);
+                        let educationEnum = b.education;
+                        let edu;
+                        if (educationEnum === 'UNFINISHED_BACHELOR') {
+                            edu = 'Бакалавр неоконченное';
+                        } else if (educationEnum === 'BACHELOR') {
+                            edu = 'Бакалавр';
+                        } else if (educationEnum === 'UNFINISHED_MASTER') {
+                            edu = 'Магистр неоконченное';
+                        } else if (educationEnum === 'MASTER') {
+                            edu = 'Магистр';
+                        } else if (educationEnum === 'UNFINISHED_GRADUATE') {
+                            edu = 'Аспирант неоконченное';
+                        } else if (educationEnum === 'GRADUATE') {
+                            edu = 'Аспирант';
+                        }
+                        $("#education").text(edu);
                     }
                     if (b.languages != null) {
                         b.languages.forEach(element => {
@@ -364,7 +379,7 @@
                         <div style="margin-top: 25px"></div>
 
                         <h5 class="card-title" hidden="true" id="info-label">О себе</h5>
-                        <p class="card-text" hidden="true" id="info"</p>
+                        <p class="card-text" hidden="true" id="info"></p>
                     </div>
                 </div>
 
