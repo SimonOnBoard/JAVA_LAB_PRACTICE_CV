@@ -33,20 +33,18 @@ public class TeacherCompanyContentController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    @PreAuthorize("hasRole('TEACHER')")
+    @PreAuthorize("hasAnyRole('TEACHER','ADMIN')")
     @PostMapping(value = {"/editTeacherProfile", "/api/editTeacherProfile"})
     public ResponseEntity<?> editTeacherProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                                     TeacherEditForm teacherEditForm) {
-        teachersService.updateTeacher(teacherEditForm, (Teacher) userDetails.getUser());
-        return ResponseEntity.ok(okAnswer);
+        return ResponseEntity.ok().body(teachersService.updateTeacher(teacherEditForm, (Teacher) userDetails.getUser()));
     }
 
     @PreAuthorize("hasRole('COMPANY')")
     @PostMapping(value = {"/editCompanyProfile", "/api/editCompanyChanges"})
     public ResponseEntity<?> editCompanyProfilePage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                                     CompanyEditForm companyEditForm) {
-        companyService.updateCompany(companyEditForm, (Company) userDetails.getUser());
-        return ResponseEntity.ok(okAnswer);
+        return ResponseEntity.ok(companyService.updateCompany(companyEditForm, (Company) userDetails.getUser()));
     }
 
 
@@ -54,35 +52,32 @@ public class TeacherCompanyContentController {
     @PostMapping("/addLanguage")
     public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                          Language language) {
-        teachersService.addLanguage((Teacher) userDetails.getUser(), language);
-        return ResponseEntity.ok().body(okAnswer);
+        return ResponseEntity.ok().body(teachersService.addLanguage(userDetails.getUserId(), language));
     }
 
     @PreAuthorize("hasRole('TEACHER')")
     @PostMapping("/removeLanguage/{langId}")
     public ResponseEntity<?> deleteLanguage(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                             @PathVariable("langId") Long langId) {
-        try {
-            teachersService.removeLanguage((Teacher) userDetails.getUser(), langId);
-            return ResponseEntity.ok(okAnswer);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        return ResponseEntity.ok().body(teachersService.removeLanguage((Teacher) userDetails.getUser(), langId));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgument(IllegalArgumentException exception) {
+        return ResponseEntity.ok().body(exception.getMessage());
     }
 
     @PreAuthorize("hasRole('COMPANY')")
     @PostMapping("/addPost")
-    public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails,
-                                         Post post) {
-        companyService.addPost(userDetails.getUser(), post);
-        return ResponseEntity.ok().body(okAnswer);
+    public ResponseEntity<?> addPost(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails,
+                                     Post post) {
+        return ResponseEntity.ok().body(companyService.addPost(userDetails.getUser(), post));
     }
 
     @PreAuthorize("hasRole('COMPANY')")
     @PostMapping("/removePost/{id}")
-    public ResponseEntity<?> addLanguage(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails,
-                                         @PathVariable("id") Long id) {
-        companyService.removePost(userDetails.getUser(), id);
-        return ResponseEntity.ok().body(okAnswer);
+    public ResponseEntity<?> removePost(@AuthenticationPrincipal UserDetailsImpl<Company> userDetails,
+                                        @PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(companyService.removePost(userDetails.getUser(), id));
     }
 }

@@ -17,12 +17,13 @@ public class ProjectDto {
     private String title;
     private String description;
     private List<String> links;
-
+    private Long id;
     public static ProjectDto from(Project project) {
         return ProjectDto.builder()
                 .description(project.getDescription())
                 .links(project.getLinks())
                 .title(project.getTitle())
+                .id(project.getId())
                 .build();
     }
 

@@ -21,12 +21,7 @@ public class CompetenceConfirmingServiceImpl implements CompetenceConfirmingServ
     @Transactional
     public void confirmCompetenceFromStudentProfile(Long competenceId, User user) {
         Teacher teacher = (Teacher) user;
-
-        Competence competence = competenceRepository.findById(competenceId)
-                .orElseThrow(() ->
-                    new IllegalArgumentException("Competence with id " + competenceId + " doesn't exist")
-                );
-
+        Competence competence = competenceRepository.findById(competenceId).orElseThrow(() -> new IllegalArgumentException("Competence with id " + competenceId + " doesn't exist"));
         competence.setConfirmed(true);
         competence.getConfirmedTeachers().add(teacher);
     }

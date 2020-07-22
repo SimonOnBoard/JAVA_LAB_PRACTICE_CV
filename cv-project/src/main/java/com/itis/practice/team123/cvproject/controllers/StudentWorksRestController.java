@@ -6,6 +6,7 @@ import com.itis.practice.team123.cvproject.models.Work;
 import com.itis.practice.team123.cvproject.repositories.WorksRepository;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.WeightsAssigner;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class StudentWorksRestController {
-    private WorksRepository worksRepository;
-    private WeightsAssigner weightsAssigner;
-
-    public StudentWorksRestController(WorksRepository worksRepository, WeightsAssigner weightsAssigner) {
-        this.worksRepository = worksRepository;
-        this.weightsAssigner = weightsAssigner;
-    }
+    private final WorksRepository worksRepository;
+    private final WeightsAssigner weightsAssigner;
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/load/works/{id}")

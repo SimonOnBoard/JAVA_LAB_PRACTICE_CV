@@ -11,5 +11,4 @@ import java.util.Optional;
 @Transactional
 public interface LanguageRepository extends JpaRepository<Language, Long> {
     Optional<Language> findByLevelAndLanguageIgnoreCase(LanguageLevel level, String language);
-    List<Language> findAllByLanguageIn(List<String> languages);
 }

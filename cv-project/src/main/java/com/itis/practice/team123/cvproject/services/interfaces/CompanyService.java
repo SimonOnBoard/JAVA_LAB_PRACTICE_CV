@@ -1,17 +1,19 @@
 package com.itis.practice.team123.cvproject.services.interfaces;
 
+import com.itis.practice.team123.cvproject.dto.CompanyDto;
 import com.itis.practice.team123.cvproject.dto.CompanyEditForm;
+import com.itis.practice.team123.cvproject.dto.PostDto;
 import com.itis.practice.team123.cvproject.models.Company;
 import com.itis.practice.team123.cvproject.models.Post;
 import com.itis.practice.team123.cvproject.models.User;
 
 public interface CompanyService {
-    void updateCompany(CompanyEditForm companyEditForm, Long id) throws IllegalArgumentException;
-    void updateCompany(CompanyEditForm companyEditForm, Company company);
+    CompanyDto updateCompany(CompanyEditForm companyEditForm, Long id) throws IllegalArgumentException;
+    CompanyDto updateCompany(CompanyEditForm companyEditForm, Company company);
 
     Company getCompany(Long id) throws IllegalArgumentException;
 
-    void addPost(Company company, Post post);
+    PostDto addPost(Company company, Post post);
 
-    void removePost(Company user, Long postId) throws IllegalArgumentException;
+    PostDto removePost(Company user, Long postId) throws IllegalArgumentException;
 }

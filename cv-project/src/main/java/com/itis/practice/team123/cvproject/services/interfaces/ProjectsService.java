@@ -11,6 +11,6 @@ public interface ProjectsService {
     List<Project> getAllProjects(Long userId);
     Project getProjectById(Long id);
 
-    void addNewProject(ProjectDto projectDto, User user);
+    ProjectDto addNewProject(ProjectDto projectDto, User user);
     void commentProject(ProjectCommentDto projectCommentDto, Long projectId, User user);
 }
