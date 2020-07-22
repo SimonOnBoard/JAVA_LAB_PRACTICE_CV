@@ -17,6 +17,13 @@ public class VacanciesController {
     private final VacanciesService vacanciesService;
     private final TagService tagService;
 
+    @GetMapping("/vacancies")
+    @PreAuthorize("isAuthenticated()")
+    public String getVacancies(Model model) {
+        model.addAttribute("vacancies", vacanciesService.getAllVacancies());
+        return "companyVacancies";
+    }
+
     @GetMapping("/vacancies/{id}")
     @PreAuthorize("isAuthenticated()")
     public String getVacancy(@PathVariable("id") Long id, Model model) {

@@ -24,6 +24,11 @@ public class VacanciesServiceImpl implements VacanciesService {
     private final TagsRepository tagsRepository;
 
     @Override
+    public List<Vacancy> getAllVacancies() {
+        return vacanciesRepository.findAll();
+    }
+
+    @Override
     public List<Vacancy> getAllVacanciesByCompanyId(Long companyId) {
         Company company = companyRepository.getOne(companyId);
         return vacanciesRepository.getAllByCompany(company);

@@ -7,6 +7,7 @@ import com.itis.practice.team123.cvproject.models.Vacancy;
 import java.util.List;
 
 public interface VacanciesService {
+    List<Vacancy> getAllVacancies();
     List<Vacancy> getAllVacanciesByCompanyId(Long companyId);
     List<Vacancy> getAllVacanciesForCompany(Company company);
     VacancyDto getVacancy(Long id);
