@@ -28,18 +28,19 @@
                 contentType: false,
                 cache: false,
                 timeout: 600000,
-                success : function(data) {
+                success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
                     alert("Successfully updated: " + String(a));
                 },
-                error : function(err) {
+                error: function (err) {
                     var a = JSON.stringify(err);
                     var b = JSON.parse(a);
                     alert(b);
                 }
             });
         }
+
         function addPost() {
             // Create an FormData object
             var form = $("#f")[0];
@@ -54,19 +55,20 @@
                 contentType: false,
                 cache: false,
                 timeout: 600000,
-                success : function(data) {
+                success: function (data) {
                     var a = JSON.stringify(data);
                     var b = JSON.parse(a);
                     alert("Successfully created: " + String(a));
                     $('#f')[0].reset();
                 },
-                error : function(err) {
+                error: function (err) {
                     var a = JSON.stringify(err);
                     var b = JSON.parse(a);
                     alert(b);
                 }
             });
         }
+
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
         getViewerInfo();
@@ -226,8 +228,8 @@
         }
     </script>
     <div id="navigation"></div>
-    <form  id='x' action="/editCompanyProfile" method='POST'>
-        <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
+    <div class="card border-dark mb-3" style="display: inline-block; min-width: 56rem; margin: 2%">
+        <form id='x' action="/editCompanyProfile" method='POST'>
             <div class="card-header">Общая информация</div>
             <div class="card-body text-dark" style="max-height: 40rem">
 
@@ -258,9 +260,9 @@
 
                     <h5 class="card-title">Адрес компании</h5>
                     <#if address?has_content>
-                        <input type='text' class="form-control"  name='address' value='${address}' required/>
+                        <input type='text' class="form-control" name='address' value='${address}' required/>
                     <#else>
-                        <input type='text' class="form-control"  name='address' value='' required/>
+                        <input type='text' class="form-control" name='address' value='' required/>
                     </#if>
 
                     <div style="margin-top: 25px"></div>
@@ -275,16 +277,16 @@
                                   style="resize: none" value=''
                                   required></textarea>
                     </#if>
-                    <div style="margin-top: 2rem; float: right">
+                    <div style="margin-top: 2rem; margin-bottom: 1rem; float: right">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <button type="button" onclick="editCompany()" class="btn btn-primary" value="Изменить"/>
+                        <button type="button" onclick="editCompany()" class="btn btn-primary">Изменить</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <div style="display: inline-block; ">
-        <div class="card border-dark mb-3" style="margin-left: 1%; margin-top: 2%; width: 36rem">
+        </form>
+    </div>
+    <div style="display: inline-block; vertical-align: top; margin-left: 1%; margin-top: 2%">
+        <div class="card border-dark mb-3" style="width: 36rem">
             <form id="f" action="/addPost">
                 <div class="card-header">Новый пост</div>
                 <div class="card-body text-dark" style="">
@@ -294,11 +296,14 @@
                     <div style="margin-top: 25px"></div>
 
                     <h5 class="card-title">Контент</h5>
-                    <textarea rows="10" cols="45" class="form-control" type="text" name="description" required></textarea>
+                    <textarea rows="10" cols="45" class="form-control" type="text" name="description"
+                              required></textarea>
 
                     <div style="margin-top: 25px"></div>
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                    <button type="button" onclick="addPost()" class="btn btn-primary" style="float: right; margin-bottom: 1rem">Добавить</button>
+                    <button type="button" onclick="addPost()" class="btn btn-primary"
+                            style="float: right; margin-bottom: 1rem">Добавить
+                    </button>
 
                 </div>
             </form>

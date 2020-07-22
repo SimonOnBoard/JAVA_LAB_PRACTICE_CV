@@ -202,10 +202,10 @@
     </script>
     <div id="navigation">
     </div>
-    <div class="card-deck">
+    <div class="card-deck" style="margin-right: auto; margin-left: auto; width: 90%">
         <div class="card border-dark mb-3" style="display: inline-block; margin: 2%; max-width: 48rem">
             <div class="card-header">Личные данные</div>
-            <div class="card-body text-dark" style="max-height: 22rem; overflow-y: scroll">
+            <div class="card-body text-dark" style="max-height: 32rem; overflow-y: scroll">
                 <#if name?has_content>
                     <h5 class="card-title">Имя</h5>
                     <p class="card-text">${name}</p>
@@ -242,7 +242,7 @@
 
         <div class="card border-dark mb-3" style="display: inline-block; max-width: 28rem; margin: 2%">
             <div class="card-header">Знание языков</div>
-            <div class="card-body text-dark" style="height: 22rem; overflow-y: scroll">
+            <div class="card-body text-dark" style="height: 32rem; overflow-y: scroll">
                 <#if languages?has_content>
                     <#list languages as lang>
                         <h5 class="card-title">${lang.getLanguage()}</h5>
