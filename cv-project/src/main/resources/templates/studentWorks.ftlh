@@ -223,8 +223,24 @@
                 }
             });
         }
+        setLinks();
+        function setLinks() {
+            var path = window.location.pathname
+            $("#linkToProfile").attr("href","/profile/" + String(path));
+            $("#linkToProjectPage").attr("href","/students/" + String(path) + "/projects");
+        }
     </script>
     <div id="navigation"></div>
+    <div><!--TODO Это нужно добавить-->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active"><a href="/profile/${id}" id="linkToProfile">Профиль</a></li>
+                <li class="breadcrumb-item"><a href="/students/${id}/projects" id="linkToProjectPage">Проекты</a></li>
+                <li class="breadcrumb-item">Работы</li>
+            </ol>
+        </nav>
+    </div>
+
     <div class="card-deck">
         <div class="card border-dark mb-3"
              style="display: inline-block; margin-left: 5%; margin-top: 2%; max-width: 60rem">

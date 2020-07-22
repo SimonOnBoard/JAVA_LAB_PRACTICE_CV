@@ -17,7 +17,9 @@
 
         .profile {
             width: 90%;
-            margin: 4%;
+            margin-top: 1%;
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .scroll-teachers {
@@ -329,10 +331,20 @@
         }
     </script>
     <div id="navigation"></div>
+
+    <div><!--TODO Это нужно добавить-->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">Профиль</li>
+                <li class="breadcrumb-item"><a href="/students/${id}/projects">Проекты</a></li>
+                <li class="breadcrumb-item"><a href="/works/${id}">Работы</a></li>
+            </ol>
+        </nav>
+    </div>
     <div class="profile">
         <div class="first-floor">
             <div class="card-deck">
-                <div class="card border-dark mb-3" style="max-width: 28rem">
+                <div class="card border-dark mb-3">
                     <div class="card-header">Личные данные</div>
                     <div class="card-body text-dark" style="max-height: 30rem; overflow-y: scroll">
                         <h5 class="card-title" hidden="true" id="fio_label">ФИО</h5>
