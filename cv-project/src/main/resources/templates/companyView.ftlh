@@ -247,7 +247,7 @@
                                 <#if isOwner == true>
                                     <form id="${post.getId()}" action="/removePost/${post.getId()}" method="post">
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                        <button type="button" onclick="removePost(${post.getId()})">Удалить пост</button>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="removePost(${post.getId()})">Удалить пост</button>
                                     </form>
                                 </#if>
                             </a>
