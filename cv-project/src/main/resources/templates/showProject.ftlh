@@ -135,7 +135,7 @@
                             "                        </li>\n" +
                             "\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -180,14 +180,14 @@
                             "                                <a class=\"dropdown-item\" href=\"/editStudentProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить проект</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/studentAccount/projects\">Добавить проект</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
                             "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -224,7 +224,7 @@
                             "                                <a class=\"dropdown-item\" href=\"/editCompanyProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить вакансию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/vacancies/newVacancy\">Добавить вакансию</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "\n" +
@@ -271,17 +271,14 @@
         </div>
     </div>
 
-    <div class="card border-dark mb-3"
+    <div class="card border-dark mb-3" id="comments-card"
          style="display: inline-block; width: 30rem; border-radius: 6px 0 0 6px">
         <div class="card-header">Комментарии</div>
         <div class="list group" style="overflow-y: scroll; height: 30em" id="comments" >
 
-            <div class="dropdown-divider"></div>
-
-
         </div>
 
-        <div style="border-top: 1px black solid; height: 6em">
+        <div hidden="true" id="comment" style="border-top: 1px black solid; height: 6em">
             <form id="addCommentForm" method="post" action="/projects/${id}/newComment">
                 <div class="input-group mb-3"
                      style="margin: 3em auto 0 auto; width: 90%; text-align: center">

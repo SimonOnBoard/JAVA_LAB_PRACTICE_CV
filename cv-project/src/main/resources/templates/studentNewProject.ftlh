@@ -66,17 +66,15 @@
                     for (let i = response.length - 1; i >= 0; i--) {
                         var links = '';
                         for (let j = response[i]['links'].length - 1; j >= 0; j--) {
-                            links = links + '<a href="#">' + response[i]['links'][j] + '</a>'
+                            links = links + '<a style="display:block;" href="' + response[i]['links'][j] + '">' + response[i]['links'][j] + '</a>'
                         }
-                        $('#projects').append('<div class="list-group">\n' +
-                            '                    <div class="list-group-item list-group-item-action flex-column align-items-start">\n' +
+                        $('#projects').append('<div class="list-group-item list-group-item-action flex-column align-items-start">\n' +
                             '                        <div class="d-flex w-100 justify-content-between">\n' +
-                            '                            <a href=\"/getProject/' + response[i]['id'] + '\"' + 'class="mb-1">' + response[i]['title'] + '</a>\n' +
+                            '                            <a style="font-size: large" href=\"/getProject/' + response[i]['id'] + '\"' + 'class="mb-1">' + response[i]['title'] + '</a>\n' +
                             '                        </div>\n' +
                             '                        <p class="mb-1">' + response[i]['description'] + '</p>\n' +
                             links +
-                            '                    </div>\n' +
-                            '                </div>')
+                            '                    </div>\n')
                     }
                 },
                 error: function (err) {
@@ -125,7 +123,7 @@
                             "                        </li>\n" +
                             "\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -170,14 +168,14 @@
                             "                                <a class=\"dropdown-item\" href=\"/editStudentProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить проект</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/studentAccount/projects\">Добавить проект</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
                             "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -214,7 +212,7 @@
                             "                                <a class=\"dropdown-item\" href=\"/editCompanyProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить вакансию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/vacancies/newVacancy\">Добавить вакансию</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "\n" +
@@ -254,7 +252,7 @@
     </div>
     <div class="card-deck">
         <div class="card border-dark mb-3"
-             style="display: inline-block; margin-left: 5%; margin-top: 2%; max-width: 40rem">
+             style="display: inline-block; margin-left: 5%; margin-top: 1%; max-width: 40rem">
             <div class="card-header">Выполненные проекты</div>
             <div class="card-body text-dark" style="height: 32rem; overflow-y: scroll">
 
@@ -266,7 +264,7 @@
         </div>
 
         <div class="card border-dark mb-3"
-             style="display: inline-block; margin-left: 5%; margin-top: 2%; max-width: 40rem; height: inherit">
+             style="display: inline-block; margin-left: 5%; margin-top: 1%; max-width: 40rem; height: inherit">
             <form method="post" action="/projects/newProject" id="projectForm">
                 <div class="card-header">Новый проект</div>
                 <div class="card-body text-dark" style="height: 32rem; overflow-y: scroll">

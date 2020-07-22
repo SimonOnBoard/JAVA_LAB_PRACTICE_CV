@@ -25,8 +25,8 @@
         var selectedTags = [];
         getViewerInfo();
 
-        function deleteVacancy() {
-            var form = $("#deleteVacancy")[0];
+        function deleteVacancy(id) {
+            var form = $("#deleteVacancy" + id)[0];
             var data = new FormData(form);
             $.ajax({
                 method: "DELETE",
@@ -119,7 +119,7 @@
                             "                        </li>\n" +
                             "\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -130,7 +130,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>"
-                        $("#navbar").append(result);
+                        $("#navigation").append(result);
                     }
                     if (b.role === 'STUDENT') {
                         result += "        <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
@@ -164,14 +164,14 @@
                             "                                <a class=\"dropdown-item\" href=\"/editStudentProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить проект</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/studentAccount/projects\">Добавить проект</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
                             "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -182,7 +182,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>";
-                        $("#navbar").append(result);
+                        $("#navigation").append(result);
                     }
                     if (b.role === 'COMPANY') {
                         result += "    <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
@@ -208,7 +208,7 @@
                             "                                <a class=\"dropdown-item\" href=\"/editCompanyProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить вакансию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/vacancies/newVacancy\">Добавить вакансию</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "\n" +
@@ -225,7 +225,7 @@
                             "                </div>\n" +
                             "            </nav>\n" +
                             "        </div>";
-                        $("#navbar").append(result);
+                        $("#navigation").append(result);
                     }
                 },
                 error: function (err) {
@@ -236,7 +236,7 @@
             });
         }
     </script>
-    <div id="navbar">
+    <div id="navigation">
     </div>
     <div class="card"
          style="display: inline-block; width: 50%; margin-left: 2%; margin-top: 1%; border: 2px darkgray solid; border-radius: 6px 0 6px 6px">
@@ -271,9 +271,9 @@
                             </div>
                         </a>
                         <div style="float: right">
-                            <form method="post" id="deleteVacancy" action="/vacancies/deleteVacancy/${vacancy.id}">
+                            <form method="post" id="deleteVacancy${vacancy.id}" action="/vacancies/deleteVacancy/${vacancy.id}">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <button type="button" onclick="deleteVacancy()" class="btn btn-outline-danger btn-sm">
+                                <button type="button" onclick="deleteVacancy(${vacancy.id})" class="btn btn-outline-danger btn-sm">
                                     Удалить вакансию
                                 </button>
                             </form>

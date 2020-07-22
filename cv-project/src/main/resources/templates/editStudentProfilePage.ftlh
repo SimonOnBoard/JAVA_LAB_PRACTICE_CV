@@ -263,7 +263,7 @@
                             "                        </li>\n" +
                             "\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -308,14 +308,14 @@
                             "                                <a class=\"dropdown-item\" href=\"/editStudentProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить проект</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/studentAccount/projects\">Добавить проект</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
                             "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -352,7 +352,7 @@
                             "                                <a class=\"dropdown-item\" href=\"/editCompanyProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить вакансию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/vacancies/newVacancy\">Добавить вакансию</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "\n" +
@@ -381,7 +381,7 @@
         }
     </script>
     <div id="navigation"></div>
-    <div style="display: inline-block; vertical-align: top">
+    <div style="display: inline-block; vertical-align: top; margin-left: 5%">
         <form method="post" action="/studentAccount/info/update" id="upd">
             <div class="card border-dark mb-3" style="width: 43rem; margin: 2%">
                 <div class="card-header">Личные данные</div>
@@ -499,8 +499,7 @@
                         </select>
 
                         <div style="margin-top: 1rem; float: right">
-                            <button type="button" class="btn btn-primary" onclick="addEducation()"
-                                    value="Обновить"></button>
+                            <button type="button" class="btn btn-primary" onclick="addEducation()">Добавить</button>
                         </div>
                     </div>
                 </div>
@@ -514,8 +513,8 @@
                 <div class="card-body text-dark" style="max-height: 40rem">
 
                     <div class="form-group">
-                        <label for="language">Выберите язык из списка</label>
-                        <input type="text" name="language" id="language"/>
+                        <label for="language">Введите язык</label>
+                        <input class="form-control" type="text" name="language" id="language"/>
 
                         <div style="margin: 1rem"></div>
 
@@ -529,8 +528,7 @@
                             <option value="C2">C2</option>
                         </select>
                         <div style="margin-top: 1rem; float: right">
-                            <button type="button" class="btn btn-primary" onclick="addLanguage()"
-                                    value="Обновить"></button>
+                            <button type="button" class="btn btn-primary" onclick="addLanguage()">Добавить</button>
                         </div>
                     </div>
 
@@ -561,8 +559,7 @@
                         </select>
 
                         <div style="margin-top: 1rem; float: right">
-                            <button type="button" class="btn btn-primary" onclick="addCertificates()"
-                                    value="Обновить"></button>
+                            <button type="button" class="btn btn-primary" onclick="addCertificates()">Добавить</button>
                         </div>
                     </div>
                 </div>
