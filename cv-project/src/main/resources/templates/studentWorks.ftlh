@@ -234,8 +234,8 @@
     <div><!--TODO Это нужно добавить-->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a id="linkToProfile">Профиль</a></li>
-                <li class="breadcrumb-item"><a id="linkToProjectPage">Проекты</a></li>
+                <li class="breadcrumb-item active"><a href="/profile/${id}" id="linkToProfile">Профиль</a></li>
+                <li class="breadcrumb-item"><a href="/students/${id}/projects" id="linkToProjectPage">Проекты</a></li>
                 <li class="breadcrumb-item">Работы</li>
             </ol>
         </nav>

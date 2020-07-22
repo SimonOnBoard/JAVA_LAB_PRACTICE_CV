@@ -246,7 +246,7 @@
     <div><!--TODO Это нужно добавить-->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="/students/${id}">Профиль</a></li>
+                <li class="breadcrumb-item active"><a href="/profile/${id}">Профиль</a></li>
                 <li class="breadcrumb-item">Проекты</li>
                 <li class="breadcrumb-item"><a href="/works/${id}">Работы</a></li>
             </ol>

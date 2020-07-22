@@ -1,5 +1,6 @@
 package com.itis.practice.team123.cvproject.utils;
 
+import com.itis.practice.team123.cvproject.models.Student;
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
