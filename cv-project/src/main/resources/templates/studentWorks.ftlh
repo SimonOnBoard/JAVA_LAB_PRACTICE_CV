@@ -52,8 +52,8 @@
                             '                                        <div style="display: flex; flex-wrap: wrap">\n' +
                             tags +
                             '                                        </div>\n' +
-                                '<div style="float: right">' +
-                                '<p style="display: inline" class="mb-1">Преподаватель:</p>' +
+                            '<div style="float: right">' +
+                            '<p style="display: inline" class="mb-1">Преподаватель:</p>' +
                             '                                       <a style="display: inline; margin-left: 8px" href="/profile/' + response[i]['work']['teacher']['id'] + '">' +
                             '                                       <u style="font-size: large">' + response[i]['work']['teacher']['surname'] + ' ' +
                             response[i]['work']['teacher']['name'] + ' ' +
@@ -110,7 +110,7 @@
                             "                        </li>\n" +
                             "\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -155,14 +155,14 @@
                             "                                <a class=\"dropdown-item\" href=\"/editStudentProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить проект</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/studentAccount/projects\">Добавить проект</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
                             "                            <a class=\"nav-link\" href=\"/search\">Поиск</a>\n" +
                             "                        </li>\n" +
                             "                        <li class=\"nav-item\" style=\"margin-left: 10px\">\n" +
-                            "                            <a class=\"nav-link\" href=\"#\">Вакансии</a>\n" +
+                            "                            <a class=\"nav-link\" href=\"/vacancies\">Вакансии</a>\n" +
                             "                        </li>\n" +
                             "                    </ul>\n" +
                             "                    <div class=\"form-inline\" style=\"margin-left: 62%; float: right\">\n" +
@@ -199,7 +199,7 @@
                             "                                <a class=\"dropdown-item\" href=\"/editCompanyProfile/";
                         result += b.id;
                         result += "\">Изменить инфомацию</a>\n" +
-                            "                                <a class=\"dropdown-item\" href=\"#\">Добавить вакансию</a>\n" +
+                            "                                <a class=\"dropdown-item\" href=\"/vacancies/newVacancy\">Добавить вакансию</a>\n" +
                             "                            </div>\n" +
                             "                        </li>\n" +
                             "\n" +
@@ -226,11 +226,13 @@
                 }
             });
         }
+
         setLinks();
+
         function setLinks() {
             var path = window.location.pathname
-            $("#linkToProfile").attr("href","/profile/" + String(path));
-            $("#linkToProjectPage").attr("href","/students/" + String(path) + "/projects");
+            $("#linkToProfile").attr("href", "/profile/" + String(path));
+            $("#linkToProjectPage").attr("href", "/students/" + String(path) + "/projects");
         }
     </script>
     <div id="navigation"></div>
