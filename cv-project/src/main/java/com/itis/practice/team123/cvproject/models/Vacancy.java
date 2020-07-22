@@ -20,7 +20,7 @@ public class Vacancy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "vacancy_title")
+    @Column(name = "vacancy_title", length = 1024)
     private String title;
 
     @Column(name = "vacancy_salary_min")
@@ -29,7 +29,7 @@ public class Vacancy {
     @Column(name = "vacancy_salary_max")
     private Integer salaryMax;
 
-    @Column(name = "vacancy_description")
+    @Column(name = "vacancy_description", length = 5120)
     private String description;
 
     @ElementCollection
@@ -62,5 +62,4 @@ public class Vacancy {
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
     private List<Tag> tags;
-
 }
