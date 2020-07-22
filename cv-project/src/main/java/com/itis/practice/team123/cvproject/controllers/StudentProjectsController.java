@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class StudentProjectsController {
-    @PreAuthorize("hasAnyRole('TEACHER', 'COMPANY', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('TEACHER', 'COMPANY', 'ADMIN','STUDENT')")
     @GetMapping("students/{id}/projects")
     public String getProjectsPage(@PathVariable("id") Long userId,
                                                       @AuthenticationPrincipal UserDetailsImpl<?> userDetails) {
