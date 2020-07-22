@@ -16,6 +16,7 @@
     <script type="application/javascript">
         var token = $("meta[name='_csrf']").attr("content");
         var header = $("meta[name='_csrf_header']").attr("content");
+
         function addLanguage() {
             var form = $("#x")[0];
             var data = new FormData(form);
@@ -224,110 +225,117 @@
         }
     </script>
     <div id="navigation"></div>
-    <div style="display: inline-block">
-        <form id='f' action="/editTeacherProfile" method='POST'>
+
+
+    <div style="margin-left: auto; margin-right: auto; width: 90%;">
+        <div style="display: inline-block">
+            <form id='f' action="/editTeacherProfile" method='POST'>
+                <div class="card border-dark mb-3" style="min-width: 46rem; margin: 2%">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <div class="card-header">Общая информация</div>
+                    <div class="card-body text-dark" style="max-height: 40rem">
+
+                        <div style="overflow-y: scroll">
+
+                        </div>
+
+                        <div class="form-group">
+                            <h5 class="card-title">ФИО</h5>
+                            <div class="form-group">
+                                <label class="card-text">
+                                    <strong>Фамилия</strong>
+                                    <#if surname?has_content>
+                                    <td><input type='text' name='surname' value='${surname}' class="form-control"
+                                               required/>
+                                        <#else>
+                                    <td><input type='text' name='surname' value='' class="form-control" required/>
+                                        </#if>
+                                </label>
+
+                                <label class="card-text" style="margin-left: 20px">
+                                    <strong>Имя</strong>
+                                    <#if name?has_content>
+                                        <input type='text' name='name' class="form-control" value='${name}' required/>
+                                    <#else>
+                                        <input type='text' name='name' class="form-control" value='' required/>
+                                    </#if>
+                                </label>
+
+                                <label class="card-text" style="margin-left: 20px">
+                                    <strong>Отчество</strong>
+                                    <#if patronymic?has_content>
+                                        <input type='text' name='patronymic' class="form-control" value='${patronymic}'
+                                               required/>
+                                    <#else>
+                                        <input type='text' name='patronymic' class="form-control" value='' required/>
+                                    </#if>
+                                </label>
+
+                            </div>
+
+                            <div style="margin-top: 25px"></div>
+
+                            <h5 class="card-title">Место преподавания</h5>
+                            <#if institution?has_content>
+                                <input type='text' class="form-control" name='institution' value='${institution}'
+                                       required/>
+                            <#else>
+                                <input type='text' class="form-control" name='institution' value='' required/>
+                            </#if>
+
+                            <div style="margin-top: 25px"></div>
+
+                            <h5 class="card-title">О себе</h5>
+                            <#if info?has_content>
+                                <textarea class="form-control" name="info" rows="5" cols="70"
+                                          style="resize: none" type='text'
+                                          required>${info}</textarea>
+                            <#else>
+                                <textarea class="form-control" name="info" rows="5" cols="70"
+                                          style="resize: none" value='' type='text'
+                                          required></textarea>
+                            </#if>
+                            <div style="margin-top: 2rem; float: right">
+                                <button type="button" onclick="addTeacherInfo()" class="btn btn-primary">Изменить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <form id="x" action="/addLanguage" style="display: inline-block; margin-left: 3rem">
             <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <div class="card-header">Общая информация</div>
+                <div class="card-header">Добавить язык</div>
                 <div class="card-body text-dark" style="max-height: 40rem">
 
-                    <div style="overflow-y: scroll">
-
-                    </div>
-
                     <div class="form-group">
-                        <h5 class="card-title">ФИО</h5>
-                        <div class="form-group">
-                            <label class="card-text">
-                                <strong>Фамилия</strong>
-                                <#if surname?has_content>
-                                    <td><input type='text' name='surname' value='${surname}'  class="form-control" required/>
-                                <#else>
-                                    <td><input type='text' name='surname' value='' class="form-control" required/>
-                                </#if>
-                            </label>
+                        <label for="languageSelect">Введите язык</label>
+                        <input type="text" name="language" id="language"/>
 
-                            <label class="card-text" style="margin-left: 20px">
-                                <strong>Имя</strong>
-                                <#if name?has_content>
-                                    <input type='text' name='name' class="form-control" value='${name}' required/>
-                                <#else>
-                                    <input type='text' name='name' class="form-control" value='' required/>
-                                </#if>
-                            </label>
+                        <div style="margin: 1rem"></div>
 
-                            <label class="card-text" style="margin-left: 20px">
-                                <strong>Отчество</strong>
-                                <#if patronymic?has_content>
-                                    <input type='text' name='patronymic' class="form-control" value='${patronymic}' required/>
-                                <#else>
-                                    <input type='text' name='patronymic' class="form-control" value='' required/>
-                                </#if>
-                            </label>
+                        <label for="exampleFormControlSelect2">Выберите уровень владения</label>
+                        <select class="form-control" id="level" name="level">
+                            <option value="A1">A1</option>
+                            <option value="A2">A2</option>
+                            <option value="B1">B1</option>
+                            <option value="B2">B2</option>
+                            <option value="C1">C1</option>
+                            <option value="C2">C2</option>
+                        </select>
 
-                        </div>
-
-                        <div style="margin-top: 25px"></div>
-
-                        <h5 class="card-title">Место преподавания</h5>
-                        <#if institution?has_content>
-                            <input type='text' class="form-control" name='institution' value='${institution}' required/>
-                        <#else>
-                            <input type='text' class="form-control" name='institution' value='' required/>
-                        </#if>
-
-                        <div style="margin-top: 25px"></div>
-
-                        <h5 class="card-title">О себе</h5>
-                        <#if info?has_content>
-                            <textarea class="form-control" name="info" rows="5" cols="70"
-                                      style="resize: none" type='text'
-                                      required>${info}</textarea>
-                        <#else>
-                            <textarea class="form-control" name="info" rows="5" cols="70"
-                                      style="resize: none" value='' type='text'
-                                      required></textarea>
-                        </#if>
-                        <div style="margin-top: 2rem; float: right">
-                                <button type="button" onclick="addTeacherInfo()" class="btn btn-primary"
-                                        value="Изменять"></button>
+                        <div style="margin-top: 1rem; float: right">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                            <button type="button" class="btn btn-primary" onclick="addLanguage()">Обновить</button>
                         </div>
                     </div>
+
                 </div>
             </div>
         </form>
     </div>
-
-    <form id="x" action="/addLanguage" style="display: inline-block">
-        <div class="card border-dark mb-3" style="min-width: 36rem; margin: 2%">
-            <div class="card-header">Добавить язык</div>
-            <div class="card-body text-dark" style="max-height: 40rem">
-
-                <div class="form-group">
-                    <label for="languageSelect">Выберите язык</label>
-                    <input type="text" name="language" id="language"/>
-
-                    <div style="margin: 1rem"></div>
-
-                    <label for="exampleFormControlSelect2">Выберите уровень владения</label>
-                    <select class="form-control" id="level" name="level">
-                        <option value="A1">A1</option>
-                        <option value="A2">A2</option>
-                        <option value="B1">B1</option>
-                        <option value="B2">B2</option>
-                        <option value="C1">C1</option>
-                        <option value="C2">C2</option>
-                    </select>
-
-                    <div style="margin-top: 1rem; float: right">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                        <button type="button" class="btn btn-primary" onclick="addLanguage()">Обновить</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </form>
 </#macro>
 <#macro title>
     <title>Личный кабинет</title>

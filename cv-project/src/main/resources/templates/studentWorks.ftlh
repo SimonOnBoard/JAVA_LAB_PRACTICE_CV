@@ -52,10 +52,13 @@
                             '                                        <div style="display: flex; flex-wrap: wrap">\n' +
                             tags +
                             '                                        </div>\n' +
-                            '                                       <a href="/profile/' + response[i]['work']['teacher']['id'] + '">' +
+                                '<div style="float: right">' +
+                                '<p style="display: inline" class="mb-1">Преподаватель:</p>' +
+                            '                                       <a style="display: inline; margin-left: 8px" href="/profile/' + response[i]['work']['teacher']['id'] + '">' +
                             '                                       <u style="font-size: large">' + response[i]['work']['teacher']['surname'] + ' ' +
                             response[i]['work']['teacher']['name'] + ' ' +
-                            response[i]['work']['teacher']['patronymic'] + '</u></a>\n' +
+                            response[i]['work']['teacher']['patronymic'] + '</u></a>' +
+                            '</div>' + '\n' +
                             '                                    </div>\n' +
                             '                                </div>');
                     }
@@ -241,11 +244,11 @@
         </nav>
     </div>
 
-    <div class="card-deck">
+    <div class="card-deck" style="margin-left: auto; margin-right: auto;width: 90%">
         <div class="card border-dark mb-3"
-             style="display: inline-block; margin-left: 5%; margin-top: 2%; max-width: 60rem">
-            <div class="card-header">Выполненные проекты</div>
-            <div id="works" class="card-body text-dark" style="height: 45rem; overflow-y: scroll">
+             style="display: inline-block; margin-top: 0.5%; max-width: 60rem">
+            <div class="card-header">Выполненные работы</div>
+            <div id="works" class="card-body text-dark" style="height: 37rem; overflow-y: scroll">
 
             </div>
         </div>

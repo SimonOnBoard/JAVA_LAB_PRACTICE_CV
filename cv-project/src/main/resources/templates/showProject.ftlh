@@ -112,6 +112,7 @@
                     var b = JSON.parse(a);
                     var result = '';
                     if (b.role === 'TEACHER' | b.role === 'ADMIN') {
+                        $("#comment").attr("hidden", false);
                         result += "        <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
                             "            <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"width: 100%; font-size: large\">\n" +
                             "                <a class=\"navbar-brand\" href=\"#\" style=\"font-size: x-large\">Curriculum vitae</a>\n" +
@@ -149,6 +150,7 @@
                         $("#navigation").append(result);
                     }
                     if (b.role === 'STUDENT') {
+                        $("#comments-card").css('height', '34rem');
                         result += "        <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
                             "            <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"width: 100%; font-size: large\">\n" +
                             "                <a class=\"navbar-brand\" href=\"#\" style=\"font-size: x-large\">Curriculum vitae</a>\n" +
@@ -201,6 +203,7 @@
                         $("#navigation").append(result);
                     }
                     if (b.role === 'COMPANY') {
+                        $("#comments-card").css('height', '34rem');
                         result += "    <div class=\"navbar\" style=\"list-style: none; padding: 0; margin: 0\">\n" +
                             "            <nav class=\"navbar navbar-expand-lg navbar-dark bg-dark\" style=\"width: 100%; font-size: large\">\n" +
                             "                <a class=\"navbar-brand\" href=\"#\" style=\"font-size: x-large\">Curriculum vitae</a>\n" +
@@ -271,17 +274,14 @@
         </div>
     </div>
 
-    <div class="card border-dark mb-3"
+    <div class="card border-dark mb-3" id="comments-card"
          style="display: inline-block; width: 30rem; border-radius: 6px 0 0 6px">
         <div class="card-header">Комментарии</div>
         <div class="list group" style="overflow-y: scroll; height: 30em" id="comments" >
 
-            <div class="dropdown-divider"></div>
-
-
         </div>
 
-        <div style="border-top: 1px black solid; height: 6em">
+        <div hidden="true" id="comment" style="border-top: 1px black solid; height: 6em">
             <form id="addCommentForm" method="post" action="/projects/${id}/newComment">
                 <div class="input-group mb-3"
                      style="margin: 3em auto 0 auto; width: 90%; text-align: center">
