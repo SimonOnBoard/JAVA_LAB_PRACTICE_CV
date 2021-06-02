@@ -6,6 +6,7 @@ import com.itis.practice.team123.cvproject.enums.Role;
 import com.itis.practice.team123.cvproject.security.details.UserDetailsImpl;
 import com.itis.practice.team123.cvproject.services.interfaces.ProfileService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +20,7 @@ import java.nio.file.AccessDeniedException;
 
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class ProfileController {
     private final ProfileService profileService;
 
@@ -46,10 +48,10 @@ public class ProfileController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping(value = {"/api/profile/{id}", "/api/profile"})
-    public ResponseEntity<?> getApiForProfile(Model model,
-                                              @AuthenticationPrincipal UserDetailsImpl<?> userDetails,
+    public ResponseEntity<?> getApiForProfile(@AuthenticationPrincipal UserDetailsImpl<?> userDetails,
                                               @PathVariable(name = "id", required = false) Long id) {
         try {
+            log.info("RECEIVED REQUEST");
             return ResponseEntity.ok().body(id == null ? profileService.getProfileForApi(userDetails.getUser()) : profileService.getProfileForApi(id));
         } catch (IllegalArgumentException e) {
             throw new IllegalStateException(e.getMessage());

@@ -89,6 +89,7 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public Object getProfileForApi(Long id) {
+
         User user = usersService.getUser(id);
         return getProfileForApi(user);
     }

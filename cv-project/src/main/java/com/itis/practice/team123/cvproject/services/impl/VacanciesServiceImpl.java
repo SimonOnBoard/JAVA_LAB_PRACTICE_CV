@@ -10,6 +10,7 @@ import com.itis.practice.team123.cvproject.repositories.VacanciesRepository;
 import com.itis.practice.team123.cvproject.services.interfaces.VacanciesService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +24,10 @@ public class VacanciesServiceImpl implements VacanciesService {
     private final CompanyRepository companyRepository;
     private final TagsRepository tagsRepository;
 
+    @Transactional
     @Override
     public List<Vacancy> getAllVacancies() {
-        return vacanciesRepository.findAll();
+        return  vacanciesRepository.findAll();
     }
 
     @Override

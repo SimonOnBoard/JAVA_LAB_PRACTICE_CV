@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.annotation.security.PermitAll;
+
 @Controller
 @AllArgsConstructor
 public class VacanciesController {
@@ -18,7 +20,7 @@ public class VacanciesController {
     private final TagService tagService;
 
     @GetMapping("/vacancies")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("permitAll()")
     public String getVacancies(Model model) {
         model.addAttribute("vacancies", vacanciesService.getAllVacancies());
         return "companyVacancies";
